@@ -1,0 +1,1115 @@
+{
+  "curated": [
+    {
+      "id": "v4c01",
+      "dept": "后勤",
+      "query": "宿舍的空调要另外交钱吗",
+      "expected_docs": [
+        "知识库-学生公寓服务中心"
+      ],
+      "keywords": [
+        "空调",
+        "电费自理"
+      ],
+      "intended_assistant": "中传小勤"
+    },
+    {
+      "id": "v4c02",
+      "dept": "后勤",
+      "query": "宿舍洗澡水是全天供应吗",
+      "expected_docs": [
+        "知识库-学生公寓服务中心"
+      ],
+      "keywords": [
+        "24 小时"
+      ],
+      "intended_assistant": "中传小勤"
+    },
+    {
+      "id": "v4c03",
+      "dept": "后勤",
+      "query": "学生宿舍里可以养宠物吗",
+      "expected_docs": [
+        "知识库-学生公寓服务中心"
+      ],
+      "keywords": [
+        "饲养宠物"
+      ],
+      "intended_assistant": "中传小勤"
+    },
+    {
+      "id": "v4c04",
+      "dept": "后勤",
+      "query": "学校一共有几个餐厅",
+      "expected_docs": [
+        "知识库-饮食服务中心"
+      ],
+      "keywords": [
+        "8 个餐厅"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c05",
+      "dept": "后勤",
+      "query": "哪些餐厅属于基本伙餐厅",
+      "expected_docs": [
+        "知识库-饮食服务中心"
+      ],
+      "keywords": [
+        "基本伙",
+        "北苑"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c06",
+      "dept": "后勤",
+      "query": "在食堂吃饭可以用微信支付吗",
+      "expected_docs": [
+        "知识库-饮食服务中心"
+      ],
+      "keywords": [
+        "微信支付",
+        "搭伙费"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c07",
+      "dept": "后勤",
+      "query": "校内家属区的水电费怎么交",
+      "expected_docs": [
+        "知识库-服务监管中心"
+      ],
+      "keywords": [
+        "水电预付",
+        "微信公众号"
+      ],
+      "intended_assistant": "中传小勤"
+    },
+    {
+      "id": "v4c08",
+      "dept": "资产",
+      "query": "行政单位的国有资产可以拿去对外投资吗",
+      "expected_docs": [
+        "中华人民共和国国务院令第738号"
+      ],
+      "keywords": [
+        "不得",
+        "对外投资"
+      ],
+      "intended_assistant": "中传小资"
+    },
+    {
+      "id": "v4c09",
+      "dept": "资产",
+      "query": "国有资产报废处置的流程是什么",
+      "expected_docs": [
+        "国有资产管理处各项业务办理指南"
+      ],
+      "keywords": [
+        "报废",
+        "处置标记"
+      ],
+      "intended_assistant": "中传小资"
+    },
+    {
+      "id": "v4c10",
+      "dept": "资产",
+      "query": "学校招标采购可以采用哪些方式",
+      "expected_docs": [
+        "中传资产字（2012）66号"
+      ],
+      "keywords": [
+        "公开招标",
+        "邀请招标"
+      ],
+      "intended_assistant": "中传小资"
+    },
+    {
+      "id": "v4c11",
+      "dept": "资产",
+      "query": "国有资产对外出租需要审批吗",
+      "expected_docs": [
+        "中传资产字（2014）74号"
+      ],
+      "keywords": [
+        "审批",
+        "出租"
+      ],
+      "intended_assistant": "中传小资"
+    },
+    {
+      "id": "v4c12",
+      "dept": "资产",
+      "query": "固定资产报废怎么办理",
+      "expected_docs": [
+        "中传资产字（2018）77号"
+      ],
+      "keywords": [
+        "报废"
+      ],
+      "intended_assistant": "中传小资"
+    },
+    {
+      "id": "v4c13",
+      "dept": "资产",
+      "query": "国有资产处置由谁审批",
+      "expected_docs": [
+        "中传资产字（2018）78号"
+      ],
+      "keywords": [
+        "处置",
+        "审批"
+      ],
+      "intended_assistant": "中传小资"
+    },
+    {
+      "id": "v4c14",
+      "dept": "教务",
+      "query": "本科成绩单的GPA是怎么计算的",
+      "expected_docs": [
+        "中传教字〔2021〕210号"
+      ],
+      "keywords": [
+        "北京大学4.0算法"
+      ],
+      "intended_assistant": "中传教务君"
+    },
+    {
+      "id": "v4c15",
+      "dept": "教务",
+      "query": "重修课程在成绩单上会有标注吗",
+      "expected_docs": [
+        "中传教字〔2021〕210号"
+      ],
+      "keywords": [
+        "重修",
+        "字样"
+      ],
+      "intended_assistant": "中传教务君"
+    },
+    {
+      "id": "v4c16",
+      "dept": "教务",
+      "query": "期末考试一般安排在学期的什么时候",
+      "expected_docs": [
+        "中国传媒大学本科教学考试工作管理办法",
+        "本科生院服务常见问题"
+      ],
+      "keywords": [
+        "最后两周"
+      ],
+      "intended_assistant": "中传教务君"
+    },
+    {
+      "id": "v4c17",
+      "dept": "教务",
+      "query": "监考老师要提前多久到考场",
+      "expected_docs": [
+        "中国传媒大学本科教学考试工作管理办法"
+      ],
+      "keywords": [
+        "提前10 分钟"
+      ],
+      "intended_assistant": "中传教务君"
+    },
+    {
+      "id": "v4c18",
+      "dept": "教务",
+      "query": "本科生选课系统的网址是什么",
+      "expected_docs": [
+        "本科生院服务常见问题"
+      ],
+      "keywords": [
+        "xsxk.cuc.edu.cn"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c19",
+      "dept": "教务",
+      "query": "退课之后成绩单上还会显示这门课吗",
+      "expected_docs": [
+        "本科生院服务常见问题"
+      ],
+      "keywords": [
+        "成绩单",
+        "退课"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c20",
+      "dept": "教务",
+      "query": "结业证书怎么换发毕业证书",
+      "expected_docs": [
+        "【融合门户】服务_本科生院_无链接"
+      ],
+      "keywords": [
+        "结业证书换发"
+      ],
+      "intended_assistant": "中传教务君"
+    },
+    {
+      "id": "v4c21",
+      "dept": "教务",
+      "query": "本科生转学需要提交哪些材料",
+      "expected_docs": [
+        "中传教字〔2021〕209号",
+        "【融合门户】服务_本科生院_无链接"
+      ],
+      "keywords": [
+        "转学",
+        "申请"
+      ],
+      "intended_assistant": "中传教务君"
+    },
+    {
+      "id": "v4c22",
+      "dept": "党建",
+      "query": "推优对象的团龄要求是什么",
+      "expected_docs": [
+        "推优入党工作办法"
+      ],
+      "keywords": [
+        "团龄超过一年"
+      ],
+      "intended_assistant": "党建知识助手"
+    },
+    {
+      "id": "v4c23",
+      "dept": "党建",
+      "query": "申请推优需要提交入党申请书满多久",
+      "expected_docs": [
+        "推优入党工作办法"
+      ],
+      "keywords": [
+        "三个月"
+      ],
+      "intended_assistant": "党建知识助手"
+    },
+    {
+      "id": "v4c24",
+      "dept": "党建",
+      "query": "专职组织员需要满足哪些任职条件",
+      "expected_docs": [
+        "专职组织员队伍建设实施办法"
+      ],
+      "keywords": [
+        "中共正式党员",
+        "3年以上党龄"
+      ],
+      "intended_assistant": "党建知识助手"
+    },
+    {
+      "id": "v4c25",
+      "dept": "党建",
+      "query": "专职组织员的任期是几年",
+      "expected_docs": [
+        "专职组织员队伍建设实施办法"
+      ],
+      "keywords": [
+        "四年"
+      ],
+      "intended_assistant": "党建知识助手"
+    },
+    {
+      "id": "v4c26",
+      "dept": "党建",
+      "query": "党员教育培训主要包括哪些内容",
+      "expected_docs": [
+        "党员教育培训工作计划"
+      ],
+      "keywords": [
+        "理论教育",
+        "党性教育"
+      ],
+      "intended_assistant": "党建知识助手"
+    },
+    {
+      "id": "v4c27",
+      "dept": "团委",
+      "query": "智慧团建系统怎么转团组织关系",
+      "expected_docs": [
+        "2023年党团组织关系转接指南",
+        "组织部管理文件库",
+        "毕业了，团组织关系怎么办"
+      ],
+      "keywords": [
+        "智慧团建"
+      ],
+      "intended_assistant": "团委小助手"
+    },
+    {
+      "id": "v4c28",
+      "dept": "团委",
+      "query": "转团组织关系时团员档案包括哪些材料",
+      "expected_docs": [
+        "2023年党团组织关系转接指南",
+        "组织部管理文件库"
+      ],
+      "keywords": [
+        "团员证",
+        "入团志愿书"
+      ],
+      "intended_assistant": "团委小助手"
+    },
+    {
+      "id": "v4c29",
+      "dept": "团委",
+      "query": "毕业生团员未满28岁还需要转团关系吗",
+      "expected_docs": [
+        "组织部管理文件库"
+      ],
+      "keywords": [
+        "28周岁",
+        "保留团籍"
+      ],
+      "intended_assistant": "团委小助手"
+    },
+    {
+      "id": "v4c30",
+      "dept": "团委",
+      "query": "发展团员要经过哪些培养考察环节",
+      "expected_docs": [
+        "中国共产主义青年团发展团员工作细则"
+      ],
+      "keywords": [
+        "入团积极分子"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c31",
+      "dept": "财务",
+      "query": "大额支出用款计划需要谁审议",
+      "expected_docs": [
+        "中传财字〔2021〕156号"
+      ],
+      "keywords": [
+        "校长办公会",
+        "党委常委会"
+      ],
+      "intended_assistant": "财务处小助手"
+    },
+    {
+      "id": "v4c32",
+      "dept": "财务",
+      "query": "单笔100万元以上的资金支付由谁审批",
+      "expected_docs": [
+        "中传财字〔2021〕156号"
+      ],
+      "keywords": [
+        "100 万元",
+        "校领导"
+      ],
+      "intended_assistant": "财务处小助手"
+    },
+    {
+      "id": "v4c33",
+      "dept": "财务",
+      "query": "收费票据领用后怎么核销",
+      "expected_docs": [
+        "中传财字〔2026〕132号"
+      ],
+      "keywords": [
+        "核销",
+        "台账"
+      ],
+      "intended_assistant": "财务处小助手"
+    },
+    {
+      "id": "v4c34",
+      "dept": "财务",
+      "query": "电子票据开错了怎么处理",
+      "expected_docs": [
+        "中传财字〔2026〕132号"
+      ],
+      "keywords": [
+        "红字票据"
+      ],
+      "intended_assistant": "财务处小助手"
+    },
+    {
+      "id": "v4c35",
+      "dept": "财务",
+      "query": "科研项目经费的学校管理费比例是多少",
+      "expected_docs": [
+        "中传政字〔2025〕91号"
+      ],
+      "keywords": [
+        "5%",
+        "管理费"
+      ],
+      "intended_assistant": "财务处小助手"
+    },
+    {
+      "id": "v4c36",
+      "dept": "财务",
+      "query": "部门的分配收入可以用在哪些方面",
+      "expected_docs": [
+        "中传财字〔2023〕189号"
+      ],
+      "keywords": [
+        "绩效奖励",
+        "事业发展经费"
+      ],
+      "intended_assistant": "财务处小助手"
+    },
+    {
+      "id": "v4c37",
+      "dept": "财务",
+      "query": "捐赠配比资金主要用来做什么",
+      "expected_docs": [
+        "中传财字〔2024〕314号"
+      ],
+      "keywords": [
+        "配比资金",
+        "奖励补助"
+      ],
+      "intended_assistant": "财务处小助手"
+    },
+    {
+      "id": "v4c38",
+      "dept": "学工",
+      "query": "学生纪律处分的期限是多久",
+      "expected_docs": [
+        "学生工作规章制度汇编2026"
+      ],
+      "keywords": [
+        "6到12个月"
+      ],
+      "intended_assistant": "新生帮手"
+    },
+    {
+      "id": "v4c39",
+      "dept": "学工",
+      "query": "学生处分到期后怎么解除",
+      "expected_docs": [
+        "学生工作规章制度汇编2026"
+      ],
+      "keywords": [
+        "解除处分"
+      ],
+      "intended_assistant": "新生帮手"
+    },
+    {
+      "id": "v4c40",
+      "dept": "学工",
+      "query": "学校按什么比例配备专职辅导员",
+      "expected_docs": [
+        "中传学工字〔2019〕191号"
+      ],
+      "keywords": [
+        "1：200"
+      ],
+      "intended_assistant": "新生帮手"
+    },
+    {
+      "id": "v4c41",
+      "dept": "学工",
+      "query": "勤工助学属于学生资助项目吗",
+      "expected_docs": [
+        "中传学字〔2019〕224号"
+      ],
+      "keywords": [
+        "勤工助学"
+      ],
+      "intended_assistant": "新生帮手"
+    },
+    {
+      "id": "v4c42",
+      "dept": "督导",
+      "query": "干部听课评价任务怎么认领",
+      "expected_docs": [
+        "干部听课、辅导员及班主任听课评价操作手册"
+      ],
+      "keywords": [
+        "认领",
+        "任务单"
+      ],
+      "intended_assistant": "督导处小助手"
+    },
+    {
+      "id": "v4c43",
+      "dept": "督导",
+      "query": "电脑端怎么做听课评价",
+      "expected_docs": [
+        "干部听课、辅导员及班主任听课评价操作手册"
+      ],
+      "keywords": [
+        "电脑端",
+        "我的任务"
+      ],
+      "intended_assistant": "督导处小助手"
+    },
+    {
+      "id": "v4c44",
+      "dept": "培训",
+      "query": "非学历教育项目可以委托校外机构招生吗",
+      "expected_docs": [
+        "非学历教育项目办学指导快问快答"
+      ],
+      "keywords": [
+        "严禁委托",
+        "代理招生"
+      ],
+      "intended_assistant": "中传培训小帮手"
+    },
+    {
+      "id": "v4c45",
+      "dept": "培训",
+      "query": "非学历教育结业证书怎么申请",
+      "expected_docs": [
+        "非学历教育项目办学指导快问快答"
+      ],
+      "keywords": [
+        "结业申请",
+        "3 个工作日"
+      ],
+      "intended_assistant": "中传培训小帮手"
+    },
+    {
+      "id": "v4c46",
+      "dept": "信息化",
+      "query": "中传云盘怎么登录",
+      "expected_docs": [
+        "信息化服务常见问题"
+      ],
+      "keywords": [
+        "pan.cuc.edu.cn"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c47",
+      "dept": "信息化",
+      "query": "统一身份认证账号怎么申诉",
+      "expected_docs": [
+        "统一身份认证之账号申诉"
+      ],
+      "keywords": [
+        "账号申诉"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c48",
+      "dept": "图书馆",
+      "query": "图书馆研讨间怎么预约",
+      "expected_docs": [
+        "图书馆手册"
+      ],
+      "keywords": [
+        "研讨间",
+        "预约"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c49",
+      "dept": "保卫",
+      "query": "户籍科在哪里办公",
+      "expected_docs": [
+        "户籍科常见问题及解决办法"
+      ],
+      "keywords": [
+        "30 号楼101"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c50",
+      "dept": "人事",
+      "query": "教职工受到警告处分的期间是多久",
+      "expected_docs": [
+        "中传人字〔2018〕110号"
+      ],
+      "keywords": [
+        "警告，6 个月"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c51",
+      "dept": "医疗",
+      "query": "没有转诊直接去校外医院能报销吗",
+      "expected_docs": [
+        "中传校医字〔2005〕202号"
+      ],
+      "keywords": [
+        "未经校医院转诊",
+        "费用自理"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c52",
+      "dept": "研究生",
+      "query": "研究生休学时间累计不能超过多久",
+      "expected_docs": [
+        "中传研字〔2024〕159号"
+      ],
+      "keywords": [
+        "两个学期",
+        "四个学期"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c53",
+      "dept": "学校",
+      "query": "中国传媒大学是公办还是民办",
+      "expected_docs": [
+        "5月31日重磅！中国传媒大学2023年本科招生章程发布",
+        "爬-学校章程"
+      ],
+      "keywords": [
+        "国家公办",
+        "教育部直属"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c54",
+      "dept": "科研",
+      "query": "实验室准入机制由哪个部门负责",
+      "expected_docs": [
+        "中传实验字〔2024〕112号"
+      ],
+      "keywords": [
+        "实验室与设备管理处",
+        "准入"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4c55",
+      "dept": "科研",
+      "query": "科研机构多久评估一次",
+      "expected_docs": [
+        "中传科研字〔2023〕245号"
+      ],
+      "keywords": [
+        "周期评估",
+        "三年"
+      ],
+      "intended_assistant": "问道中传"
+    }
+  ],
+  "short": [
+    {
+      "id": "v4s01",
+      "dept": "后勤",
+      "query": "报修电话",
+      "expected_docs": [
+        "知识库-学生公寓服务中心"
+      ],
+      "keywords": [
+        "65783000"
+      ],
+      "intended_assistant": "中传小勤"
+    },
+    {
+      "id": "v4s02",
+      "dept": "后勤",
+      "query": "空调",
+      "expected_docs": [
+        "知识库-学生公寓服务中心"
+      ],
+      "keywords": [
+        "空调"
+      ],
+      "intended_assistant": "中传小勤"
+    },
+    {
+      "id": "v4s03",
+      "dept": "后勤",
+      "query": "热水",
+      "expected_docs": [
+        "知识库-学生公寓服务中心"
+      ],
+      "keywords": [
+        "24 小时"
+      ],
+      "intended_assistant": "中传小勤"
+    },
+    {
+      "id": "v4s04",
+      "dept": "后勤",
+      "query": "餐厅",
+      "expected_docs": [
+        "知识库-饮食服务中心"
+      ],
+      "keywords": [
+        "餐厅"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4s05",
+      "dept": "后勤",
+      "query": "快递",
+      "expected_docs": [
+        "快递服务中心相关事项"
+      ],
+      "keywords": [
+        "快递"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4s06",
+      "dept": "财务",
+      "query": "报销",
+      "expected_docs": [
+        "中传财字〔2021〕156号"
+      ],
+      "keywords": [
+        "报销"
+      ],
+      "intended_assistant": "财务处小助手"
+    },
+    {
+      "id": "v4s07",
+      "dept": "财务",
+      "query": "票据",
+      "expected_docs": [
+        "中传财字〔2026〕132号"
+      ],
+      "keywords": [
+        "票据"
+      ],
+      "intended_assistant": "财务处小助手"
+    },
+    {
+      "id": "v4s08",
+      "dept": "信息化",
+      "query": "补卡",
+      "expected_docs": [
+        "中传政字〔2019〕169号"
+      ],
+      "keywords": [
+        "补办"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4s09",
+      "dept": "信息化",
+      "query": "校园网",
+      "expected_docs": [
+        "信息化服务常见问题"
+      ],
+      "keywords": [
+        "校园网"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4s10",
+      "dept": "信息化",
+      "query": "邮箱",
+      "expected_docs": [
+        "信息化服务常见问题"
+      ],
+      "keywords": [
+        "邮箱"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4s11",
+      "dept": "信息化",
+      "query": "云盘",
+      "expected_docs": [
+        "信息化服务常见问题"
+      ],
+      "keywords": [
+        "云盘"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4s12",
+      "dept": "教务",
+      "query": "选课",
+      "expected_docs": [
+        "本科生选课管理办法"
+      ],
+      "keywords": [
+        "选课"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4s13",
+      "dept": "教务",
+      "query": "缓考",
+      "expected_docs": [
+        "中国传媒大学本科教学考试工作管理办法",
+        "修学指南2025版",
+        "本科生院服务常见问题"
+      ],
+      "keywords": [
+        "缓考"
+      ],
+      "intended_assistant": "中传教务君"
+    },
+    {
+      "id": "v4s14",
+      "dept": "教务",
+      "query": "重修",
+      "expected_docs": [
+        "中传教字〔2021〕210号",
+        "修学指南2025版",
+        "本科生院服务常见问题"
+      ],
+      "keywords": [
+        "重修"
+      ],
+      "intended_assistant": "中传教务君"
+    },
+    {
+      "id": "v4s15",
+      "dept": "教务",
+      "query": "成绩单",
+      "expected_docs": [
+        "本科生院服务常见问题",
+        "中传教字〔2021〕210号"
+      ],
+      "keywords": [
+        "成绩单"
+      ],
+      "intended_assistant": "中传教务君"
+    },
+    {
+      "id": "v4s16",
+      "dept": "团委",
+      "query": "团关系",
+      "expected_docs": [
+        "2023年党团组织关系转接指南",
+        "组织部管理文件库",
+        "毕业了，团组织关系怎么办"
+      ],
+      "keywords": [
+        "团组织"
+      ],
+      "intended_assistant": "团委小助手"
+    },
+    {
+      "id": "v4s17",
+      "dept": "党建",
+      "query": "推优",
+      "expected_docs": [
+        "推优入党工作办法"
+      ],
+      "keywords": [
+        "推优"
+      ],
+      "intended_assistant": "党建知识助手"
+    },
+    {
+      "id": "v4s18",
+      "dept": "人事",
+      "query": "退休",
+      "expected_docs": [
+        "教职工退休工作办法"
+      ],
+      "keywords": [
+        "退休"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4s19",
+      "dept": "医疗",
+      "query": "公费医疗",
+      "expected_docs": [
+        "公费医疗管理办法"
+      ],
+      "keywords": [
+        "公费医疗"
+      ],
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4s20",
+      "dept": "图书馆",
+      "query": "图书馆",
+      "expected_docs": [
+        "图书馆手册"
+      ],
+      "keywords": [
+        "图书馆"
+      ],
+      "intended_assistant": "问道中传"
+    }
+  ],
+  "no_answer": [
+    {
+      "id": "v4n01",
+      "query": "推荐一部科幻小说"
+    },
+    {
+      "id": "v4n02",
+      "query": "哪款耳机降噪好"
+    },
+    {
+      "id": "v4n03",
+      "query": "如何做寿司"
+    },
+    {
+      "id": "v4n04",
+      "query": "今天空气质量怎么样"
+    },
+    {
+      "id": "v4n05",
+      "query": "如何更换汽车轮胎"
+    },
+    {
+      "id": "v4n06",
+      "query": "最近有什么体育比赛"
+    },
+    {
+      "id": "v4n07",
+      "query": "怎么做手冲咖啡"
+    },
+    {
+      "id": "v4n08",
+      "query": "如何学习游泳"
+    },
+    {
+      "id": "v4n09",
+      "query": "推荐一款智能手表"
+    },
+    {
+      "id": "v4n10",
+      "query": "如何养多肉植物"
+    },
+    {
+      "id": "v4n11",
+      "query": "附近有什么好吃的"
+    },
+    {
+      "id": "v4n12",
+      "query": "如何提高记忆力"
+    },
+    {
+      "id": "v4n13",
+      "query": "哪款游戏好玩"
+    },
+    {
+      "id": "v4n14",
+      "query": "如何申请信用卡"
+    },
+    {
+      "id": "v4n15",
+      "query": "火箭为什么能上天"
+    }
+  ],
+  "citation": [
+    {
+      "id": "v4cit01",
+      "query": "校园卡丢了怎么挂失",
+      "expected_docs": [
+        "中传政字〔2019〕169号"
+      ],
+      "expected_page": 7,
+      "page_phrase": "校园卡遗失应及时挂失",
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4cit02",
+      "query": "学生申请校外住宿需要哪些手续",
+      "expected_docs": [
+        "中传政字〔2024〕312号"
+      ],
+      "expected_page": 8,
+      "page_phrase": "校外住宿（退宿）",
+      "intended_assistant": "中传小勤"
+    },
+    {
+      "id": "v4cit03",
+      "query": "本科生退学处理的条件",
+      "expected_docs": [
+        "中传教字〔2021〕209号"
+      ],
+      "expected_page": 17,
+      "page_phrase": "第五十二条",
+      "intended_assistant": "中传教务君"
+    },
+    {
+      "id": "v4cit04",
+      "query": "纸质收费票据丢失怎么处理",
+      "expected_docs": [
+        "中传财字〔2026〕132号"
+      ],
+      "expected_page": 7,
+      "page_phrase": "纸质票据遗失",
+      "intended_assistant": "财务处小助手"
+    },
+    {
+      "id": "v4cit05",
+      "query": "本科生一次能借几本书、借多久",
+      "expected_docs": [
+        "图书馆手册"
+      ],
+      "expected_page": 24,
+      "page_phrase": "5 周（35 天）",
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4cit06",
+      "query": "没有转诊直接去校外医院能报销吗",
+      "expected_docs": [
+        "中传校医字〔2005〕202号"
+      ],
+      "expected_page": 1,
+      "page_phrase": "未经校医院转诊",
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4cit07",
+      "query": "教师借设备要提前多久申请",
+      "expected_docs": [
+        "设备共享中心设备借用管理办法"
+      ],
+      "expected_page": 2,
+      "page_phrase": "教师本人至少提前1 天",
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4cit08",
+      "query": "体育场馆学期内几点开放",
+      "expected_docs": [
+        "体育场馆管理办法"
+      ],
+      "expected_page": 4,
+      "page_phrase": "15:00-21:00",
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4cit09",
+      "query": "实验室安全方针是什么",
+      "expected_docs": [
+        "中传实验字〔2024〕112号"
+      ],
+      "expected_page": 3,
+      "page_phrase": "安全第一",
+      "intended_assistant": "问道中传"
+    },
+    {
+      "id": "v4cit10",
+      "query": "转团组织关系要介绍信吗",
+      "expected_docs": [
+        "2023年党团组织关系转接指南"
+      ],
+      "expected_page": 1,
+      "page_phrase": "介绍信",
+      "intended_assistant": "团委小助手"
+    }
+  ]
+}

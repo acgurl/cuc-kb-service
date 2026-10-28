@@ -1,0 +1,17 @@
+[Unit]
+Description=CUC KB MCP Docker gateway forwarder
+After=network-online.target docker.service cuc-kb-mcp.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/cuc-kb
+EnvironmentFile=/home/ubuntu/cuc-kb/.env
+ExecStart=/home/ubuntu/cuc-kb/.venv-mcp/bin/python /home/ubuntu/cuc-kb/mcp_gateway_proxy.py
+Restart=always
+RestartSec=3
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target

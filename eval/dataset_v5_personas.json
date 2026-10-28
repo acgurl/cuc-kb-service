@@ -1,0 +1,1773 @@
+{
+ "meta": {
+  "name": "CUC KB persona eval v5",
+  "created": "2026-10-28",
+  "collection": "cuc_kb_v2",
+  "docs": 311,
+  "chunks": 10358,
+  "note": "新增入库后分人群测评；标准答案逐条用 chunk 原文核验"
+ },
+ "curated": [
+  {
+   "id": "u01",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "普通全日制本科生最长有效学习年限是几年？",
+   "expected_docs": [
+    "中传教字〔2025〕195号"
+   ],
+   "keywords": [
+    "最长有效学习年限为六年"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "u02",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "本科生转专业一般在大几可以申请？",
+   "expected_docs": [
+    "本科生院〔2024〕77号",
+    "【融合门户】服务_本科生院"
+   ],
+   "keywords": [
+    "一、二年级"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "u03",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "哪些学生不得申请转专业？",
+   "expected_docs": [
+    "本科生院〔2024〕77号"
+   ],
+   "keywords": [
+    "已转过一次专业",
+    "违纪记录"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "u04",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "申请辅修专业需要什么资格？",
+   "expected_docs": [
+    "中传教字〔2022〕233号"
+   ],
+   "keywords": [
+    "必修课程全部及格",
+    "不同专业大类"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "u05",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "辅修学士学位会单独发学位证书吗？",
+   "expected_docs": [
+    "中传教字〔2022〕233号"
+   ],
+   "keywords": [
+    "不单独发放学位证书"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "u06",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "申请推免需要满足哪些基本条件？",
+   "expected_docs": [
+    "中传教字〔2026〕122号"
+   ],
+   "keywords": [
+    "应届毕业生",
+    "无任何考试作弊"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "u07",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "研究生支教团专项推免对成绩排名有什么要求？",
+   "expected_docs": [
+    "中传教字〔2026〕122号"
+   ],
+   "keywords": [
+    "专业前50%"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "u08",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "重修、重考取得的必修课学分最多认定多少？",
+   "expected_docs": [
+    "中传教字〔2025〕7号"
+   ],
+   "keywords": [
+    "24 学分",
+    "28 学分"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "u09",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "代替他人参加考试会受到什么处分？",
+   "expected_docs": [
+    "中国传媒大学学生考试与学术违纪处理办法"
+   ],
+   "keywords": [
+    "开除学籍",
+    "代替他人"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "u10",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "本科生国家奖学金一年多少钱？",
+   "expected_docs": [
+    "中传学字〔2024〕196号"
+   ],
+   "keywords": [
+    "8000"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "u11",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "校励志奖学金一年多少钱？",
+   "expected_docs": [
+    "中传学字〔2024〕194号"
+   ],
+   "keywords": [
+    "1500"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "u12",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "优秀本科生奖学金分几档，获奖比例是多少？",
+   "expected_docs": [
+    "中传学字〔2024〕193号"
+   ],
+   "keywords": [
+    "5000",
+    "1%",
+    "20%"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "u13",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "三好学生多久评选一次？",
+   "expected_docs": [
+    "中传学字〔2019〕215号"
+   ],
+   "keywords": [
+    "每学年评选一次"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "u14",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "优秀学生干部的评选条件是什么？",
+   "expected_docs": [
+    "中传学字〔2019〕216号"
+   ],
+   "keywords": [
+    "担任学校、学院、班级学生干部"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "u15",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "学生纪律处分的期限一般是多久？",
+   "expected_docs": [
+    "中传学字〔2022〕250号"
+   ],
+   "keywords": [
+    "6到12个月",
+    "12个月"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "u16",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "什么情况下本科生可以申请退宿？",
+   "expected_docs": [
+    "中传学字〔2009〕160号"
+   ],
+   "keywords": [
+    "已婚",
+    "毕业班在外实习半年以上"
+   ],
+   "intended_assistant": "中传小勤"
+  },
+  {
+   "id": "u17",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "学生在校医院门诊看病需要自付多少？",
+   "expected_docs": [
+    "中传政字〔2019〕124号"
+   ],
+   "keywords": [
+    "自负10",
+    "住院费用自负5"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "u18",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "本科毕业论文查重超过多少不能评优？",
+   "expected_docs": [
+    "中传教字〔2018〕156号"
+   ],
+   "keywords": [
+    "论文查重超过20%"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "u19",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "实习成绩的优秀率和优良率控制在多少？",
+   "expected_docs": [
+    "本科学生实习工作暂行规定"
+   ],
+   "keywords": [
+    "不超过20%",
+    "优良率不超过65%"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "u20",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "教师临时调课需要办理什么手续？",
+   "expected_docs": [
+    "本科生课程调课管理办法"
+   ],
+   "keywords": [
+    "提前办理调课手续",
+    "教学事故"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "u21",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "学费和住宿费怎么缴纳？",
+   "expected_docs": [
+    "2025-2026学年学生缴费通知"
+   ],
+   "keywords": [
+    "校园统一支付平台",
+    "中国传媒大学APP"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "u22",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "学校电子学生交通卡有什么优惠？",
+   "expected_docs": [
+    "学生电子交通卡申领"
+   ],
+   "keywords": [
+    "2.5 折",
+    "300"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "u23",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "校园无线网的SSID是什么？",
+   "expected_docs": [
+    "访问校园网"
+   ],
+   "keywords": [
+    "Wireless CUC"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "u24",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "校园卡丢失补办要交多少钱？",
+   "expected_docs": [
+    "中传政字〔2019〕169号"
+   ],
+   "keywords": [
+    "20 元"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "u25",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "图书馆阅览区每天开放到几点？",
+   "expected_docs": [
+    "中国传媒大学图书馆手册"
+   ],
+   "keywords": [
+    "22:30",
+    "4100"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "u26",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "2026级新生什么时候报到？",
+   "expected_docs": [
+    "2026年迎接新生开学相关工作",
+    "新生入学须知（校本部）"
+   ],
+   "keywords": [
+    "9 月5 日",
+    "9 月6 日"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "u27",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "学生公寓里哪些行为被明确禁止？",
+   "expected_docs": [
+    "中传政字〔2024〕312号"
+   ],
+   "keywords": [
+    "饲养宠物",
+    "违规经商"
+   ],
+   "intended_assistant": "中传小勤"
+  },
+  {
+   "id": "u28",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "食堂价格平抑资金补贴到哪里？",
+   "expected_docs": [
+    "中传政字〔2025〕43号"
+   ],
+   "keywords": [
+    "平抑资金",
+    "基本伙"
+   ],
+   "intended_assistant": "中传小勤"
+  },
+  {
+   "id": "u29",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "宿舍报修可以通过什么渠道？",
+   "expected_docs": [
+    "后勤服务指南",
+    "知识库-学生公寓服务中心"
+   ],
+   "keywords": [
+    "微信公众平台进行自助报修",
+    "65783000"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "u30",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "家庭经济困难学生认定的依据是什么？",
+   "expected_docs": [
+    "中传学字〔2019〕77号"
+   ],
+   "keywords": [
+    "难以满足其在校期间的学习、生活基本支出"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "g01",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "学术型硕士的基本学制和最长年限是多少？",
+   "expected_docs": [
+    "中传研字〔2026〕228号"
+   ],
+   "keywords": [
+    "三年",
+    "五年"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g02",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "专业型硕士的基本学制是几年？",
+   "expected_docs": [
+    "中传研字〔2026〕226号"
+   ],
+   "keywords": [
+    "基本学制为两年"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g03",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "直博生的基本学制是几年？",
+   "expected_docs": [
+    "中传研字〔2026〕227号"
+   ],
+   "keywords": [
+    "基本学制为五年"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g04",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "研究生提出学位申请前要完成哪些环节？",
+   "expected_docs": [
+    "中传研字〔2026〕219号"
+   ],
+   "keywords": [
+    "预答辩",
+    "重复率"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g05",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "博士学位答辩公告要提前几天公示？",
+   "expected_docs": [
+    "中传研字〔2026〕219号"
+   ],
+   "keywords": [
+    "三天"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g06",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "答辩委员会多少票同意才算通过？",
+   "expected_docs": [
+    "中传研字〔2026〕219号",
+    "中传研字〔2024〕159号",
+    "研究生院〔2025〕9号"
+   ],
+   "keywords": [
+    "三分之二"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g07",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "硕士预答辩专家小组由几人组成？",
+   "expected_docs": [
+    "研究生院〔2025〕5号"
+   ],
+   "keywords": [
+    "三至五名"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g08",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "博士预答辩专家小组由几人组成？",
+   "expected_docs": [
+    "研究生院〔2025〕4号"
+   ],
+   "keywords": [
+    "五至七名"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g09",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "学术硕士答辩委员会有什么组成要求？",
+   "expected_docs": [
+    "研究生院〔2025〕9号"
+   ],
+   "keywords": [
+    "校外专家",
+    "不少于1 小时"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g10",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "学术博士在读期间要完成多少科研成果？",
+   "expected_docs": [
+    "中传研字〔2023〕135号"
+   ],
+   "keywords": [
+    "8 分",
+    "C 类"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g11",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "博士生在C类期刊发表论文的旧要求是几篇？",
+   "expected_docs": [
+    "中传研字〔2019〕257号"
+   ],
+   "keywords": [
+    "不少于2 篇"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g12",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "公派留学研究生怎么选拔？",
+   "expected_docs": [
+    "中传研字〔2019〕211号"
+   ],
+   "keywords": [
+    "个人申请",
+    "择优录取"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g13",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "国际研究生什么情况应当休学？",
+   "expected_docs": [
+    "中传研字〔2017〕238号"
+   ],
+   "keywords": [
+    "两个月"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g14",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "研究生休学最多可以累计多长时间？",
+   "expected_docs": [
+    "中传研字〔2024〕159号"
+   ],
+   "keywords": [
+    "两个学期"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g15",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "研究生导师岗位聘任多久考核一次？",
+   "expected_docs": [
+    "中传研字〔2026〕147号"
+   ],
+   "keywords": [
+    "每年",
+    "动态管理"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g16",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "学术学位博士生导师资格的基本条件是什么？",
+   "expected_docs": [
+    "中传研字〔2023〕194号"
+   ],
+   "keywords": [
+    "博士学位和正高级职称"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g17",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "专业学位研究生导师资格重点考查什么？",
+   "expected_docs": [
+    "中传研字〔2023〕193号"
+   ],
+   "keywords": [
+    "实践创作能力"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g18",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "业界导师的聘期一般几年？",
+   "expected_docs": [
+    "中传研字〔2026〕196号"
+   ],
+   "keywords": [
+    "4 年"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g19",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "研究生导师在培养中的定位是什么？",
+   "expected_docs": [
+    "中传研字〔2026〕214",
+    "中传研字〔2026〕228号",
+    "中传研字〔2026〕226号"
+   ],
+   "keywords": [
+    "第一责任人"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g20",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "对匿名评阅结论有异议，多久内申请学术复核？",
+   "expected_docs": [
+    "中传研字〔2026〕218号"
+   ],
+   "keywords": [
+    "三个工作日"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g21",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "学位与学历分离后可以获得什么证书？",
+   "expected_docs": [
+    "中传研字〔2026〕221号"
+   ],
+   "keywords": [
+    "毕业证书"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g22",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "研究生课程补考成绩怎么记？",
+   "expected_docs": [
+    "中传研字〔2026〕148号"
+   ],
+   "keywords": [
+    "六十分"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g23",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "学位评定委员会有多少委员、任期几年？",
+   "expected_docs": [
+    "中传学位字〔2025〕1号"
+   ],
+   "keywords": [
+    "25 人",
+    "4 年"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g24",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "校领导班子成员指导研究生数量有什么限制？",
+   "expected_docs": [
+    "中传研字〔2024〕223号"
+   ],
+   "keywords": [
+    "不超过本学科导师指导研究生的平均数"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g25",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "2025级学术学位硕士的学费标准是多少？",
+   "expected_docs": [
+    "2025年攻读硕士学位研究生招生简章"
+   ],
+   "keywords": [
+    "8000 元/学年"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g26",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "2025级学术学位博士的学费标准是多少？",
+   "expected_docs": [
+    "2025年博士学位研究生招生简章"
+   ],
+   "keywords": [
+    "10000 元/年"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "g27",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "非定向研究生的档案什么时候要调到学校？",
+   "expected_docs": [
+    "2026级研究生入学须知"
+   ],
+   "keywords": [
+    "8 月1 日"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t01",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "职称评审可以破格申报吗？",
+   "expected_docs": [
+    "中传人字〔2022〕63"
+   ],
+   "keywords": [
+    "破格申报高级职称"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t02",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "教授岗位聘用需要满足哪些条件？",
+   "expected_docs": [
+    "中传人字〔2023〕139号"
+   ],
+   "keywords": [
+    "10 年",
+    "本科生讲授一门课程"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t03",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "奖励性绩效工资主要体现什么？",
+   "expected_docs": [
+    "中传人字〔2023〕146号"
+   ],
+   "keywords": [
+    "奖励性绩效工资主要体现工作量"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t04",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "专任教师年度考核分几个等次？",
+   "expected_docs": [
+    "中传人字〔2020〕132号"
+   ],
+   "keywords": [
+    "优秀、合格、基本合格、不合格"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t05",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "返聘人员的年龄上限是多少？",
+   "expected_docs": [
+    "中传人字〔2025〕209号"
+   ],
+   "keywords": [
+    "65 周岁",
+    "70周岁"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t06",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "博士后在站工作期限是多长？",
+   "expected_docs": [
+    "中传人字〔2021〕295号"
+   ],
+   "keywords": [
+    "24 个月"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t07",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "青年教授聘任的年龄要求是多少？",
+   "expected_docs": [
+    "中传人字〔2021〕301号"
+   ],
+   "keywords": [
+    "40 周岁"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t08",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "教学青年拔尖人才培育对象的年龄要求是多少？",
+   "expected_docs": [
+    "中传人字〔2021〕297号"
+   ],
+   "keywords": [
+    "45周岁"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t09",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "教学科研岗接收毕业生一般通过什么方式？",
+   "expected_docs": [
+    "中传人字〔2021〕299号"
+   ],
+   "keywords": [
+    "公开招聘"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t10",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "教职工校内调动按什么权限办理？",
+   "expected_docs": [
+    "中传人字〔2017〕370号"
+   ],
+   "keywords": [
+    "干部管理权限"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t11",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "教职工请事假会怎么扣发工资？",
+   "expected_docs": [
+    "中传人字〔2018〕9号"
+   ],
+   "keywords": [
+    "1/22"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t12",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "教师因公出国进修的期限是多久？",
+   "expected_docs": [
+    "中传人字〔2017〕385号"
+   ],
+   "keywords": [
+    "3-12 个月"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t13",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "教师学术休假可以延期多久？",
+   "expected_docs": [
+    "中传人字〔2017〕377号"
+   ],
+   "keywords": [
+    "延期期限最长不超过一学期"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t14",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "优秀教学奖评选要组织几次随堂听课？",
+   "expected_docs": [
+    "中传人字〔2017〕208号"
+   ],
+   "keywords": [
+    "3 次以上的随堂听课"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t15",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "三牛奖各类奖项分别由哪个部门牵头？",
+   "expected_docs": [
+    "中传人字〔2022〕81号"
+   ],
+   "keywords": [
+    "党政办公室",
+    "人事处",
+    "宣传部"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t16",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "科研经费单笔支出超过多少需要校领导审批？",
+   "expected_docs": [
+    "中传财字 [2019] 175号",
+    "中传财字〔2021〕156号"
+   ],
+   "keywords": [
+    "50 万元"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "t17",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "出差伙食补助的发放标准是多少？",
+   "expected_docs": [
+    "中传财字 [2019] 35号"
+   ],
+   "keywords": [
+    "每人每天 120 元",
+    "每人每天 100 元"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "t18",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "多少金额以上的修缮工程由校园建设处负责？",
+   "expected_docs": [
+    "中传资产字〔2024〕231号"
+   ],
+   "keywords": [
+    "50 万元（含）以上的装修"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "t19",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "实验室安全风险分几级，哪一级要报教育部备案？",
+   "expected_docs": [
+    "中传实验字〔2025〕122号"
+   ],
+   "keywords": [
+    "I 级/红色级",
+    "教育部备案"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "t20",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "实验室安全事故对人员有哪些责任追究形式？",
+   "expected_docs": [
+    "中传实验字〔2025〕121号"
+   ],
+   "keywords": [
+    "书面检查",
+    "诫勉谈话"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "t21",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "学术不端举报由哪个机构组织调查？",
+   "expected_docs": [
+    "中传政字〔2016〕113号"
+   ],
+   "keywords": [
+    "学风建设领导小组"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t22",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "科研助理有哪些岗位类型？",
+   "expected_docs": [
+    "中传科研字〔2023〕36号"
+   ],
+   "keywords": [
+    "学术助理",
+    "科研财务助理"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t23",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "科研成果转化由谁评估成果价值？",
+   "expected_docs": [
+    "中传科研字〔2024〕118号"
+   ],
+   "keywords": [
+    "第三方评估机构"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t24",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "科研人员离岗创业最长可以几年？",
+   "expected_docs": [
+    "中传人字〔2024〕245号"
+   ],
+   "keywords": [
+    "不超过3 年"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t25",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "基本科研业务费可以购买大型仪器设备吗？",
+   "expected_docs": [
+    "中传科研字〔2019〕152号"
+   ],
+   "keywords": [
+    "40 万元"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t26",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "什么金额以下的零星支出必须用公务卡结算？",
+   "expected_docs": [
+    "中传财字〔2019〕176号"
+   ],
+   "keywords": [
+    "2 万元以下"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "t27",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "教职工探亲费报销前要先办什么？",
+   "expected_docs": [
+    "中传人字〔2017〕366号"
+   ],
+   "keywords": [
+    "探亲证"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t28",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "教职工子女的医药费现在还能报销吗？",
+   "expected_docs": [
+    "中传校医字〔2015〕26号"
+   ],
+   "keywords": [
+    "不再报销",
+    "一老一小"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t29",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "校园邮箱在客户端登录要注意什么？",
+   "expected_docs": [
+    "邮箱自助开户指南"
+   ],
+   "keywords": [
+    "授权密码"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "t30",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "学校正版软件平台的地址和技术支持电话是什么？",
+   "expected_docs": [
+    "正版软件服务"
+   ],
+   "keywords": [
+    "software.cuc.edu.cn",
+    "400-168-6616"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "a01",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "学校规范性文件的制定要经过哪些程序？",
+   "expected_docs": [
+    "中传政字〔2021〕292号"
+   ],
+   "keywords": [
+    "立项、起草、审查、审议、公布"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "a02",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "所属企业“三重一大”事项的决策原则是什么？",
+   "expected_docs": [
+    "中传教发字〔2022〕16号"
+   ],
+   "keywords": [
+    "集体讨论",
+    "避免个人决策"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "a03",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "所属企业年度审计什么时候完成？",
+   "expected_docs": [
+    "中传教发字〔2022〕17号"
+   ],
+   "keywords": [
+    "2 个月内",
+    "第三方审计机构"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "a04",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "学校消防安全实行什么责任原则？",
+   "expected_docs": [
+    "中传政字〔2024〕138号"
+   ],
+   "keywords": [
+    "谁管理谁负责"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "a05",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "哪些车辆禁止驶入校园？",
+   "expected_docs": [
+    "中传保工字〔2017〕311号"
+   ],
+   "keywords": [
+    "摩托车"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "a06",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "校园内哪些区域是重点禁烟区域？",
+   "expected_docs": [
+    "控烟管理办法"
+   ],
+   "keywords": [
+    "教学楼、办公楼、图书馆"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "a07",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "学校公务用车由哪个部门调度？",
+   "expected_docs": [
+    "中传政字〔2025〕106号"
+   ],
+   "keywords": [
+    "党政办公室负责公务用车调度",
+    "后勤保障处为公务用车归口管理单位"
+   ],
+   "intended_assistant": "中传小勤"
+  },
+  {
+   "id": "a08",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "新增3KW以上的空调要向哪个部门申请？",
+   "expected_docs": [
+    "节约能源管理规定"
+   ],
+   "keywords": [
+    "3KW",
+    "节能办公室"
+   ],
+   "intended_assistant": "中传小勤"
+  },
+  {
+   "id": "a09",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "来华自费留学生的学费按多少比例拨付学院？",
+   "expected_docs": [
+    "中传外字〔2014〕19号"
+   ],
+   "keywords": [
+    "40%"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "a10",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "继续教育本科生授予学士学位要满足哪些条件？",
+   "expected_docs": [
+    "中传继教字〔2025〕10号"
+   ],
+   "keywords": [
+    "最长有效学习年限",
+    "毕业论文"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "a11",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "学校网络安全工作的第一责任人是谁？",
+   "expected_docs": [
+    "网络安全事件应急预案"
+   ],
+   "keywords": [
+    "领导班子主要负责人"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "a12",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "网站群如何设置多级审核流程？",
+   "expected_docs": [
+    "网站群操作指南"
+   ],
+   "keywords": [
+    "多级流程"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "a13",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "2026年团学系统春季评优在什么时间表彰？",
+   "expected_docs": [
+    "2026年团学系统春季评优表彰"
+   ],
+   "keywords": [
+    "五四青年节前夕"
+   ],
+   "intended_assistant": "团委小助手"
+  },
+  {
+   "id": "a14",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "校史馆团体参观要提前几天预约？",
+   "expected_docs": [
+    "参考：教师手册",
+    "中国传媒大学学生工作规章制度汇编2026"
+   ],
+   "keywords": [
+    "提前3 个工作日",
+    "danganguan@cuc.edu.cn"
+   ],
+   "intended_assistant": "问道中传"
+  }
+ ],
+ "short": [
+  {
+   "id": "s01",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "转专业",
+   "expected_docs": [
+    "本科生院〔2024〕77号",
+    "【融合门户】服务_本科生院"
+   ],
+   "keywords": [
+    "转专业",
+    "一、二年级"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "s02",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "推免",
+   "expected_docs": [
+    "中传教字〔2026〕122号"
+   ],
+   "keywords": [
+    "推免"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "s03",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "辅修",
+   "expected_docs": [
+    "中传教字〔2022〕233号"
+   ],
+   "keywords": [
+    "辅修"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "s04",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "国奖",
+   "expected_docs": [
+    "中传学字〔2024〕196号"
+   ],
+   "keywords": [
+    "国家奖学金"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "s05",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "预答辩",
+   "expected_docs": [
+    "研究生院〔2025〕5号",
+    "研究生院〔2025〕4号"
+   ],
+   "keywords": [
+    "预答辩"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "s06",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "延聘",
+   "expected_docs": [
+    "中传人字〔2025〕209号"
+   ],
+   "keywords": [
+    "延聘"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "s07",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "博士后",
+   "expected_docs": [
+    "中传人字〔2021〕295号"
+   ],
+   "keywords": [
+    "博士后"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "s08",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "差旅",
+   "expected_docs": [
+    "中传财字 [2019] 35号"
+   ],
+   "keywords": [
+    "差旅费"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "s09",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "采购",
+   "expected_docs": [
+    "中传资产字〔2024〕231号"
+   ],
+   "keywords": [
+    "采购"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "s10",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "一卡通",
+   "expected_docs": [
+    "中传政字〔2019〕169号"
+   ],
+   "keywords": [
+    "校园卡"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "s11",
+   "dept": "行政与公共服务",
+   "persona": "行政与公共服务",
+   "query": "食堂",
+   "expected_docs": [
+    "中传政字〔2025〕43号"
+   ],
+   "keywords": [
+    "食堂"
+   ],
+   "intended_assistant": "中传小勤"
+  },
+  {
+   "id": "s12",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "实验室分级",
+   "expected_docs": [
+    "中传实验字〔2025〕122号"
+   ],
+   "keywords": [
+    "实验室安全分级"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "s13",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "学术不端",
+   "expected_docs": [
+    "中传政字〔2016〕113号"
+   ],
+   "keywords": [
+    "学术不端"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "s14",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "公费医疗",
+   "expected_docs": [
+    "中传政字〔2019〕124号"
+   ],
+   "keywords": [
+    "公费医疗"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "s15",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "离岗创业",
+   "expected_docs": [
+    "中传人字〔2024〕245号"
+   ],
+   "keywords": [
+    "离岗创业"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "s16",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "学位复核",
+   "expected_docs": [
+    "中传研字〔2026〕218号"
+   ],
+   "keywords": [
+    "复核"
+   ],
+   "intended_assistant": "问道中传"
+  }
+ ],
+ "no_answer": [
+  {
+   "id": "n01",
+   "persona": "本科生",
+   "dept": "本科生",
+   "query": "中国传媒大学附属小学的招生划片范围是什么？"
+  },
+  {
+   "id": "n02",
+   "persona": "教师",
+   "dept": "教师",
+   "query": "学校教职工体检套餐价格是多少？"
+  },
+  {
+   "id": "n03",
+   "persona": "本科生",
+   "dept": "本科生",
+   "query": "学校游泳馆年卡多少钱？"
+  },
+  {
+   "id": "n04",
+   "persona": "教师",
+   "dept": "教师",
+   "query": "校车发车时刻表在哪里查？"
+  },
+  {
+   "id": "n05",
+   "persona": "本科生",
+   "dept": "本科生",
+   "query": "食堂今天的菜单是什么？"
+  },
+  {
+   "id": "n06",
+   "persona": "本科生",
+   "dept": "本科生",
+   "query": "校园理发店剪一次头发多少钱？"
+  },
+  {
+   "id": "n07",
+   "persona": "行政与公共服务",
+   "dept": "行政与公共服务",
+   "query": "2026年第10次校长办公会纪要内容是什么？"
+  },
+  {
+   "id": "n08",
+   "persona": "本科生",
+   "dept": "本科生",
+   "query": "北京市大学生医保个人缴费标准是多少？"
+  },
+  {
+   "id": "n09",
+   "persona": "本科生",
+   "dept": "本科生",
+   "query": "学校洗衣房洗一次衣服多少钱？"
+  },
+  {
+   "id": "n10",
+   "persona": "行政与公共服务",
+   "dept": "行政与公共服务",
+   "query": "学校幼儿园入园报名需要什么条件？"
+  }
+ ],
+ "citation": [
+  {
+   "id": "c01",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "普通全日制本科最长有效学习年限是多久？",
+   "expected_docs": [
+    "中传教字〔2025〕195号"
+   ],
+   "expected_page": 4,
+   "page_phrase": "最长有效学习年限为六年",
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "c02",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "什么情况下学生不得申请转专业？",
+   "expected_docs": [
+    "本科生院〔2024〕77号"
+   ],
+   "expected_page": 2,
+   "page_phrase": "不得申请转专业",
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "c03",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "辅修学士学位对平均学分绩点有什么要求？",
+   "expected_docs": [
+    "中传教字〔2025〕7号"
+   ],
+   "expected_page": 3,
+   "page_phrase": "平均学分绩点不低于2.0",
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "c04",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "本科生国家奖学金的奖励标准是多少？",
+   "expected_docs": [
+    "中传学字〔2024〕196号"
+   ],
+   "expected_page": 2,
+   "page_phrase": "每生每学年8000",
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "c05",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "博士学位答辩公告需要提前几天公示？",
+   "expected_docs": [
+    "中传研字〔2026〕219号"
+   ],
+   "expected_page": 4,
+   "page_phrase": "至少提前三天",
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "c06",
+   "dept": "研究生",
+   "persona": "研究生",
+   "query": "硕士研究生预答辩专家小组的组成人数？",
+   "expected_docs": [
+    "研究生院〔2025〕5号"
+   ],
+   "expected_page": 2,
+   "page_phrase": "三至五名",
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "c07",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "返聘人员年龄一般不超过多少岁？",
+   "expected_docs": [
+    "中传人字〔2025〕209号"
+   ],
+   "expected_page": 4,
+   "page_phrase": "不超过65",
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "c08",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "出差期间伙食补助费按什么标准发放？",
+   "expected_docs": [
+    "中传财字 [2019] 35号"
+   ],
+   "expected_page": 6,
+   "page_phrase": "每人每天 120 元",
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "c09",
+   "dept": "教师",
+   "persona": "教师",
+   "query": "科研经费单笔支出超过50万元由谁审批？",
+   "expected_docs": [
+    "中传财字〔2021〕156号"
+   ],
+   "expected_page": 5,
+   "page_phrase": "校领导进行审批",
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "c10",
+   "dept": "本科生",
+   "persona": "本科生",
+   "query": "校园卡丢失补办需要交多少工本费？",
+   "expected_docs": [
+    "中传政字〔2019〕169号"
+   ],
+   "expected_page": 7,
+   "page_phrase": "补卡工本费20 元",
+   "intended_assistant": "问道中传"
+  }
+ ]
+}

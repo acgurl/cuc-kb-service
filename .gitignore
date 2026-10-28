@@ -1,0 +1,41 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Runtime data and generated indexes
+data/
+data.bak*/
+docs/
+docs-new*/
+qdrant_storage/
+.cache/
+.venv*/
+venv/
+
+# Logs and backups
+*.log
+*.bak*
+*.tmp
+*.snapshot
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Large evaluation snapshot (regenerate from the live index)
+eval/chunks_20261028.jsonl
+eval/corpus_md/
+
+# Source data with personal contact information
+QA知识导入模板.csv
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

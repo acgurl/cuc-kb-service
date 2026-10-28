@@ -1,0 +1,403 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "CUC 知识库检索 API",
+    "version": "1.0.0",
+    "description": "中国传媒大学校内规章制度与常见问题知识库。回答校内制度、办事流程、FAQ 类问题前先调用 /v1/search。短问题先改写成完整中文问题；no_answer=true 时改写后重试一次，仍无结果不要基于知识库作答。引用时使用 citation 中的 doc_title、doc_no、clause_no、page_start；citation.file_url 可直接打开原文并跳到 page_start 页，page_count 为文档总页数。"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8000",
+      "description": "本机或 SSH 隧道地址；云端 agent 请替换为可访问的 HTTPS 地址"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/v1/search": {
+      "post": {
+        "operationId": "kb_search",
+        "summary": "检索知识库",
+        "description": "混合检索（向量 + BM25 + rerank），返回相关条款原文、出处和置信度。assistant 与 doc_type 可先通过 /v1/meta 获取。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              },
+              "example": {
+                "query": "学生公寓的床尺寸是多少？",
+                "assistant": "中传小勤",
+                "top_k": 5
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "检索结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效"
+          }
+        }
+      }
+    },
+    "/v1/meta": {
+      "get": {
+        "operationId": "kb_meta",
+        "summary": "读取知识库概况",
+        "description": "返回文档数、知识块数、可用助手名和文档类型，用于选择检索过滤条件。",
+        "responses": {
+          "200": {
+            "description": "知识库概况",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetaResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效"
+          }
+        }
+      }
+    },
+    "/v1/documents": {
+      "get": {
+        "operationId": "kb_documents",
+        "summary": "列出文档",
+        "description": "列出知识库全部文档及元数据，可确认某份制度是否在库中。",
+        "responses": {
+          "200": {
+            "description": "文档列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效"
+          }
+        }
+      }
+    },
+    "/v1/documents/{doc_id}/chunks": {
+      "get": {
+        "operationId": "kb_document_chunks",
+        "summary": "读取文档知识块",
+        "description": "按 doc_id 返回文档原文知识块，用于核对引用或补充上下文。",
+        "parameters": [
+          {
+            "name": "doc_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "文档知识块",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentChunks"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token 无效"
+          },
+          "404": {
+            "description": "文档不存在"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Authorization: Bearer <KB_API_TOKEN>"
+      }
+    },
+    "schemas": {
+      "SearchRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "完整的中文检索问题；短问题或指代不清时先改写。"
+          },
+          "assistant": {
+            "type": "string",
+            "description": "按助手名过滤，例如“中传小勤”；共享文档始终可见。"
+          },
+          "doc_type": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "按文档类型过滤，可传多个。"
+          },
+          "top_k": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "default": 5,
+            "description": "返回条数。"
+          }
+        },
+        "required": [
+          "query"
+        ]
+      },
+      "Citation": {
+        "type": "object",
+        "properties": {
+          "doc_title": {
+            "type": "string"
+          },
+          "doc_no": {
+            "type": "string"
+          },
+          "doc_type": {
+            "type": "string"
+          },
+          "clause_no": {
+            "type": "string"
+          },
+          "page_start": {
+            "type": "integer"
+          },
+          "page_end": {
+            "type": "integer"
+          },
+          "section_path": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_file": {
+            "type": "string"
+          },
+          "page_count": {
+            "type": "integer",
+            "description": "文档总页数。"
+          },
+          "file_url": {
+            "type": "string",
+            "description": "原文 PDF 公网链接，已带 #page=page_start 页锚点；QA 条目为空。"
+          }
+        }
+      },
+      "SearchResult": {
+        "type": "object",
+        "properties": {
+          "chunk_id": {
+            "type": "string"
+          },
+          "doc_id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string",
+            "description": "条款或问答原文。"
+          },
+          "score": {
+            "type": "number",
+            "description": "RRF 融合分数。"
+          },
+          "dense_score": {
+            "type": "number"
+          },
+          "bm25_score": {
+            "type": "number"
+          },
+          "rerank_score": {
+            "type": "number",
+            "nullable": true
+          },
+          "citation": {
+            "$ref": "#/components/schemas/Citation"
+          },
+          "is_qa": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SearchResponse": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchResult"
+            }
+          },
+          "no_answer": {
+            "type": "boolean",
+            "description": "为 true 表示最高 rerank 分数低于阈值，不应把结果当作可靠答案。"
+          },
+          "confidence": {
+            "type": "number"
+          },
+          "took_ms": {
+            "type": "integer"
+          }
+        }
+      },
+      "MetaResponse": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string"
+          },
+          "chunks": {
+            "type": "integer"
+          },
+          "documents": {
+            "type": "integer"
+          },
+          "assistants": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "doc_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Document": {
+        "type": "object",
+        "properties": {
+          "doc_id": {
+            "type": "string"
+          },
+          "doc_title": {
+            "type": "string"
+          },
+          "doc_no": {
+            "type": "string"
+          },
+          "doc_type": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "assistants": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "source_file": {
+            "type": "string"
+          },
+          "pages": {
+            "type": "integer"
+          },
+          "chunks": {
+            "type": "integer"
+          },
+          "file_url": {
+            "type": "string",
+            "description": "原文 PDF 公网链接。"
+          }
+        }
+      },
+      "DocumentList": {
+        "type": "object",
+        "properties": {
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Document"
+            }
+          }
+        }
+      },
+      "DocumentChunks": {
+        "type": "object",
+        "properties": {
+          "doc_id": {
+            "type": "string"
+          },
+          "page_count": {
+            "type": "integer"
+          },
+          "file_url": {
+            "type": "string",
+            "description": "原文 PDF 公网链接。"
+          },
+          "chunks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "chunk_id": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "clause_no": {
+                  "type": "string"
+                },
+                "page_start": {
+                  "type": "integer"
+                },
+                "page_end": {
+                  "type": "integer"
+                },
+                "section_path": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "source_file": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
