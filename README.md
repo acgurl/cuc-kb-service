@@ -73,6 +73,7 @@ kb-service/
 ├── cuc-kb-mcp.service         # systemd: HTTP MCP
 ├── cuc-kb-mcp-gateway.service # systemd: Docker 网关转发
 ├── agent/                     # OpenAPI / tools 定义
+├── corpus/                    # 知识语料（Git LFS）
 ├── eval/  eval_v2/            # 评测
 ├── data/                      # 运行时生成，不入库
 └── .env.example
@@ -86,6 +87,13 @@ kb-service/
 - 可访问的 Qdrant 实例
 - 需要原文跳转时：OCI 对象存储桶与实例主体/配置文件凭据
 - 需要登录时：OIDC（Casdoor 等）应用与回调地址
+
+克隆仓库前先安装 Git LFS，否则拿到的只是 PDF 指针文件：
+
+```bash
+git lfs install
+git clone https://git.cuc.edu.cn/202613103032/cuc-kb-service.git
+```
 
 ```bash
 python -m venv .venv
@@ -101,11 +109,11 @@ cp .env.example .env               # 填入密钥，.env 不要提交
 docker run -d --name qdrant -p 127.0.0.1:6333:6333 qdrant/qdrant
 ```
 
-入库。`--src` 指向知识文档根目录，第一层目录名会作为助手名：
+入库。`--src` 指向知识文档根目录；目录名作为默认助手，文号/标题规则会再补充文档归属：
 
 ```bash
 python ingest.py \
-  --src ../AIHub-全部助手-知识文档 \
+  --src corpus \
   --qa ../QA知识导入模板.csv \
   --out data \
   --recreate
@@ -120,6 +128,17 @@ uvicorn app:app --host 127.0.0.1 --port 8000
 ```
 
 浏览器打开 `http://127.0.0.1:8000/`；脚本调用用 `Authorization: Bearer $KB_API_TOKEN`。
+
+## 语料（Git LFS）
+
+`corpus/` 收录当前入库使用的全部知识文档（321 个 PDF，约 175 MB），按批次和部门分目录，另含各助手的 prompts、manifest 和清单。PDF 与 xlsx 由 Git LFS 管理：
+
+```bash
+git lfs pull                 # 首次克隆或切换分支后拉取原件
+git lfs ls-files | wc -l     # 查看 LFS 文件数
+```
+
+不在仓库中的内容：已过时/重复的历史版本、待入库 tar、根目录含个人联系方式的 `QA知识导入模板.csv`。重新入库时请用 `--src corpus`。
 
 ## 配置
 
@@ -299,6 +318,7 @@ sudo systemctl enable --now cuc-kb-mcp cuc-kb-mcp-gateway
 ## 仓库约定
 
 - `.env`、`data/`、模型缓存、日志与备份均不入库。
+- `corpus/` 下的 PDF 与 xlsx 走 Git LFS（见 `.gitattributes`），不要用普通 Git 重新跟踪。
 - `QA知识导入模板.csv` 含个人联系方式，已加入 `.gitignore`；需要版本管理时请先脱敏。
 - 一次性线上修正脚本（`p0_migrate.py`、`p1_alias.py`）默认 dry run，加 `--apply` 才写库。
 

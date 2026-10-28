@@ -1,0 +1,2 @@
+﻿itemId,名称,类型,webUrl,平台抽取,页面正文,备注
+8d2ef87a629ff4eb1536bc2919a43d69,预约校史馆,CRAWLER_KNOWLEDGE,https://archive.cuc.edu.cn/2022/0401/c8241a192063/page.htm,平台抽取文本.txt,预约校史馆.md,平台转换文本仅含页眉/地址；md 为原页面正文快照，页面本身无更多正文，viewer 返回 sorry.jpg（无图）
