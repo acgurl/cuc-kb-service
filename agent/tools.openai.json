@@ -3,15 +3,15 @@
     "type": "function",
     "function": {
       "name": "kb_search",
-      "description": "检索中国传媒大学校内规章制度与常见问题知识库，返回相关条款、原文和出处。回答校内制度/办事流程/FAQ 类问题前必须先调用。短问题或指代不清的问题（如“床多宽”）先改写成完整问题再检索。若返回 no_answer=true，改写问题后重试一次；仍无结果则不要基于该知识库作答。引用时使用 citation 中的 doc_title、doc_no、clause_no、page_start；citation.file_url 可直接打开原文并跳到 page_start 页，page_count 为文档总页数。【必须】每次回复末尾都要附「参考文件」清单：按正文首次引用顺序，逐条列出实际引用的文档，格式为「N. 《文档名》（文号，第 X、Y 页）— 文件名 — 原文链接」，缺失字段可省略；同一文档多页合并为一条；正文未引用的检索结果不得列入；全程未引用任何文档时写「参考文件：无」。正文中的出处标注照常保留。",
+      "description": "检索中国传媒大学校内规章制度与常见问题知识库，返回相关条款、原文和出处。仅当用户问题属于校内制度、办事流程或校园常见问题（FAQ）时调用；问候、寒暄、自我介绍、询问你是谁或你能做什么、闲聊和通用知识问题不要调用任何工具，直接回答。用户问题较短或指代不清时可以补全成完整问句再检索，但只能补全用户已表达的意思，不得引入示例、知识库内容或无关话题。若返回 no_answer=true，可改写问题后重试一次；仍无结果则不要基于该知识库作答。检索结果与用户问题无关时，忽略结果并直接回答用户原问题。引用时使用 citation 中的 doc_title、doc_no、clause_no、page_start；citation.file_url 可直接打开原文并跳到 page_start 页，page_count 为文档总页数。检索词提示：学生口语与制度用词常不一致——“双学位”通常指文件里的“辅修/辅修学士学位”，“保研”指“推免”，“一卡通”指“校园卡”。这类问题以正式称谓为主组织查询（如“辅修学士学位 管理办法 申请条件”），不要只保留口语词；若首轮只命中开具证明、成绩单等边缘服务或常见问题汇总，不要据此判定知识库没有，换个正式说法再检索一次，必要时把 top_k 提到 10，或用 kb_documents 确认制度在库后按 doc_id 读取。【必须】每次回复末尾都要附「参考文件」清单：按正文首次引用顺序，逐条列出实际引用的文档，格式为「N. 《文档名》（文号，第 X、Y 页）— 文件名 — 原文链接」，缺失字段可省略；同一文档多页合并为一条；正文未引用的检索结果不得列入；全程未引用任何文档时写「参考文件：无」。正文中的出处标注照常保留。",
       "parameters": {
         "type": "object",
         "properties": {
           "query": {
             "type": "string",
-            "description": "完整的中文检索问题。",
             "minLength": 1,
-            "maxLength": 500
+            "maxLength": 500,
+            "description": "完整的中文检索问题。"
           },
           "assistant": {
             "type": "string",
@@ -26,10 +26,10 @@
           },
           "top_k": {
             "type": "integer",
-            "description": "返回条数，默认 5。",
             "minimum": 1,
             "maximum": 20,
-            "default": 5
+            "default": 5,
+            "description": "返回条数。"
           }
         },
         "required": [
@@ -43,7 +43,7 @@
     "type": "function",
     "function": {
       "name": "kb_meta",
-      "description": "读取知识库概况：文档数、知识块数、可用助手名和文档类型。用于选择 kb_search 的过滤条件。",
+      "description": "读取知识库概况：文档数、知识块数、可用助手名和文档类型。只返回全库统计，不含本会话或账号的引用记录；不要用它回答引用次数，也不要据此声称用户从未引用过任何文档。仅在需要了解知识库覆盖范围或选择 kb_search 过滤条件时调用；问候、闲聊或询问助手能力时不要调用。",
       "parameters": {
         "type": "object",
         "properties": {},
@@ -55,7 +55,7 @@
     "type": "function",
     "function": {
       "name": "kb_documents",
-      "description": "列出知识库文档及元数据，可按助手或文档类型过滤。用于确认某份制度是否在库中。",
+      "description": "列出知识库文档及元数据，可按助手或文档类型过滤。返回 source_file、页数 pages 和原文链接 file_url。用于确认某份制度是否在库中。",
       "parameters": {
         "type": "object",
         "properties": {
@@ -79,7 +79,7 @@
     "type": "function",
     "function": {
       "name": "kb_document_chunks",
-      "description": "按 doc_id 读取文档的原文知识块，用于核对引用或补充上下文。大文档请限制 limit。若据这些内容作答，末尾「参考文件」清单同样要列出该文档的 doc_title、source_file 和 file_url。",
+      "description": "按 doc_id 读取文档的原文知识块，用于核对引用或补充上下文。返回每块的页码和 source_file，以及文档总页数 page_count 和原文链接 file_url。大文档请限制 limit。若据这些内容作答，末尾「参考文件」清单同样要列出该文档的 doc_title、source_file 和 file_url。",
       "parameters": {
         "type": "object",
         "properties": {
@@ -89,10 +89,10 @@
           },
           "limit": {
             "type": "integer",
-            "description": "返回的知识块数量，默认 20。",
             "minimum": 1,
             "maximum": 50,
-            "default": 20
+            "default": 20,
+            "description": "返回的知识块数量。"
           }
         },
         "required": [

@@ -25,6 +25,14 @@ REFERENCE_RULE = (
     "同一文档多页合并为一条；正文未引用的检索结果不得列入；"
     "全程未引用任何文档时写「参考文件：无」。正文中的出处标注照常保留。"
 )
+QUERY_TERMS_RULE = (
+    "检索词提示：学生口语与制度用词常不一致——“双学位”通常指文件里的“辅修/辅修学士学位”，"
+    "“保研”指“推免”，“一卡通”指“校园卡”。这类问题以正式称谓为主组织查询"
+    "（如“辅修学士学位 管理办法 申请条件”），不要只保留口语词；"
+    "若首轮只命中开具证明、成绩单等边缘服务或常见问题汇总，不要据此判定知识库没有，"
+    "换个正式说法再检索一次，必要时把 top_k 提到 10，"
+    "或用 kb_documents 确认制度在库后按 doc_id 读取。"
+)
 TOKEN_FILE = os.getenv("KB_API_TOKEN_FILE", "").strip()
 TOKEN_ENV_FILE = os.getenv("KB_API_ENV_FILE", "").strip()
 
@@ -221,6 +229,7 @@ TOOL_DEFINITIONS = [
             "检索结果与用户问题无关时，忽略结果并直接回答用户原问题。"
             "引用时使用 citation 中的 doc_title、doc_no、clause_no、page_start；"
             "citation.file_url 可直接打开原文并跳到 page_start 页，page_count 为文档总页数。"
+            + QUERY_TERMS_RULE
             + REFERENCE_RULE
         ),
         "inputSchema": {
@@ -368,6 +377,7 @@ def handle(message):
                     "回答必须基于返回原文并标注文档名、条款和页码；"
                     "citation.file_url 是可点击的原文链接，回答中一并给出；"
                     "no_answer=true 时不要编造。"
+                    + QUERY_TERMS_RULE
                     + REFERENCE_RULE
                 ),
             },

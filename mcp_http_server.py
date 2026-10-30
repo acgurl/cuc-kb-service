@@ -79,6 +79,7 @@ INSTRUCTIONS = (
     "回答必须基于返回原文并标注文档名、条款和页码；"
     "citation.file_url 是可点击的原文链接（带 #page=page_start），回答中一并给出；"
     "no_answer=true 时不要编造。"
+    + core.QUERY_TERMS_RULE
     + core.REFERENCE_RULE
 )
 
@@ -105,6 +106,7 @@ def dump(payload):
         "检索结果与用户问题无关时，忽略结果并直接回答用户原问题。"
         "引用时使用 citation 中的 doc_title、doc_no、clause_no、page_start；"
         "citation.file_url 可直接打开原文并跳到 page_start 页，page_count 为文档总页数。"
+        + core.QUERY_TERMS_RULE
         + core.REFERENCE_RULE
     ),
 )
