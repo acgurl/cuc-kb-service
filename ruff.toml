@@ -1,0 +1,9 @@
+# Lint gate used by CI (.gitlab-ci.yml). Production runs Python 3.12.
+target-version = "py312"
+line-length = 120
+extend-exclude = ["data", "corpus", ".cache"]
+
+[lint]
+# Syntax errors and pyflakes (undefined names, unused imports/variables, ...).
+# Style rules are left out on purpose: the code base has no formatter yet.
+select = ["E9", "F"]

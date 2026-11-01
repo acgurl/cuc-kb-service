@@ -1,0 +1,61 @@
+# CI for cuc-kb-service (git.cuc.edu.cn).
+#
+# Everything runs offline: no Qdrant, embedding model, reranker API, OCI or
+# secrets are needed. Retrieval quality is measured by eval/ against the live
+# index, not here.
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_COMMIT_TAG
+
+stages:
+  - lint
+  - test
+
+variables:
+  # corpus/ holds ~175 MB of PDFs in Git LFS; no job reads them.
+  GIT_LFS_SKIP_SMUDGE: "1"
+  GIT_DEPTH: "20"
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PYTHONUTF8: "1"
+  PYTHONDONTWRITEBYTECODE: "1"
+
+default:
+  # Same minor version as production (Phoenix: Python 3.12.3).
+  image: python:3.12-slim
+  interruptible: true
+  cache:
+    key: pip-$CI_JOB_NAME
+    paths:
+      - .cache/pip
+
+lint:
+  stage: lint
+  script:
+    - pip install ruff==0.14.3
+    - ruff check .
+    - python -m compileall -q -x '/(\.venv[^/]*|\.cache|data)/' .
+    - bash -n run-mcp.sh
+
+# API, auth, retrieval pipeline and stdio MCP server, with the dependencies of
+# the main service venv (requirements.txt).
+unit:
+  stage: test
+  needs: []
+  script:
+    - pip install -r requirements-dev.txt
+    - python -m unittest discover -s tests -t . -v
+
+# mcp_http_server.py runs from its own venv in production (.venv-mcp), with the
+# mcp SDK pinned to the deployed version and none of requirements.txt.
+mcp-http:
+  stage: test
+  needs: []
+  script:
+    - pip install "mcp==2.3.0" "uvicorn>=0.30"
+    - python -m unittest tests.test_mcp_http tests.test_mcp_server -v

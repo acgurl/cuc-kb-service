@@ -17,7 +17,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ab_embed  # noqa: E402
-from ab_embed import AB_DIR, OUT_DIR, ROOT, OfflineKB, best_rerank, load_backend, load_chunks  # noqa: E402
+from ab_embed import AB_DIR, OUT_DIR, ROOT, OfflineKB, best_rerank, load_backend  # noqa: E402
 
 import search_core  # noqa: E402
 
@@ -45,7 +45,6 @@ def main():
 
     search_core.ANSWERABILITY_OVERRIDE = False
     search_core.RERANK_MIN_SCORE = 0.75
-    chunks = load_chunks()
     kb = OfflineKB(load_backend("bge-small-zh"), np.load(AB_DIR / "bge-small-zh.npy"))
     kb.load()
     kb.active_reranker = ab_embed.RERANKERS["bl-qwen3-rerank"]()
