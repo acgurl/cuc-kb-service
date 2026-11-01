@@ -2,50 +2,9 @@
 import argparse
 import json
 import os
-import re
-import statistics
-import time
-import urllib.request
 from pathlib import Path
 
-
-def norm(text):
-    return re.sub(r"\s+", "", text or "")
-
-
-def request_json(api, token, path, payload=None):
-    data = json.dumps(payload).encode("utf-8") if payload is not None else None
-    request = urllib.request.Request(
-        api.rstrip("/") + path,
-        data=data,
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token,
-        },
-    )
-    with urllib.request.urlopen(request, timeout=90) as response:
-        return json.loads(response.read().decode("utf-8"))
-
-
-def percentile(values, pct):
-    if not values:
-        return 0
-    ordered = sorted(values)
-    index = min(len(ordered) - 1, max(0, int(round((pct / 100) * (len(ordered) - 1)))))
-    return ordered[index]
-
-
-def doc_rank(results, expected):
-    for rank, item in enumerate(results, 1):
-        title = item.get("citation", {}).get("doc_title", "")
-        if any(e in title for e in expected):
-            return rank
-    return None
-
-
-def keyword_hit(results, keywords):
-    texts = [norm(item.get("text", "")) for item in results]
-    return any(norm(k) in text for k in keywords for text in texts)
+from kbeval import DEFAULT_API, doc_rank, keyword_hit, percentile, request_json, top_title
 
 
 def source_assistant(item):
@@ -55,7 +14,7 @@ def source_assistant(item):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--api", default="http://127.0.0.1:8000")
+    parser.add_argument("--api", default=DEFAULT_API)
     parser.add_argument("--token", default=os.getenv("KB_API_TOKEN", ""))
     parser.add_argument("--data", default="eval/dataset_v3.json")
     parser.add_argument("--docs", default="data/docs.json")
@@ -108,7 +67,7 @@ def main():
                 "expected_docs": case["expected_docs"], "keywords": case["keywords"],
                 "doc_rank": rank, "keyword_hit": khit,
                 "no_answer": response["no_answer"], "confidence": response["confidence"],
-                "top_title": results[0]["citation"]["doc_title"] if results else None,
+                "top_title": top_title(results),
                 "top_text": results[0]["text"][:240] if results else "",
                 "took_ms": response["took_ms"],
             }
@@ -143,7 +102,7 @@ def main():
                 "id": case["id"], "dept": case.get("dept", ""), "query": case["query"],
                 "doc_rank": rank, "keyword_hit": khit,
                 "no_answer": response["no_answer"], "confidence": response["confidence"],
-                "top_title": results[0]["citation"]["doc_title"] if results else None,
+                "top_title": top_title(results),
                 "took_ms": response["took_ms"],
             }
         )
@@ -162,7 +121,7 @@ def main():
             {
                 "id": case["id"], "query": case["query"], "passed": passed,
                 "no_answer": response["no_answer"], "confidence": response["confidence"],
-                "top_title": results[0]["citation"]["doc_title"] if results else None,
+                "top_title": top_title(results),
                 "took_ms": response["took_ms"],
             }
         )

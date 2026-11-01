@@ -12,16 +12,16 @@ import os
 import signal
 import sys
 
+DEFAULT_BIND_HOSTS = ("172.17.0.1", "172.18.0.1", "172.19.0.1", "172.20.0.1")
 BIND_HOSTS = [
     item.strip()
-    for item in os.getenv(
-        "KB_MCP_PROXY_BIND_HOSTS",
-        "172.17.0.1,172.18.0.1,172.19.0.1,172.20.0.1",
+    for item in (
+        os.getenv("KB_MCP_PROXY_BIND_HOSTS", "").strip() or ",".join(DEFAULT_BIND_HOSTS)
     ).split(",")
     if item.strip()
 ]
 PORT = int(os.getenv("KB_MCP_PROXY_PORT", "8765").strip() or "8765")
-TARGET_HOST = os.getenv("KB_MCP_PROXY_TARGET_HOST", "127.0.0.1").strip()
+TARGET_HOST = os.getenv("KB_MCP_PROXY_TARGET_HOST", "").strip() or "127.0.0.1"
 TARGET_PORT = int(os.getenv("KB_MCP_PROXY_TARGET_PORT", "8765").strip() or "8765")
 
 
@@ -60,7 +60,7 @@ async def handle(client_reader, client_writer):
         for writer in (client_writer, server_writer):
             try:
                 writer.close()
-            except Exception:
+            except OSError:
                 pass
 
 

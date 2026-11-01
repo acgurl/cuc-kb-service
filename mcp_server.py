@@ -17,7 +17,6 @@ BASE_URL = os.getenv("KB_API_URL", "http://127.0.0.1:8000").strip().rstrip("/")
 TIMEOUT = float(os.getenv("KB_TIMEOUT", "10").strip() or "10")
 DEFAULT_ASSISTANT = os.getenv("KB_DEFAULT_ASSISTANT", "").strip()
 DEFAULT_TOP_K = int(os.getenv("KB_DEFAULT_TOP_K", "5").strip() or "5")
-TOKEN = os.getenv("KB_API_TOKEN", "").strip()
 
 REFERENCE_RULE = (
     "【必须】每次回复末尾都要附「参考文件」清单：按正文首次引用顺序，逐条列出实际引用的文档，"
@@ -33,27 +32,48 @@ QUERY_TERMS_RULE = (
     "换个正式说法再检索一次，必要时把 top_k 提到 10，"
     "或用 kb_documents 确认制度在库后按 doc_id 读取。"
 )
-TOKEN_FILE = os.getenv("KB_API_TOKEN_FILE", "").strip()
-TOKEN_ENV_FILE = os.getenv("KB_API_ENV_FILE", "").strip()
+INSTRUCTIONS = (
+    "校内制度/FAQ 类问题才调用 kb_search；问候、寒暄、自我介绍、"
+    "询问助手能力、闲聊和通用知识问题不要调用任何工具。"
+    "短问题可补全为完整问句，但不得改变原意或引入示例话题。"
+    "回答必须基于返回原文并标注文档名、条款和页码；"
+    "citation.file_url 是可点击的原文链接（带 #page=page_start），回答中一并给出；"
+    "no_answer=true 时不要编造。"
+    + QUERY_TERMS_RULE
+    + REFERENCE_RULE
+)
 
-if not TOKEN and TOKEN_FILE:
-    try:
-        TOKEN = Path(TOKEN_FILE).expanduser().read_text(encoding="utf-8").strip()
-    except OSError as exc:
-        print(f"{SERVER_NAME}: cannot read KB_API_TOKEN_FILE: {exc}", file=sys.stderr)
 
-if not TOKEN and TOKEN_ENV_FILE:
-    try:
-        for line in Path(TOKEN_ENV_FILE).expanduser().read_text(encoding="utf-8").splitlines():
-            line = line.strip()
-            if line.startswith("export "):
-                line = line[7:].strip()
-            key, separator, value = line.partition("=")
-            if separator and key.strip() == "KB_API_TOKEN":
-                TOKEN = value.strip().strip("\"'")
-                break
-    except OSError as exc:
-        print(f"{SERVER_NAME}: cannot read KB_API_ENV_FILE: {exc}", file=sys.stderr)
+def read_env_file_value(path, name):
+    for line in Path(path).expanduser().read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line.startswith("export "):
+            line = line[7:].strip()
+        key, separator, value = line.partition("=")
+        if separator and key.strip() == name:
+            return value.strip().strip("\"'")
+    return ""
+
+
+def load_token():
+    """KB_API_TOKEN, else KB_API_TOKEN_FILE, else KB_API_TOKEN from KB_API_ENV_FILE."""
+    token = os.getenv("KB_API_TOKEN", "").strip()
+    token_file = os.getenv("KB_API_TOKEN_FILE", "").strip()
+    env_file = os.getenv("KB_API_ENV_FILE", "").strip()
+    if not token and token_file:
+        try:
+            token = Path(token_file).expanduser().read_text(encoding="utf-8").strip()
+        except OSError as exc:
+            print(f"{SERVER_NAME}: cannot read KB_API_TOKEN_FILE: {exc}", file=sys.stderr)
+    if not token and env_file:
+        try:
+            token = read_env_file_value(env_file, "KB_API_TOKEN")
+        except OSError as exc:
+            print(f"{SERVER_NAME}: cannot read KB_API_ENV_FILE: {exc}", file=sys.stderr)
+    return token
+
+
+TOKEN = load_token()
 
 
 class ToolError(Exception):
@@ -180,7 +200,7 @@ def tool_documents(arguments):
         documents = [
             doc
             for doc in documents
-            if assistant in (doc.get("assistants") or []) or "shared" in (doc.get("assistants") or [])
+            if {assistant, "shared"} & set(doc.get("assistants") or [])
         ]
     if doc_types:
         documents = [doc for doc in documents if doc.get("doc_type") in doc_types]
@@ -301,12 +321,18 @@ TOOL_DEFINITIONS = [
     },
 ]
 
+TOOL_DESCRIPTIONS = {tool["name"]: tool["description"] for tool in TOOL_DEFINITIONS}
+
 TOOL_HANDLERS = {
     "kb_search": tool_search,
     "kb_meta": tool_meta,
     "kb_documents": tool_documents,
     "kb_document_chunks": tool_document_chunks,
 }
+
+
+def tool_text_result(text, is_error):
+    return {"content": [{"type": "text", "text": text}], "isError": is_error}
 
 
 def send(message):
@@ -335,25 +361,13 @@ def handle_call(request_id, params):
     try:
         payload = handler(arguments)
     except ToolError as exc:
-        send_result(
-            request_id,
-            {"content": [{"type": "text", "text": str(exc)}], "isError": True},
-        )
+        send_result(request_id, tool_text_result(str(exc), True))
         return
     except Exception as exc:
         print(f"{SERVER_NAME}: tool {name} failed: {exc}", file=sys.stderr)
-        send_result(
-            request_id,
-            {"content": [{"type": "text", "text": f"工具执行失败: {exc}"}], "isError": True},
-        )
+        send_result(request_id, tool_text_result(f"工具执行失败: {exc}", True))
         return
-    send_result(
-        request_id,
-        {
-            "content": [{"type": "text", "text": json.dumps(payload, ensure_ascii=False)}],
-            "isError": False,
-        },
-    )
+    send_result(request_id, tool_text_result(json.dumps(payload, ensure_ascii=False), False))
 
 
 def handle(message):
@@ -370,16 +384,7 @@ def handle(message):
                 "protocolVersion": version,
                 "capabilities": {"tools": {"listChanged": False}},
                 "serverInfo": {"name": SERVER_NAME, "version": SERVER_VERSION},
-                "instructions": (
-                    "校内制度/FAQ 类问题才调用 kb_search；问候、寒暄、自我介绍、"
-                    "询问助手能力、闲聊和通用知识问题不要调用任何工具。"
-                    "短问题可补全为完整问句，但不得改变原意或引入示例话题。"
-                    "回答必须基于返回原文并标注文档名、条款和页码；"
-                    "citation.file_url 是可点击的原文链接，回答中一并给出；"
-                    "no_answer=true 时不要编造。"
-                    + QUERY_TERMS_RULE
-                    + REFERENCE_RULE
-                ),
+                "instructions": INSTRUCTIONS,
             },
         )
     elif method == "ping":
