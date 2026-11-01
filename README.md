@@ -45,17 +45,18 @@
 
 | 文件 | 作用 |
 | --- | --- |
-| `app.py` | FastAPI 服务：Web 检索页、检索/文档/原文接口、SSO 登录回调 |
+| `app.py` | FastAPI 服务：检索/文档/原文接口、SSO 登录回调 |
+| `static/index.html` | 内置 Web 检索页（由 `app.py` 在 `/` 返回） |
 | `search_core.py` | 载入 `data/` 与 Qdrant，执行向量 + BM25 + RRF + rerank 检索，返回引用与拒答判断 |
 | `ingest.py` | PDF/QA CSV 解析、切块、去重、生成 `data/` 产物并写入 Qdrant |
 | `auth.py` | OIDC id_token 校验（JWKS 缓存）、会话 JWT 签发/读取、服务 Token 校验 |
-| `common.py` | 全部环境变量与默认值 |
+| `common.py` | 全部环境变量与默认值、通用汇编标题规则、Qdrant 客户端工厂 |
 | `file_access.py` | OCI 私有桶 PAR 签发与缓存 |
-| `mcp_server.py` | 纯标准库实现的 stdio MCP 服务，转发到 HTTP API |
+| `mcp_server.py` | 纯标准库实现的 stdio MCP 服务，转发到 HTTP API；工具定义与 instructions 的唯一来源 |
 | `mcp_http_server.py` | 常驻 Streamable HTTP MCP 端点，含 Token 与 Host 校验 |
 | `mcp_gateway_proxy.py` | 监听 Docker 网桥地址并转发到 `127.0.0.1:8765`，避免服务绑定公网 |
 | `agent/` | 给通用 Agent 用的 OpenAPI 描述与 OpenAI function-calling 工具定义 |
-| `eval/`、`eval_v2/` | 评测脚本、数据集、结果与报告 |
+| `eval/`、`eval_v2/` | 评测脚本（共享 `eval/kbeval.py`）、数据集、结果与报告；`eval/inspect_queries.py` + `eval/inspect_sets/` 用于逐条排查 |
 | `p0_migrate.py`、`p1_alias.py` | 线上元数据修正与别名重嵌入等一次性脚本 |
 
 ## 目录
@@ -63,6 +64,7 @@
 ```
 kb-service/
 ├── app.py                     # FastAPI 应用
+├── static/index.html          # Web 检索页
 ├── search_core.py             # 检索核心
 ├── ingest.py                  # 入库脚本
 ├── auth.py  common.py  file_access.py
@@ -154,7 +156,8 @@ git lfs ls-files | wc -l     # 查看 LFS 文件数
 | 可答性 | `KB_ANSWERABILITY_*`、`KB_ANSWER_SPAN_WINDOW` | 拒答阈值与答案片段窗口 |
 | OCI | `KB_OCI_*`、`KB_PAR_TTL` | 私有 PDF 桶、PAR 有效期 |
 | 登录 | `KB_OIDC_*`、`KB_SESSION_*`、`KB_PUBLIC_BASE_URL` | OIDC 应用、会话密钥与有效期、对外基址 |
-| MCP | `KB_MCP_HOST`、`KB_MCP_PORT`、`KB_MCP_TOKEN`、`KB_MCP_ALLOWED_HOSTS` | HTTP MCP 监听、Token 与 Host 白名单 |
+| MCP | `KB_MCP_HOST`、`KB_MCP_PORT`、`KB_MCP_TOKEN`、`KB_MCP_ALLOWED_HOSTS`、`KB_MCP_ALLOWED_ORIGINS` | HTTP MCP 监听、Token 与 Host/Origin 白名单（留空用默认值） |
+| MCP 转发 | `KB_MCP_PROXY_BIND_HOSTS`、`KB_MCP_PROXY_PORT`、`KB_MCP_PROXY_TARGET_*` | Docker 网桥转发监听地址与目标 |
 
 `KB_RERANK_PROVIDER=openai`（兼容 `cloud` / `openai-compatible`）时必须配置 `RERANK_API_BASE` 与 `RERANK_API_MODEL`；云端失败会回退到本地 `bge-reranker-base`（`KB_RERANK_LOCAL_FALLBACK=1`）。
 
@@ -277,8 +280,11 @@ python eval/eval_v3.py --api http://127.0.0.1:8000 --token "$KB_API_TOKEN" \
 python eval/eval_noassistant.py --api http://127.0.0.1:8000 \
   --token "$KB_API_TOKEN" --data eval/dataset_v5_personas.json --tag v5
 
-# 只校验数据集与当前索引是否一致
-python eval/validate_dataset.py
+# 只校验数据集与当前索引是否一致（默认 v5 数据集 + data/chunks.jsonl）
+python eval/validate_dataset.py --data eval/dataset_v5_personas.json
+
+# 逐条查看一组调试问句的排序结果
+python eval/inspect_queries.py eval/inspect_sets/p0.json --top-k 5
 ```
 
 最新一轮（`eval/report_v5_4_p1.md`，2026-10-28，101 条文档检索 + 16 条短问句 + 10 条无答案 + 10 条页码引用）：
@@ -311,6 +317,7 @@ sudo systemctl enable --now cuc-kb-mcp cuc-kb-mcp-gateway
 ```
 
 - API 由反向代理终止 TLS 并转发到 `127.0.0.1:8000`；`KB_OIDC_REDIRECT_URIS` 必须与外部访问地址一致。
+- 部署时 `static/` 目录需与 `app.py` 一起同步。
 - 源 PDF 桶保持私有，仅通过 `/v1/files/{doc_id}` 鉴权后签发 PAR（默认 900 秒）。
 - MCP HTTP 只绑定回环，容器通过网桥转发访问；公网入口不要直接放开 8765。
 - 带 `--recreate` 重新入库会删除并重建集合；只想解析预览时用 `--skip-embed`。

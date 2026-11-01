@@ -1,30 +1,18 @@
 #!/usr/bin/env python3
+"""v1 eval (eval/dataset.json). Its percentile/keyword_hit differ from kbeval on
+purpose so that report.md stays reproducible."""
 import argparse
 import csv
 import json
 import os
-import statistics
 import time
-import urllib.request
 from pathlib import Path
 
-
-def request_json(api_url, token, path, payload=None):
-    data = json.dumps(payload).encode("utf-8") if payload is not None else None
-    request = urllib.request.Request(
-        api_url.rstrip("/") + path,
-        data=data,
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token,
-        },
-    )
-    with urllib.request.urlopen(request, timeout=60) as response:
-        return json.loads(response.read().decode("utf-8"))
+from kbeval import DEFAULT_API, request_json
 
 
 def post(api_url, token, payload):
-    return request_json(api_url, token, "/v1/search", payload)
+    return request_json(api_url, token, "/v1/search", payload, timeout=60)
 
 
 def percentile(values, pct):
@@ -59,7 +47,7 @@ def keyword_hit(results, keywords):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--api", default=os.getenv("KB_API_URL", "http://127.0.0.1:8000"))
+    parser.add_argument("--api", default=DEFAULT_API)
     parser.add_argument("--token", default=os.getenv("KB_API_TOKEN", ""))
     parser.add_argument("--data", default="eval/dataset.json")
     parser.add_argument("--qa", default="QA知识导入模板.csv")

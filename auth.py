@@ -14,10 +14,10 @@ from common import (
     SESSION_COOKIE,
     SESSION_SECRET,
     SESSION_TTL,
+    USER_AGENT,
 )
 
 JWKS_URL = OIDC_ISSUER + "/.well-known/jwks" if OIDC_ISSUER else ""
-USER_AGENT = "Mozilla/5.0 (compatible; CUC-KnowledgeBase/0.1)"
 JWKS_TTL = 3600
 ALLOWED_ALGS = ["RS256", "RS512"]
 
@@ -119,6 +119,14 @@ def session_user(claims, service=False):
     }
 
 
+def _unauthorized(detail):
+    return HTTPException(
+        status_code=401,
+        detail=detail,
+        headers={"WWW-Authenticate": 'Bearer realm="kb"'},
+    )
+
+
 def require_user(request: Request):
     authorization = request.headers.get("authorization", "")
     if API_TOKEN and hmac.compare_digest(authorization, f"Bearer {API_TOKEN}"):
@@ -129,11 +137,7 @@ def require_user(request: Request):
         try:
             return session_user(verify_oidc_token(token))
         except AuthError:
-            raise HTTPException(
-                status_code=401,
-                detail="invalid token",
-                headers={"WWW-Authenticate": 'Bearer realm="kb"'},
-            )
+            raise _unauthorized("invalid token")
 
     cookie = request.cookies.get(SESSION_COOKIE)
     if cookie:
@@ -142,8 +146,4 @@ def require_user(request: Request):
         except AuthError:
             pass
 
-    raise HTTPException(
-        status_code=401,
-        detail="login required",
-        headers={"WWW-Authenticate": 'Bearer realm="kb"'},
-    )
+    raise _unauthorized("login required")

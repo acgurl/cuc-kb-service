@@ -2,11 +2,15 @@
 import argparse
 import json
 import os
-import re
-import statistics
-import time
-import urllib.request
+from functools import partial
 from pathlib import Path
+
+from kbeval import DEFAULT_API, doc_rank, percentile, top_title
+from kbeval import keyword_hit as _keyword_hit
+from kbeval import request_json as _request_json
+
+keyword_hit = partial(_keyword_hit, top=5)
+request_json = partial(_request_json, timeout=120)
 
 GENERIC_TITLES = (
     "参考：教师手册",
@@ -15,42 +19,6 @@ GENERIC_TITLES = (
     "2026年迎接新生开学相关工作",
     "修学指南2025版",
 )
-
-
-def norm(text):
-    return re.sub(r"\s+", "", text or "")
-
-
-def request_json(api, token, path, payload=None):
-    data = json.dumps(payload).encode("utf-8") if payload is not None else None
-    request = urllib.request.Request(
-        api.rstrip("/") + path,
-        data=data,
-        headers={"Content-Type": "application/json", "Authorization": "Bearer " + token},
-    )
-    with urllib.request.urlopen(request, timeout=120) as response:
-        return json.loads(response.read().decode("utf-8"))
-
-
-def percentile(values, pct):
-    if not values:
-        return 0
-    ordered = sorted(values)
-    index = min(len(ordered) - 1, max(0, int(round((pct / 100) * (len(ordered) - 1)))))
-    return ordered[index]
-
-
-def doc_rank(results, expected):
-    for rank, item in enumerate(results, 1):
-        title = item.get("citation", {}).get("doc_title", "")
-        if any(e in title for e in expected):
-            return rank
-    return None
-
-
-def keyword_hit(results, keywords, top=5):
-    texts = [norm(item.get("text", "")) for item in results[:top]]
-    return any(norm(k) in text for k in keywords for text in texts)
 
 
 def page_ok(results, expected, page):
@@ -81,7 +49,7 @@ def top_in_domain(results, doc_meta, assistant):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--api", default="http://127.0.0.1:8000")
+    parser.add_argument("--api", default=DEFAULT_API)
     parser.add_argument("--token", default=os.getenv("KB_API_TOKEN", ""))
     parser.add_argument("--data", default="eval/dataset_v4_noassistant.json")
     parser.add_argument("--docs", default="data/docs.json")
@@ -134,7 +102,7 @@ def main():
             "intended_assistant": assistant,
             "no_rank": rank_no, "no_keyword": kw_no,
             "no_answer": no["no_answer"], "no_confidence": no["confidence"],
-            "no_top": results_no[0]["citation"]["doc_title"] if results_no else None,
+            "no_top": top_title(results_no),
             "no_top_doc_id": results_no[0].get("doc_id") if results_no else None,
             "assist_rank": rank_as, "assist_keyword": kw_as,
             "assist_no_answer": assisted["no_answer"] if assisted else None,

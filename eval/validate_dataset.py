@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
+"""Check that every expected doc and keyword in a dataset exists in the active index."""
+import argparse
 import json
 import sys
 from pathlib import Path
 
 
 def main():
-    dataset = json.loads(Path("eval/dataset_v2.json").read_text(encoding="utf-8"))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data", default="eval/dataset_v5_personas.json")
+    parser.add_argument("--chunks", default="data/chunks.jsonl")
+    args = parser.parse_args()
+
+    dataset = json.loads(Path(args.data).read_text(encoding="utf-8"))
     chunks = [
         json.loads(line)
-        for line in Path("data/chunks.jsonl").read_text(encoding="utf-8").splitlines()
+        for line in Path(args.chunks).read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
     active = [c for c in chunks if c.get("status") == "active"]

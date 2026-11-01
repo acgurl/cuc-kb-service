@@ -10,22 +10,14 @@ import os
 import shutil
 from pathlib import Path
 
-from qdrant_client import QdrantClient
 from qdrant_client.models import FieldCondition, Filter, MatchValue
 
-BASE = Path("/home/ubuntu/cuc-kb")
-DATA = BASE / "data"
-QA_CSV = BASE / "QA知识导入模板.csv"
-STAMP = "20261028-p0"
+from common import BASE_DIR, COLLECTION, DATA_DIR, is_generic_title, qdrant_client
+from ingest import merge_unique
 
-GENERIC_PREFIXES = (
-    "中国传媒大学学生工作规章制度汇编",
-    "参考：教师手册",
-    "修学指南2025版",
-    "QA知识导入模板",
-    "2026年迎接新生开学相关工作",
-    "学校部门分类",
-)
+DATA = DATA_DIR
+QA_CSV = BASE_DIR / "QA知识导入模板.csv"
+STAMP = "20261028-p0"
 
 ASSISTANT_ADDITIONS = {
     # doc_id -> assistants to add
@@ -42,31 +34,23 @@ STALE_QA_QUESTION = "保研（推免）的相关规定在哪里？"
 STALE_QA_REASON = "stale: 2026-122 推免办法已入库，旧答案称尚未发布"
 
 
-def is_generic_title(title: str) -> bool:
-    return any(title.startswith(prefix) for prefix in GENERIC_PREFIXES)
-
-
 def load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
 def add_assistants(assistants, additions):
     result = list(assistants)
-    for item in additions:
-        if item not in result:
-            result.append(item)
+    merge_unique(result, additions)
     return result
 
 
-def qdrant_points_for_doc(client, doc_id):
+def point_ids(client, key, value):
     points = []
     offset = None
     while True:
         batch, offset = client.scroll(
-            collection_name="cuc_kb_v2",
-            scroll_filter=Filter(
-                must=[FieldCondition(key="doc_id", match=MatchValue(value=doc_id))]
-            ),
+            collection_name=COLLECTION,
+            scroll_filter=Filter(must=[FieldCondition(key=key, match=MatchValue(value=value))]),
             limit=512,
             offset=offset,
             with_payload=False,
@@ -74,21 +58,16 @@ def qdrant_points_for_doc(client, doc_id):
         )
         points.extend(point.id for point in batch)
         if offset is None:
-            break
-    return points
+            return points
 
 
-def qdrant_points_for_chunk(client, chunk_id):
-    batch, _ = client.scroll(
-        collection_name="cuc_kb_v2",
-        scroll_filter=Filter(
-            must=[FieldCondition(key="chunk_id", match=MatchValue(value=chunk_id))]
-        ),
-        limit=10,
-        with_payload=False,
-        with_vectors=False,
-    )
-    return [point.id for point in batch]
+def set_payload(client, key, value, payload):
+    points = point_ids(client, key, value)
+    if points:
+        client.set_payload(
+            collection_name=COLLECTION, payload=payload, points=points, wait=True
+        )
+    return len(points)
 
 
 def main():
@@ -134,6 +113,7 @@ def main():
     for doc_id in generic_docs:
         print("  generic:", next(d["title"] for d in docs if d["doc_id"] == doc_id))
 
+    print(f"collection={COLLECTION} data={DATA} qa={QA_CSV}")
     if not args.apply:
         print("dry run; pass --apply to write")
         return
@@ -166,53 +146,20 @@ def main():
         writer.writerows(remaining)
     os.replace(qa_tmp, QA_CSV)
 
-    client = QdrantClient(
-        url=os.environ.get("QDRANT_URL", "http://127.0.0.1:6333"),
-        api_key=os.environ.get("QDRANT_API_KEY") or None,
-        timeout=60,
-    )
-
+    client = qdrant_client(timeout=60)
     for doc_id, assistants in affected_docs.items():
-        points = qdrant_points_for_doc(client, doc_id)
-        if points:
-            client.set_payload(
-                collection_name="cuc_kb_v2",
-                payload={"assistants": assistants},
-                points=points,
-                wait=True,
-            )
-        print("qdrant assistant:", doc_id, len(points), assistants)
-
+        count = set_payload(client, "doc_id", doc_id, {"assistants": assistants})
+        print("qdrant assistant:", doc_id, count, assistants)
     for doc_id in generic_docs:
-        points = qdrant_points_for_doc(client, doc_id)
-        if points:
-            client.set_payload(
-                collection_name="cuc_kb_v2",
-                payload={"is_generic": True},
-                points=points,
-                wait=True,
-            )
-        print("qdrant generic:", doc_id, len(points))
-
-    qa_points = qdrant_points_for_doc(client, "qa-csv")
-    if qa_points:
-        client.set_payload(
-            collection_name="cuc_kb_v2",
-            payload={"is_generic": True},
-            points=qa_points,
-            wait=True,
-        )
-    print("qdrant qa generic:", len(qa_points))
-
-    stale_points = qdrant_points_for_chunk(client, STALE_QA_CHUNK)
-    if stale_points:
-        client.set_payload(
-            collection_name="cuc_kb_v2",
-            payload={"status": "inactive", "status_reason": STALE_QA_REASON},
-            points=stale_points,
-            wait=True,
-        )
-    print("qdrant stale qa:", STALE_QA_CHUNK, len(stale_points))
+        print("qdrant generic:", doc_id, set_payload(client, "doc_id", doc_id, {"is_generic": True}))
+    print("qdrant qa generic:", set_payload(client, "doc_id", "qa-csv", {"is_generic": True}))
+    stale = set_payload(
+        client,
+        "chunk_id",
+        STALE_QA_CHUNK,
+        {"status": "inactive", "status_reason": STALE_QA_REASON},
+    )
+    print("qdrant stale qa:", STALE_QA_CHUNK, stale)
     print("applied")
 
 

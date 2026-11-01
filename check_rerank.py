@@ -3,12 +3,10 @@ import json
 import sys
 
 from common import (
+    CLOUD_RERANK_PROVIDERS,
     RERANK_API_BASE,
-    RERANK_API_HEADER,
     RERANK_API_KEY,
     RERANK_API_MODEL,
-    RERANK_API_PATH,
-    RERANK_API_TIMEOUT,
     RERANK_MIN_SCORE,
     RERANK_PROVIDER,
 )
@@ -24,21 +22,14 @@ DOCUMENTS = [
 
 def main():
     print(f"provider={RERANK_PROVIDER} model={RERANK_API_MODEL or '(empty)'} threshold={RERANK_MIN_SCORE}")
-    if RERANK_PROVIDER not in ("openai", "cloud", "openai-compatible"):
+    if RERANK_PROVIDER not in CLOUD_RERANK_PROVIDERS:
         print("KB_RERANK_PROVIDER is not openai/cloud")
         return 2
     if not RERANK_API_BASE or not RERANK_API_MODEL:
         print("missing RERANK_API_BASE or RERANK_API_MODEL")
         return 2
 
-    reranker = CloudReranker(
-        base=RERANK_API_BASE,
-        path=RERANK_API_PATH,
-        model=RERANK_API_MODEL,
-        api_key=RERANK_API_KEY,
-        header=RERANK_API_HEADER,
-        timeout=RERANK_API_TIMEOUT,
-    )
+    reranker = CloudReranker.from_env()
     print(f"url={reranker.url} key={'set' if RERANK_API_KEY else 'empty'}")
     try:
         scores = reranker.rerank(QUERY, DOCUMENTS)
@@ -48,8 +39,9 @@ def main():
 
     print(json.dumps({"query": QUERY, "scores": scores}, ensure_ascii=False, indent=2))
     print("ranking:")
-    for index in sorted(range(len(scores)), key=lambda i: scores[i] or -1e9, reverse=True):
-        print(f"  {scores[index]:.4f}  {DOCUMENTS[index][:50]}")
+    for index in sorted(range(len(scores)), key=lambda i: -1e9 if scores[i] is None else scores[i], reverse=True):
+        score = "  n/a " if scores[index] is None else f"{scores[index]:.4f}"
+        print(f"  {score}  {DOCUMENTS[index][:50]}")
     return 0
 
 

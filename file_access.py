@@ -21,18 +21,16 @@ _cache = {}
 _client = None
 
 
-def _client_for():
+def _get_client():
     global _client
-    if _client is not None:
+    with _lock:
+        if _client is None:
+            if OCI_AUTH == "config":
+                _client = oci.object_storage.ObjectStorageClient(oci.config.from_file())
+            else:
+                signer = oci.auth.signers.InstancePrincipalsSecurityTokenSigner()
+                _client = oci.object_storage.ObjectStorageClient(config={}, signer=signer)
         return _client
-    if OCI_AUTH == "config":
-        config = oci.config.from_file()
-        client = oci.object_storage.ObjectStorageClient(config)
-    else:
-        signer = oci.auth.signers.InstancePrincipalsSecurityTokenSigner()
-        client = oci.object_storage.ObjectStorageClient(config={}, signer=signer)
-    _client = client
-    return client
 
 
 def object_name(doc_id):
@@ -52,7 +50,7 @@ def signed_url(doc_id):
         object_name=object_name(doc_id),
         time_expires=datetime.now(timezone.utc) + timedelta(seconds=PAR_TTL),
     )
-    response = _client_for().create_preauthenticated_request(
+    response = _get_client().create_preauthenticated_request(
         OCI_NAMESPACE, OCI_BUCKET, details
     )
     url = f"https://objectstorage.{OCI_REGION}.oraclecloud.com{response.data.access_uri}"
