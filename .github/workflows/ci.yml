@@ -1,0 +1,71 @@
+# CI for cuc-kb-service.
+#
+# Everything runs offline: no Qdrant, embedding model, reranker API, OCI or
+# secrets are needed. Retrieval quality is measured by eval/ against the live
+# index, not here.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUTF8: "1"
+  PYTHONDONTWRITEBYTECODE: "1"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      # lfs: false (default) — corpus/ PDFs are not needed and would use LFS bandwidth.
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12" # production: Python 3.12.3
+          cache: pip
+      - run: pip install ruff==0.14.3
+      - run: ruff check --output-format=github .
+      - run: python -m compileall -q -x '/(\.venv[^/]*|\.cache|data)/' .
+      - run: bash -n run-mcp.sh
+
+  # API, auth, retrieval pipeline and stdio MCP server, with the dependencies of
+  # the main service venv (requirements.txt).
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements*.txt
+            constraints/prod.txt
+      # Pinned to the production venv so tests see the deployed versions.
+      - run: pip install -r requirements-dev.txt -c constraints/prod.txt
+      - run: python -m unittest discover -s tests -t . -v
+
+  # mcp_http_server.py runs from its own venv in production (.venv-mcp), pinned
+  # to the deployed versions and without requirements.txt.
+  mcp-http:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: constraints/prod-mcp.txt
+      - run: pip install mcp uvicorn -c constraints/prod-mcp.txt
+      - run: python -m unittest tests.test_mcp_http tests.test_mcp_server -v
