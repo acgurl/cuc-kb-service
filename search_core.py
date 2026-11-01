@@ -1,10 +1,9 @@
+import http.client
 import json
 import re
 import threading
 import time
-import urllib.error
-import urllib.request
-from urllib.parse import quote
+from urllib.parse import quote, urlsplit
 
 import jieba
 import numpy as np
@@ -31,7 +30,6 @@ from common import (
     GENERIC_RERANK_PENALTY,
     GENERIC_RRF_FACTOR,
     MAX_CHUNKS_PER_DOC,
-    PHRASE_BONUS,
     PUBLIC_BASE_URL,
     QUERY_INSTRUCTION,
     RERANK_API_BASE,
@@ -50,7 +48,6 @@ from common import (
     RERANK_PROVIDER,
     RERANK_SHORTLIST,
     RERANK_TRIGGER,
-    TITLE_PHRASE_BONUS,
     is_generic_title,
     qdrant_client,
 )
@@ -74,13 +71,6 @@ COVERAGE_STOPWORDS = {
     "进行", "相关", "多少", "以上", "以下", "一个", "以及", "或者",
     "其中", "必须", "应当", "完成", "提出", "对于", "关于", "这个",
 }
-INTENT_PHRASES = (
-    "基本条件", "申请条件", "评选条件", "岗位聘用", "聘用条件",
-    "学分认定", "报销比例", "自付比例", "收费标准", "办理流程",
-    "申请材料", "负责部门", "责任人", "学位申请",
-)
-DEFINITION_HINTS = ("依据", "定义", "是什么", "指什么", "含义")
-DURATION_HINTS = ("多久", "多长时间", "期限", "最长", "可以延期")
 
 ATTRIBUTE_HINTS = {
     "price": (
@@ -216,6 +206,7 @@ class CloudReranker:
         self.api_key = api_key
         self.header = header
         self.timeout = timeout
+        self._local = threading.local()
 
     @classmethod
     def from_env(cls):
@@ -239,17 +230,50 @@ class CloudReranker:
                 headers["api-key"] = self.api_key
             else:
                 headers["Authorization"] = "Bearer " + self.api_key
-        request = urllib.request.Request(
-            self.url,
-            data=json.dumps(payload).encode("utf-8"),
-            headers=headers,
-        )
-        try:
-            with urllib.request.urlopen(request, timeout=self.timeout) as response:
-                return json.loads(response.read().decode("utf-8"))
-        except urllib.error.HTTPError as exc:
-            detail = exc.read().decode("utf-8", "ignore")[:300]
-            raise RuntimeError(f"HTTP {exc.code}: {detail}") from exc
+        parts = urlsplit(self.url)
+        path = parts.path + ("?" + parts.query if parts.query else "")
+        data = json.dumps(payload).encode("utf-8")
+        # One keep-alive connection per worker thread: a fresh TCP+TLS handshake
+        # to the Beijing endpoint adds ~0.7 s and causes most of the >4 s tail.
+        for attempt in range(2):
+            conn = self._connection(parts)
+            reused = conn.sock is not None
+            try:
+                conn.request("POST", path, body=data, headers=headers)
+                response = conn.getresponse()
+                body = response.read()
+            except TimeoutError:
+                self._drop_connection()
+                raise  # a retry would double the wait; caller degrades instead
+            except (http.client.HTTPException, OSError):
+                self._drop_connection()
+                if reused and attempt == 0:
+                    continue  # server closed the idle connection; reconnect once
+                raise
+            if response.will_close:
+                self._drop_connection()
+            if response.status >= 400:
+                detail = body.decode("utf-8", "ignore")[:300]
+                raise RuntimeError(f"HTTP {response.status}: {detail}")
+            return json.loads(body.decode("utf-8"))
+
+    def _connection(self, parts):
+        conn = getattr(self._local, "conn", None)
+        if conn is None or getattr(self._local, "netloc", None) != parts.netloc:
+            if conn is not None:
+                conn.close()
+            factory = (
+                http.client.HTTPSConnection if parts.scheme == "https" else http.client.HTTPConnection
+            )
+            conn = factory(parts.netloc, timeout=self.timeout)
+            self._local.conn, self._local.netloc = conn, parts.netloc
+        return conn
+
+    def _drop_connection(self):
+        conn = getattr(self._local, "conn", None)
+        if conn is not None:
+            conn.close()
+        self._local.conn = None
 
     def rerank(self, query, documents):
         payload = {
@@ -536,24 +560,9 @@ class KB:
                 print(f"{label} failed: {exc}", flush=True)
         return None
 
-    def _adjusted_rerank_score(self, query, chunk, score, generic_penalty):
-        if is_generic_chunk(chunk):
-            return score - GENERIC_RERANK_PENALTY if generic_penalty else score
-        title = chunk.get("doc_title", "")
-        text = chunk.get("text", "")
-        if any(phrase in query and phrase in title for phrase in INTENT_PHRASES):
-            score += TITLE_PHRASE_BONUS
-        elif any(phrase in query and phrase in text for phrase in INTENT_PHRASES):
-            score += PHRASE_BONUS
-        if any(hint in query for hint in DEFINITION_HINTS) and (
-            "是指" in text or "指的是" in text
-        ):
-            score += PHRASE_BONUS
-        if any(hint in query for hint in DURATION_HINTS) and (
-            "最长不超过" in text
-            or ("不超过" in text and SPAN_PATTERNS["time"].search(text))
-        ):
-            score += PHRASE_BONUS
+    def _adjusted_rerank_score(self, chunk, score, generic_penalty):
+        if generic_penalty and is_generic_chunk(chunk):
+            return score - GENERIC_RERANK_PENALTY
         return score
 
     def _rerank(self, query, candidates):
@@ -582,7 +591,6 @@ class KB:
         )
         reranked.sort(
             key=lambda item: self._adjusted_rerank_score(
-                query,
                 self.chunk_map.get(item[0]) or {},
                 rerank_scores[item[0]],
                 generic_penalty,

@@ -17,6 +17,10 @@ BASE_URL = os.getenv("KB_API_URL", "http://127.0.0.1:8000").strip().rstrip("/")
 TIMEOUT = float(os.getenv("KB_TIMEOUT", "10").strip() or "10")
 DEFAULT_ASSISTANT = os.getenv("KB_DEFAULT_ASSISTANT", "").strip()
 DEFAULT_TOP_K = int(os.getenv("KB_DEFAULT_TOP_K", "5").strip() or "5")
+# Below the API's no_answer threshold but at or above this confidence, results are
+# usually related rules without the asked fact (eval/ab/report_na1.md); the agent may
+# answer partially from them. Below it, results are treated as unrelated.
+RELATED_MIN_CONFIDENCE = float(os.getenv("KB_RELATED_MIN_CONFIDENCE", "0.6").strip() or "0.6")
 
 REFERENCE_RULE = (
     "【必须】每次回复末尾都要附「参考文件」清单：按正文首次引用顺序，逐条列出实际引用的文档，"
@@ -32,13 +36,26 @@ QUERY_TERMS_RULE = (
     "换个正式说法再检索一次，必要时把 top_k 提到 10，"
     "或用 kb_documents 确认制度在库后按 doc_id 读取。"
 )
+NO_ANSWER_RULE = (
+    "按 kb_search 返回的 answer_mode 作答："
+    "direct（no_answer=false）——正常基于原文回答；"
+    "related（no_answer=true，但有相关内容）——先换成更完整、正式的问法重试一次，仍为 related 时，"
+    "逐条判断 results 是否真的与问题相关：相关则先明确说“知识库中没有直接回答这个问题的内容”，"
+    "再给出原文中相关的规定、办理渠道或查询入口并标注出处，"
+    "不得把相关内容说成直接答案，不得推断原文没写的具体数字、日期、地点或个人信息；"
+    "都不相关则按 none 处理；"
+    "none——改写重试一次，仍为 none 则说明知识库中没有相关信息，不要基于检索结果作答。"
+    "查询个人状态（余额、成绩、审批进度、分配结果等）时知识库无法给出个人数据，"
+    "最多给出原文中的查询或办理渠道。"
+)
 INSTRUCTIONS = (
     "校内制度/FAQ 类问题才调用 kb_search；问候、寒暄、自我介绍、"
     "询问助手能力、闲聊和通用知识问题不要调用任何工具。"
     "短问题可补全为完整问句，但不得改变原意或引入示例话题。"
     "回答必须基于返回原文并标注文档名、条款和页码；"
     "citation.file_url 是可点击的原文链接（带 #page=page_start），回答中一并给出；"
-    "no_answer=true 时不要编造。"
+    "不要编造原文没有的内容。"
+    + NO_ANSWER_RULE
     + QUERY_TERMS_RULE
     + REFERENCE_RULE
 )
@@ -171,18 +188,34 @@ def tool_search(arguments):
             }
         )
 
+    no_answer = bool(data.get("no_answer"))
+    confidence = data.get("confidence")
+    if not no_answer:
+        answer_mode = "direct"
+    elif results and isinstance(confidence, (int, float)) and confidence >= RELATED_MIN_CONFIDENCE:
+        answer_mode = "related"
+    else:
+        answer_mode = "none"
     result = {
         "query": data.get("query", query),
-        "no_answer": bool(data.get("no_answer")),
-        "confidence": data.get("confidence"),
+        "no_answer": no_answer,
+        "answer_mode": answer_mode,
+        "confidence": confidence,
         "took_ms": data.get("took_ms"),
-        "results": results,
+        "results": results if answer_mode != "none" else [],
     }
-    if result["no_answer"]:
+    if answer_mode == "related":
         result["note"] = (
-            "no_answer=true 表示结果未达到置信阈值。"
-            "请把问题改写为完整、具体的中文问题后重试一次；"
-            "若仍为 true，不要基于知识库内容作答。"
+            "answer_mode=related：知识库没有直接回答该问题的条款，以下是可能相关的内容。"
+            "先换成更完整、正式的问法重试一次；仍为 related 时，只有确实相关的原文才能使用，"
+            "回答须先说明“知识库中没有直接回答这个问题的内容”，再给出相关规定或办理渠道并标注出处，"
+            "不得推断原文没写的具体数字、日期、地点或个人信息。"
+        )
+    elif answer_mode == "none":
+        result["note"] = (
+            "answer_mode=none：知识库中没有与该问题相关的内容。"
+            "请把问题改写为完整、具体的中文问题后重试一次；若仍为 none，"
+            "告诉用户知识库没有相关信息，不要基于知识库作答。"
         )
     return result
 
@@ -245,8 +278,8 @@ TOOL_DEFINITIONS = [
             "问候、寒暄、自我介绍、询问你是谁或你能做什么、闲聊和通用知识问题不要调用任何工具，直接回答。"
             "用户问题较短或指代不清时可以补全成完整问句再检索，但只能补全用户已表达的意思，"
             "不得引入示例、知识库内容或无关话题。"
-            "若返回 no_answer=true，可改写问题后重试一次；仍无结果则不要基于该知识库作答。"
-            "检索结果与用户问题无关时，忽略结果并直接回答用户原问题。"
+            + NO_ANSWER_RULE
+            + "检索结果与用户问题无关时，忽略结果并直接回答用户原问题。"
             "引用时使用 citation 中的 doc_title、doc_no、clause_no、page_start；"
             "citation.file_url 可直接打开原文并跳到 page_start 页，page_count 为文档总页数。"
             + QUERY_TERMS_RULE

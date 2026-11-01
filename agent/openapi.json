@@ -3,7 +3,7 @@
   "info": {
     "title": "CUC 知识库检索 API",
     "version": "1.0.0",
-    "description": "中国传媒大学校内规章制度与常见问题知识库。回答校内制度、办事流程、FAQ 类问题前先调用 /v1/search。短问题先改写成完整中文问题；no_answer=true 时改写后重试一次，仍无结果不要基于知识库作答。引用时使用 citation 中的 doc_title、doc_no、clause_no、page_start；citation.file_url 可直接打开原文并跳到 page_start 页，page_count 为文档总页数。"
+    "description": "中国传媒大学校内规章制度与常见问题知识库。回答校内制度、办事流程、FAQ 类问题前先调用 /v1/search。短问题先改写成完整中文问题；no_answer=false 时基于原文回答；no_answer=true 时先改写成更完整、正式的问法重试一次。仍为 true 且 confidence ≥0.6 时，结果多为相关规定而非直接答案：只使用确实相关的原文，先说明“知识库中没有直接回答这个问题的内容”，再给出相关规定或办理渠道并标注出处，不得推断原文没写的具体数字、日期、地点或个人信息；仍为 true 且 confidence <0.6 时，说明知识库没有相关信息，不要基于结果作答。引用时使用 citation 中的 doc_title、doc_no、clause_no、page_start；citation.file_url 可直接打开原文并跳到 page_start 页，page_count 为文档总页数。"
   },
   "servers": [
     {
@@ -264,10 +264,11 @@
           },
           "no_answer": {
             "type": "boolean",
-            "description": "为 true 表示最高 rerank 分数低于阈值，不应把结果当作可靠答案。"
+            "description": "为 true 表示最高 rerank 分数低于阈值（0.75），结果不是可靠的直接答案。"
           },
           "confidence": {
-            "type": "number"
+            "type": "number",
+            "description": "最高 rerank 分数。no_answer=true 时，≥0.6 通常是相关规定但没有直接答案，<0.6 视为无关。"
           },
           "took_ms": {
             "type": "integer"
