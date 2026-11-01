@@ -1,0 +1,480 @@
+{
+ "meta": {
+  "name": "CUC KB no-answer v1",
+  "created": "2026-11-01",
+  "chunks_md5_source": "data/chunks.jsonl (production 2026-11-01)",
+  "note": "每题探测词在 active 语料（正文+标题）中零命中；qwen3-rerank 得分 >=0.55 的题逐条人工阅读 Top1：可答的剔除，部分可答的放入 partial，不参与阈值标定"
+ },
+ "no_answer": [
+  {
+   "id": "na02",
+   "category": "campus",
+   "query": "宿舍楼下的自动售货机坏了吞钱找谁退？",
+   "probes": [
+    "售货机"
+   ]
+  },
+  {
+   "id": "na06",
+   "category": "campus",
+   "query": "眼镜坏了学校附近有配眼镜的地方吗？",
+   "probes": [
+    "配眼镜",
+    "眼镜店"
+   ]
+  },
+  {
+   "id": "na07",
+   "category": "campus",
+   "query": "学校里哪里有工商银行的ATM机？",
+   "probes": [
+    "ATM",
+    "取款机"
+   ]
+  },
+  {
+   "id": "na08",
+   "category": "campus",
+   "query": "在食堂丢了耳机去哪里认领？",
+   "probes": [
+    "失物招领"
+   ]
+  },
+  {
+   "id": "na14",
+   "category": "campus",
+   "query": "校园里有流浪猫救助社团吗？",
+   "probes": [
+    "流浪猫"
+   ]
+  },
+  {
+   "id": "na15",
+   "category": "adjacent",
+   "query": "四六级考试的报名费是多少钱？",
+   "probes": [
+    "四六级报名费",
+    "四级报名费",
+    "六级报名费"
+   ]
+  },
+  {
+   "id": "na18",
+   "category": "adjacent",
+   "query": "计算机二级考试学校是考点吗？",
+   "probes": [
+    "计算机二级",
+    "计算机等级考试"
+   ]
+  },
+  {
+   "id": "na19",
+   "category": "adjacent",
+   "query": "研究生宿舍可以申请换成单人间吗？",
+   "probes": [
+    "单人间"
+   ]
+  },
+  {
+   "id": "na21",
+   "category": "adjacent",
+   "query": "本科生毕业照统一拍摄是哪天？",
+   "probes": [
+    "毕业照"
+   ]
+  },
+  {
+   "id": "na24",
+   "category": "adjacent",
+   "query": "教职工子女上北京市重点高中学校有指标吗？",
+   "probes": [
+    "重点高中"
+   ]
+  },
+  {
+   "id": "na28",
+   "category": "adjacent",
+   "query": "校园马拉松比赛怎么报名？",
+   "probes": [
+    "马拉松"
+   ]
+  },
+  {
+   "id": "na29",
+   "category": "adjacent",
+   "query": "学校的心理咨询可以线上视频咨询吗？",
+   "probes": [
+    "视频咨询"
+   ]
+  },
+  {
+   "id": "na30",
+   "category": "adjacent",
+   "query": "转专业考试的历年真题在哪里能找到？",
+   "probes": [
+    "历年真题"
+   ]
+  },
+  {
+   "id": "na31",
+   "category": "adjacent",
+   "query": "教师职称评审答辩的PPT有模板吗？",
+   "probes": [
+    "答辩PPT",
+    "PPT模板"
+   ]
+  },
+  {
+   "id": "na33",
+   "category": "external",
+   "query": "北京市应届毕业生落户的积分标准是什么？",
+   "probes": [
+    "落户积分",
+    "积分落户"
+   ]
+  },
+  {
+   "id": "na36",
+   "category": "external",
+   "query": "个税专项附加扣除里子女教育每月扣多少？",
+   "probes": [
+    "专项附加扣除"
+   ]
+  },
+  {
+   "id": "na37",
+   "category": "external",
+   "query": "北京住房公积金贷款最高能贷多少？",
+   "probes": [
+    "公积金贷款"
+   ]
+  },
+  {
+   "id": "na39",
+   "category": "external",
+   "query": "出国留学的签证面签要准备什么材料？",
+   "probes": [
+    "面签"
+   ]
+  },
+  {
+   "id": "na44",
+   "category": "instance",
+   "query": "2026年11月的党委常委会决定了哪些事项？",
+   "probes": [
+    "2026年11月"
+   ]
+  },
+  {
+   "id": "na45",
+   "category": "instance",
+   "query": "这学期校运动会是几号开？",
+   "probes": [
+    "校运动会",
+    "田径运动会"
+   ]
+  },
+  {
+   "id": "na46",
+   "category": "instance",
+   "query": "今年元旦晚会在哪个礼堂办？",
+   "probes": [
+    "元旦晚会"
+   ]
+  },
+  {
+   "id": "na48",
+   "category": "instance",
+   "query": "明天上午图书馆会停电吗？",
+   "probes": [
+    "停电通知"
+   ]
+  },
+  {
+   "id": "na49",
+   "category": "instance",
+   "query": "第35期中传校报头版讲的是什么？",
+   "probes": [
+    "第35期"
+   ]
+  },
+  {
+   "id": "na51",
+   "category": "personal",
+   "query": "我上学期高数考了多少分？",
+   "probes": [
+    "高数"
+   ]
+  },
+  {
+   "id": "na53",
+   "category": "personal",
+   "query": "我的报销单现在审批到哪一步了？",
+   "probes": [
+    "审批到哪"
+   ]
+  },
+  {
+   "id": "na55",
+   "category": "offtopic",
+   "query": "明天北京会下雨吗？",
+   "probes": [
+    "下雨"
+   ]
+  },
+  {
+   "id": "na56",
+   "category": "offtopic",
+   "query": "红烧肉怎么做才好吃？",
+   "probes": [
+    "红烧肉"
+   ]
+  },
+  {
+   "id": "na57",
+   "category": "offtopic",
+   "query": "Python里怎么把列表倒序？",
+   "probes": [
+    "Python",
+    "列表倒序"
+   ]
+  },
+  {
+   "id": "na58",
+   "category": "offtopic",
+   "query": "比特币现在多少钱一个？",
+   "probes": [
+    "比特币"
+   ]
+  },
+  {
+   "id": "na59",
+   "category": "offtopic",
+   "query": "推荐几部好看的科幻电影",
+   "probes": [
+    "科幻电影"
+   ]
+  },
+  {
+   "id": "na60",
+   "category": "offtopic",
+   "query": "猫咪不吃饭是生病了吗？",
+   "probes": [
+    "猫咪"
+   ]
+  },
+  {
+   "id": "na61",
+   "category": "offtopic",
+   "query": "iPhone怎么截长图？",
+   "probes": [
+    "iPhone",
+    "截长图"
+   ]
+  },
+  {
+   "id": "na62",
+   "category": "offtopic",
+   "query": "去云南旅游七天怎么安排路线？",
+   "probes": [
+    "云南旅游"
+   ]
+  },
+  {
+   "id": "na63",
+   "category": "campus",
+   "query": "学校有没有能免费借雨伞的地方？",
+   "probes": [
+    "借雨伞",
+    "共享雨伞"
+   ]
+  },
+  {
+   "id": "na64",
+   "category": "campus",
+   "query": "校园里哪里能买到鲜花？",
+   "probes": [
+    "鲜花店",
+    "花店"
+   ]
+  },
+  {
+   "id": "na65",
+   "category": "campus",
+   "query": "学校的乒乓球台需要自己带球拍吗？",
+   "probes": [
+    "乒乓球台",
+    "球拍"
+   ]
+  },
+  {
+   "id": "na66",
+   "category": "campus",
+   "query": "学校附近有没有便宜的打印复印店推荐？",
+   "probes": [
+    "复印店"
+   ]
+  },
+  {
+   "id": "na69",
+   "category": "adjacent",
+   "query": "教职工的年度体检能带家属一起去吗？",
+   "probes": [
+    "带家属体检",
+    "家属体检"
+   ]
+  },
+  {
+   "id": "na71",
+   "category": "adjacent",
+   "query": "校医院可以开具新冠疫苗接种证明吗？",
+   "probes": [
+    "新冠疫苗",
+    "接种证明"
+   ]
+  },
+  {
+   "id": "na73",
+   "category": "external",
+   "query": "北京大学的博士生每月补助是多少？",
+   "probes": [
+    "北京大学博士"
+   ]
+  },
+  {
+   "id": "na74",
+   "category": "external",
+   "query": "教育部今年的“强基计划”招哪些专业？",
+   "probes": [
+    "强基计划"
+   ]
+  },
+  {
+   "id": "na76",
+   "category": "instance",
+   "query": "这周三下午的全校教职工大会在哪开？",
+   "probes": [
+    "教职工大会"
+   ]
+  },
+  {
+   "id": "na78",
+   "category": "personal",
+   "query": "我的四级成绩什么时候能查？",
+   "probes": [
+    "四级成绩"
+   ]
+  },
+  {
+   "id": "na79",
+   "category": "offtopic",
+   "query": "怎么提高手机电池续航？",
+   "probes": [
+    "电池续航"
+   ]
+  },
+  {
+   "id": "na80",
+   "category": "offtopic",
+   "query": "世界杯下一届在哪个国家举办？",
+   "probes": [
+    "世界杯"
+   ]
+  }
+ ],
+ "partial": [
+  {
+   "id": "na11",
+   "category": "campus",
+   "query": "期末周通宵自习室在哪？",
+   "probes": [
+    "通宵自习"
+   ],
+   "review": "公共教室：延时自习室开放到 22:00，无通宵"
+  },
+  {
+   "id": "na16",
+   "category": "adjacent",
+   "query": "教师资格证面试学校统一组织培训吗？",
+   "probes": [
+    "教师资格证面试",
+    "教资面试"
+   ],
+   "review": "人事：高校教师资格认定需参加学校岗前培训"
+  },
+  {
+   "id": "na22",
+   "category": "adjacent",
+   "query": "留学生的汉语言补习班怎么报名？",
+   "probes": [
+    "汉语补习",
+    "汉语言补习"
+   ],
+   "review": "迎新：汉语进修班报到与分班考试安排"
+  },
+  {
+   "id": "na26",
+   "category": "adjacent",
+   "query": "实验室的3D打印机怎么预约使用？",
+   "probes": [
+    "3D打印"
+   ],
+   "review": "实验室开放预约走实验室综合管理系统，未提 3D 打印机"
+  },
+  {
+   "id": "na43",
+   "category": "instance",
+   "query": "上周五新闻学院学术讲座的课件能下载吗？",
+   "probes": [
+    "上周五"
+   ],
+   "review": "图书馆手册：讲座及培训课件挂在图书馆页面下载"
+  },
+  {
+   "id": "na50",
+   "category": "personal",
+   "query": "我的校园卡余额还剩多少？",
+   "probes": [
+    "余额查询结果"
+   ],
+   "review": "校园卡在中传 APP/公众号界面查余额，个人余额无法回答"
+  },
+  {
+   "id": "na52",
+   "category": "personal",
+   "query": "我的奖学金什么时候到账？",
+   "probes": [
+    "到账时间"
+   ],
+   "review": "资助资金管理办法：奖学金于每年 12 月 31 日前发放"
+  },
+  {
+   "id": "na54",
+   "category": "personal",
+   "query": "我的宿舍分到了哪栋楼？",
+   "probes": [
+    "分到了哪"
+   ],
+   "review": "学生公寓服务中心：各楼对应的学生类别，个人分配无法回答"
+  },
+  {
+   "id": "na68",
+   "category": "adjacent",
+   "query": "研究生毕业论文查重可以免费查几次？",
+   "probes": [
+    "免费查重",
+    "查重次数"
+   ],
+   "review": "图书馆提供免费查重，次数未写"
+  },
+  {
+   "id": "na77",
+   "category": "instance",
+   "query": "今年春季学期的期末考试安排表出来了吗？",
+   "probes": [
+    "期末考试安排表"
+   ],
+   "review": "本科生院 FAQ：期末考试安排通常在第 17 周前公布"
+  }
+ ]
+}
