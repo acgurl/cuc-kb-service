@@ -5,8 +5,8 @@
 ## 功能
 
 - **文档入库**：PDF 文本与表格提取、页锚点、文号/类型/部门/助手识别、内容去重、同文号多版本合并、条款级切分；支持导入 QA 问答表。
-- **混合检索**：向量召回 + BM25（jieba 分词）+ RRF 融合，条件触发 rerank，再叠加文号、短语、词语覆盖和通用汇编降权等排序修正。
-- **拒答判断**：基于 rerank 分数、dense/BM25 下限和价格/时间/数量等属性可答性检查，返回 `no_answer` 与 `confidence`。
+- **混合检索**：向量召回 + BM25（jieba 分词）+ RRF 融合，百炼 `qwen3-rerank` 重排，再叠加文号、短语、词语覆盖和通用汇编降权等排序修正。
+- **拒答判断**：基于 rerank 最高分（云端不可用时退回 dense/BM25 下限），返回 `no_answer` 与 `confidence`；价格/时间/数量等属性的答案片段检查结果放在 `answerability` 里供调用方参考。
 - **出处引用**：每条结果返回文档名、文号、条款号、章节路径、页码、原件文件名和可跳页的原文链接。
 - **鉴权**：OIDC（Casdoor）浏览器登录 + 会话 Cookie、OIDC Bearer Token、服务 Token 三种方式。
 - **原文访问**：源 PDF 存放在私有 OCI 对象存储，按需签发短时 PAR 链接，不直接暴露桶。
@@ -151,15 +151,15 @@ git lfs ls-files | wc -l     # 查看 LFS 文件数
 | 基础 | `KB_COLLECTION`、`KB_DATA_DIR`、`KB_EMBED_MODEL`、`KB_API_TOKEN` | 集合名（线上用 `cuc_kb_v2`）、数据目录、向量模型、服务 Token |
 | 向量库 | `QDRANT_URL`、`QDRANT_API_KEY` | Qdrant 地址与密钥 |
 | 缓存 | `FASTEMBED_CACHE`、`HF_HOME` | 模型缓存目录 |
-| Rerank | `KB_RERANK_PROVIDER`、`RERANK_API_*`、`KB_RERANK_*` | 云端/本地重排、触发阈值、最低分、本地回退 |
+| Rerank | `KB_RERANK_PROVIDER`、`RERANK_API_*`、`KB_RERANK_*` | 云端/本地重排、`KB_RERANK_ALWAYS`、触发阈值、最低分、本地回退 |
 | 排序 | `KB_GENERIC_*`、`KB_CANDIDATE_*`、`KB_COVERAGE_*`、`KB_PHRASE_*` | 通用汇编降权、候选池、覆盖与短语加分 |
-| 可答性 | `KB_ANSWERABILITY_*`、`KB_ANSWER_SPAN_WINDOW` | 拒答阈值与答案片段窗口 |
+| 可答性 | `KB_ANSWERABILITY_*`、`KB_ANSWER_SPAN_WINDOW` | 答案片段检查；`KB_ANSWERABILITY_OVERRIDE=0` 时只报告、不改写 `no_answer` |
 | OCI | `KB_OCI_*`、`KB_PAR_TTL` | 私有 PDF 桶、PAR 有效期 |
 | 登录 | `KB_OIDC_*`、`KB_SESSION_*`、`KB_PUBLIC_BASE_URL` | OIDC 应用、会话密钥与有效期、对外基址 |
 | MCP | `KB_MCP_HOST`、`KB_MCP_PORT`、`KB_MCP_TOKEN`、`KB_MCP_ALLOWED_HOSTS`、`KB_MCP_ALLOWED_ORIGINS` | HTTP MCP 监听、Token 与 Host/Origin 白名单（留空用默认值） |
 | MCP 转发 | `KB_MCP_PROXY_BIND_HOSTS`、`KB_MCP_PROXY_PORT`、`KB_MCP_PROXY_TARGET_*` | Docker 网桥转发监听地址与目标 |
 
-`KB_RERANK_PROVIDER=openai`（兼容 `cloud` / `openai-compatible`）时必须配置 `RERANK_API_BASE` 与 `RERANK_API_MODEL`；云端失败会回退到本地 `bge-reranker-base`（`KB_RERANK_LOCAL_FALLBACK=1`）。
+`KB_RERANK_PROVIDER=openai`（兼容 `cloud` / `openai-compatible`）时必须配置 `RERANK_API_BASE` 与 `RERANK_API_MODEL`。线上用百炼北京地域的 OpenAI 兼容端点（`RERANK_API_BASE=https://dashscope.aliyuncs.com`、`RERANK_API_PATH=/compatible-api/v1/reranks`、`RERANK_API_MODEL=qwen3-rerank`）。云端失败时，`KB_RERANK_LOCAL_FALLBACK=1` 会回退到本地 fastembed 模型（logit 经 sigmoid 映射到 0–1）；ARM 主机上本地重排约 17 秒/次，因此线上设为 `0`，失败时直接使用未重排的混合排序。
 
 ## HTTP API
 
@@ -264,9 +264,9 @@ python mcp_http_server.py      # 默认 127.0.0.1:8765/mcp
 2. jieba 搜索模式分词，BM25 取 Top 40；两路按 RRF（k=60）融合。
 3. 排序修正：查询含文号时命中同文号加分；QA 块小幅加分；查询词在正文中的覆盖度加分（通用汇编不参与）。
 4. 单文档最多保留 `KB_MAX_CHUNKS_PER_DOC` 个块，候选池 40、进重排 24 条。
-5. 满足以下任一条件才 rerank：命中条件/流程/金额等意图词、dense 最高分偏低、长问句且 dense 偏低。云端 rerank 失败回退本地模型。
+5. `KB_RERANK_ALWAYS=1`（线上）时每条查询都 rerank；为 0 时只在命中条件/流程/金额等意图词、dense 最高分偏低、长问句且 dense 偏低时 rerank。
 6. rerank 后：通用汇编在具体制度分数接近时降权；标题/正文命中「申请条件」「报销比例」等短语加分；定义与时限类问题在正文出现「是指」「最长不超过」时加分。
-7. 生成引用与拒答判断：rerank 最高分低于 `KB_RERANK_MIN_SCORE` 判为无答案；无 rerank 时用 dense/BM25 下限兜底；属性类问题再检查 Top 5 是否真的包含对应答案片段。
+7. 生成引用与拒答判断：rerank 最高分低于 `KB_RERANK_MIN_SCORE` 判为无答案；无 rerank 时用 dense/BM25 下限兜底；属性类问题再检查 Top 5 是否包含对应答案片段，`KB_ANSWERABILITY_OVERRIDE=1` 时用检查结果改写 `no_answer`（线上为 0，只报告）。
 8. 仅 `status=active` 的知识块参与检索，已标记 `superseded` 的旧版本保留但默认不召回。
 
 ## 评测
@@ -285,7 +285,26 @@ python eval/validate_dataset.py --data eval/dataset_v5_personas.json
 
 # 逐条查看一组调试问句的排序结果
 python eval/inspect_queries.py eval/inspect_sets/p0.json --top-k 5
+
+# 留出集：重新生成并核验（只用 v1-v5 未引用过的文档出题）
+python eval/heldout/build_heldout.py
+
+# 离线 A/B：换向量模型或 reranker，其余复用 search_core（需要 GPU 环境，见 eval/ab/report_ab1.md）
+python eval/ab/ab_embed.py eval --models bge-small-zh --rerankers bge-base,bl-qwen3-rerank --modes prod,always --tag rr
+python eval/ab/calibrate_no_answer.py eval/ab/results_rr.json
 ```
+
+2026-11-01 线上切换为百炼 `qwen3-rerank` + `KB_RERANK_ALWAYS=1` + `KB_ANSWERABILITY_OVERRIDE=0` 后，通过线上 API 实测（无指定助手；依据见 `eval/ab/report_rr2.md`）：
+
+| 指标 | 留出集 heldout（87 + 10 无答案） | v5（117 + 10 无答案） |
+| --- | ---: | ---: |
+| 文档命中@1 | 82/87（切换前 73） | 105/117（切换前 99） |
+| 文档命中@5 | 87/87（切换前 82） | 117/117（切换前 115） |
+| MRR | 0.9649（切换前 0.8851） | 0.9397（切换前 0.8962） |
+| 无答案准确率 | 10/10（切换前 7/10） | 10/10 |
+| P50 / P95 | 1449 / 3035 ms | 1541 / 5145 ms |
+
+延迟主要来自美西主机到百炼北京地域的跨境调用；超过 `RERANK_API_TIMEOUT` 的请求会降级为未重排的混合排序（本次复测 204 条中出现 2 次）。
 
 最新一轮（`eval/report_v5_4_p1.md`，2026-10-28，101 条文档检索 + 16 条短问句 + 10 条无答案 + 10 条页码引用）：
 

@@ -16,6 +16,7 @@ from rank_bm25 import BM25Okapi
 from common import (
     ANSWER_SPAN_WINDOW,
     ANSWERABILITY_MAX_CONF,
+    ANSWERABILITY_OVERRIDE,
     CANDIDATE_LIMIT,
     CANDIDATE_POOL,
     CLOUD_RERANK_PROVIDERS,
@@ -39,6 +40,7 @@ from common import (
     RERANK_API_MODEL,
     RERANK_API_PATH,
     RERANK_API_TIMEOUT,
+    RERANK_ALWAYS,
     RERANK_API_USER_AGENT,
     RERANK_LOCAL_FALLBACK,
     RERANK_LONG_MIN_CHARS,
@@ -506,6 +508,8 @@ class KB:
         return candidates
 
     def _should_rerank(self, query, best_dense):
+        if RERANK_ALWAYS:
+            return True
         if any(hint in query for hint in INTENT_RERANK_HINTS):
             return True
         if best_dense < RERANK_TRIGGER:
@@ -524,7 +528,10 @@ class KB:
             label = "rerank"
         if self.reranker:
             try:
-                return list(self.reranker.rerank(query, documents))
+                # fastembed returns raw logits; map them onto the cloud providers'
+                # 0-1 scale so thresholds and bonuses keep their meaning.
+                logits = np.asarray(list(self.reranker.rerank(query, documents)), dtype=np.float64)
+                return (1.0 / (1.0 + np.exp(-logits))).tolist()
             except Exception as exc:
                 print(f"{label} failed: {exc}", flush=True)
         return None
@@ -643,10 +650,11 @@ class KB:
         answerable = any(
             has_answer_span(item["text"], attribute, entities, query) for item in results[:5]
         )
-        if answerable:
-            no_answer = False
-        elif attribute in STRICT_ATTRIBUTES:
-            no_answer = True
+        if ANSWERABILITY_OVERRIDE:
+            if answerable:
+                no_answer = False
+            elif attribute in STRICT_ATTRIBUTES:
+                no_answer = True
         return no_answer, confidence, {"attribute": attribute, "answerable": answerable}
 
     # ---- public API --------------------------------------------------------
