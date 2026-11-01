@@ -337,7 +337,7 @@ python eval/ab/noanswer_eval.py --base eval/ab/results_abl1.json --tag na1
 
 `tests/` 是离线单元测试，不需要 Qdrant、模型、rerank API、OCI 或任何密钥：检索流水线用内存小语料加假的向量库/重排器跑真实的 BM25、融合、加分、重排排序和拒答判断；另外覆盖 API 鉴权与参数校验、会话 JWT、stdio/HTTP 两种 MCP，以及 `agent/*.json` 与 `mcp_server.TOOL_DEFINITIONS` 是否同步（改了工具描述要同时改 `agent/`，否则 CI 失败）。
 
-CI 在 GitHub Actions（`.github/workflows/ci.yml`，push 到 main 和 PR 时触发）上跑；`.gitlab-ci.yml` 是同样的配置，留给校内 GitLab（需要校园网内的 Runner）。都用 Python 3.12（与线上一致），分三个 job，本地复现用同样的命令：
+CI 在 GitHub Actions（`.github/workflows/ci.yml`，push 到 main 和 PR 时触发）上跑，用 Python 3.12（与线上一致），分三个 job，本地复现用同样的命令：
 
 ```bash
 # lint
@@ -354,7 +354,7 @@ python -m unittest tests.test_mcp_http tests.test_mcp_server -v
 
 `constraints/prod*.txt` 是 Phoenix 上两个 venv 的 `pip freeze`，线上升级依赖后要同步刷新（命令见文件头），否则 CI 测的就不是线上版本。GitHub 私有仓库在免费计划下不能设分支保护，合并前请自己看一眼 PR 的检查结果。
 
-CI 不拉取 LFS（GitLab 用 `GIT_LFS_SKIP_SMUDGE=1`，Actions 的 checkout 默认不取 LFS），不会下载 `corpus/` 的 PDF。检索效果评测仍在 `eval/` 里对线上索引跑，不在 CI 中。
+CI 的 checkout 不拉取 LFS，不会下载 `corpus/` 的 PDF。检索效果评测仍在 `eval/` 里对线上索引跑，不在 CI 中。
 
 ## 部署
 

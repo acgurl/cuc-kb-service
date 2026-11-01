@@ -1,4 +1,4 @@
-# CI for cuc-kb-service. Same jobs as .gitlab-ci.yml.
+# CI for cuc-kb-service.
 #
 # Everything runs offline: no Qdrant, embedding model, reranker API, OCI or
 # secrets are needed. Retrieval quality is measured by eval/ against the live

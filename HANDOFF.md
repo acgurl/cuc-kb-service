@@ -22,9 +22,9 @@ ssh phoenix 'cd ~/cuc-kb && for f in search_core.py common.py .env; do cp -p $f.
 
 ## Git
 
-- 远端：`github` = https://github.com/acgurl/cuc-kb-service （私有，主仓库，GitHub Actions 跑 CI）；`origin` = 校内 GitLab（仅校园网可达，没有 Runner，流水线会一直 pending）。
-- `main` = `e00c7ff`，refactor 和 qwen3-rerank 两个分支都已合入；线上 `app.py` 与 main 一致。
-- `ci/gitlab-pipeline`（PR acgurl/cuc-kb-service#1）：CI 配置、`tests/`、`constraints/prod*.txt`，以及 `_safe_next` 开放跳转修复（`/auth/login?next=/%5Cevil.test` 登录后会跳到外站）。**修复合并后还要部署 `app.py` 到 Phoenix 并重启 `cuc-kb.service`。**
+- 远端：`github` = https://github.com/acgurl/cuc-kb-service （私有，主仓库，GitHub Actions 跑 CI）；`origin` = 校内 GitLab 镜像（仅校园网可达，不跑 CI）。
+- `main` = `e00c7ff`，refactor 和 qwen3-rerank 两个分支都已合入，并已删除。
+- `ci/gitlab-pipeline`（PR acgurl/cuc-kb-service#1）：GitHub Actions CI、`tests/`、`constraints/prod*.txt`，以及 `_safe_next` 开放跳转修复（`/auth/login?next=/%5Cevil.test` 登录后会跳到外站）。修复已于 2026-11-01 部署到 Phoenix（备份 `app.py.bak-20261101-redirect`），线上冒烟通过；线上代码与该分支一致。
 - 不提交的文件（已加入 `.gitignore`）：`eval/heldout/_candidates.txt`（出题用的原文样本）、`eval/ab/results_deploycheck.json`。
 
 ## 这次做了什么
