@@ -39,7 +39,7 @@ ssh phoenix 'cd ~/cuc-kb && for f in search_core.py common.py .env; do cp -p $f.
 
 ## 待办（按优先级）
 
-1. **换掉线上用的百炼 Key**：现在 `.env` 里的 `RERANK_API_KEY` 是用户本机 bl 配置里的个人 workspace Key，2026-11-01 还在本机会话输出里露过一次。需要用户在百炼控制台新建一个服务端专用 Key（这一步只能用户自己操作）、轮换旧 Key，然后改 Phoenix 的 `.env` 并重启服务。传 Key 时走 `ssh … 'read -r K'` 的 stdin 方式，并去掉 Windows 的 `\r`。
+1. ~~换掉线上用的百炼 Key~~：**线上已完成（2026-11-01）**。Phoenix 现在用控制台新建的专用 Key（sha256 前缀 f31ac91cd822），线上检索已验证。本机 bl 配置也已切换到新 Key。用户已在控制台吊销旧的个人 Key（前缀 4f34cd21fc93）；吊销后立即测试时旧 Key 仍能调用，可能有生效延迟，建议之后再确认一次。存有旧 Key 的两个备份（Phoenix `.env.bak-20261101-key`、本机 `~/.bailian/config.json.bak-20261101-key`）已删除。
 2. ~~延迟和超时~~：**已完成（2026-11-01）**，reranker 改成 keep-alive 长连接，线上 P50 从 1.5 s 降到 0.85 s，P95 从 3～5 s 降到 1.35 s，见 `eval/ab/report_abl1.md`。之后可选：对冲请求、国际站端点。
 3. **合并策略**：用户决定 refactor 和 rerank 两个分支怎么进 main。
 4. ~~扩充无答案集~~：**已完成**。`eval/heldout/dataset_noanswer_v1.json` 新增 45 道严格无答案题和 10 道部分可答题，加上原有的共 65 道无答案题；`eval/ab/report_na1.md`。阈值 0.75 复核通过：拒答 65/65，保留 202/204，交叉验证中位 0.73，判定相同，**不改**。新的灰区是部分可答题（得分 0.61～0.79，线上拒掉 8/10），MCP 层已于 2026-11-01 09:11 UTC 部署（备份 `mcp_server.py.bak-20261101-mode`，已重启 `cuc-kb-mcp.service`，线上冒烟测试三档均正确）：`kb_search` 新增 `answer_mode`（direct / related / none，`KB_RELATED_MIN_CONFIDENCE=0.6`）；none 时不返回结果；related 时要求 agent 先说明“没有直接答案”，再给出相关规定。`agent/tools.openai.json`、`openapi.json` 已同步。按 na1 数据，10/10 部分可答题会进入 related，65 道严格无答案题中有 11 道也会进入 related，需要靠 agent 的相关性判断兜底。下一步：用 LLM 做端到端评测，统计部分回答率和编造率。
