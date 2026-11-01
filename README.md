@@ -94,7 +94,8 @@ kb-service/
 
 ```bash
 git lfs install
-git clone https://git.cuc.edu.cn/202613103032/cuc-kb-service.git
+git clone https://github.com/acgurl/cuc-kb-service.git   # 私有仓库，CI 在这里跑
+# 校内镜像（仅校园网可达）：https://git.cuc.edu.cn/202613103032/cuc-kb-service.git
 ```
 
 ```bash
@@ -342,14 +343,16 @@ CI 在 GitHub Actions（`.github/workflows/ci.yml`，push 到 main 和 PR 时触
 # lint
 ruff check .
 
-# unit：主服务依赖（requirements.txt + httpx）
-pip install -r requirements-dev.txt
+# unit：主服务依赖（requirements.txt + httpx），版本锁定为线上 .venv
+pip install -r requirements-dev.txt -c constraints/prod.txt
 python -m unittest discover -s tests -t . -v
 
 # mcp-http：与线上 .venv-mcp 一致，只装 mcp SDK
-pip install "mcp==2.3.0" "uvicorn>=0.30"
+pip install mcp uvicorn -c constraints/prod-mcp.txt
 python -m unittest tests.test_mcp_http tests.test_mcp_server -v
 ```
+
+`constraints/prod*.txt` 是 Phoenix 上两个 venv 的 `pip freeze`，线上升级依赖后要同步刷新（命令见文件头），否则 CI 测的就不是线上版本。GitHub 私有仓库在免费计划下不能设分支保护，合并前请自己看一眼 PR 的检查结果。
 
 CI 不拉取 LFS（GitLab 用 `GIT_LFS_SKIP_SMUDGE=1`，Actions 的 checkout 默认不取 LFS），不会下载 `corpus/` 的 PDF。检索效果评测仍在 `eval/` 里对线上索引跑，不在 CI 中。
 

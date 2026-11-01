@@ -39,3 +39,7 @@ QA知识导入模板.csv
 Thumbs.db
 .idea/
 .vscode/
+
+# Local working files (see HANDOFF.md)
+eval/heldout/_candidates.txt
+eval/ab/results_deploycheck.json

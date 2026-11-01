@@ -48,14 +48,14 @@ unit:
   stage: test
   needs: []
   script:
-    - pip install -r requirements-dev.txt
+    - pip install -r requirements-dev.txt -c constraints/prod.txt
     - python -m unittest discover -s tests -t . -v
 
-# mcp_http_server.py runs from its own venv in production (.venv-mcp), with the
-# mcp SDK pinned to the deployed version and none of requirements.txt.
+# mcp_http_server.py runs from its own venv in production (.venv-mcp), pinned
+# to the deployed versions and without requirements.txt.
 mcp-http:
   stage: test
   needs: []
   script:
-    - pip install "mcp==2.3.0" "uvicorn>=0.30"
+    - pip install mcp uvicorn -c constraints/prod-mcp.txt
     - python -m unittest tests.test_mcp_http tests.test_mcp_server -v
