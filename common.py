@@ -64,6 +64,8 @@ RERANK_API_USER_AGENT = _env(
     "Mozilla/5.0 (compatible; CUC-KnowledgeBase/0.1; +https://cuc.edu.cn)",
 )
 RERANK_API_TIMEOUT = _env_float("RERANK_API_TIMEOUT", 3)
+# Rerank every query instead of only when the trigger heuristics fire.
+RERANK_ALWAYS = _env_bool("KB_RERANK_ALWAYS", False)
 
 # Ranking and answerability knobs (see search_core.py)
 GENERIC_RERANK_PENALTY = _env_float("KB_GENERIC_RERANK_PENALTY", 0.10)
@@ -79,6 +81,9 @@ TITLE_PHRASE_BONUS = _env_float("KB_TITLE_PHRASE_BONUS", 0.06)
 ANSWERABILITY_MAX_CONF = _env_float("KB_ANSWERABILITY_MAX_CONF", 0.95)
 CONTENT_ANSWERABILITY_MAX_CONF = _env_float("KB_CONTENT_ANSWERABILITY_MAX_CONF", 0.97)
 ANSWER_SPAN_WINDOW = _env_int("KB_ANSWER_SPAN_WINDOW", 50)
+# When off, the answer-span check is reported in `answerability` but no longer
+# overrides the rerank-threshold no_answer decision.
+ANSWERABILITY_OVERRIDE = _env_bool("KB_ANSWERABILITY_OVERRIDE", True)
 
 # OIDC login and browser session
 OIDC_ISSUER = _env("KB_OIDC_ISSUER").rstrip("/")

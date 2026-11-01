@@ -1,0 +1,1023 @@
+{
+ "meta": {
+  "name": "CUC KB held-out v1",
+  "created": "2026-11-01",
+  "chunks_md5_source": "data/chunks.jsonl (production 2026-11-01)",
+  "note": "仅使用 v1-v5 未引用过的文档出题；口语化改写，答案关键词逐条在原文核验；未参与任何调参"
+ },
+ "curated": [
+  {
+   "id": "h01",
+   "query": "出租车能直接开进学校里吗？",
+   "expected_docs": [
+    "中传保工字〔2014〕26号",
+    "中传保工字〔2008〕9号"
+   ],
+   "keywords": [
+    "出租车驶入校内"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h02",
+   "query": "拿政府奖学金的留学生本科生想转去别的学校可以吗？",
+   "expected_docs": [
+    "中传教字〔2025〕196号"
+   ],
+   "keywords": [
+    "原则上不予转学"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "h03",
+   "query": "留学生入学不买来华留学保险会怎样？",
+   "expected_docs": [
+    "中传教字〔2025〕196号"
+   ],
+   "keywords": [
+    "拒不购买国家要求的来华留学综合保险"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "h04",
+   "query": "专业学位博士的选题报告算几个学分？",
+   "expected_docs": [
+    "中传研字〔2026〕225号"
+   ],
+   "keywords": [
+    "选题报告计2学分"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h05",
+   "query": "励志奖学金学院初审名单要公示几天？",
+   "expected_docs": [
+    "中传学字〔2024〕195号"
+   ],
+   "keywords": [
+    "不少于5个工作日的公示"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "h06",
+   "query": "评优秀本科生荣誉称号对体测成绩有什么要求？",
+   "expected_docs": [
+    "中传学字〔2024〕197号"
+   ],
+   "keywords": [
+    "测试成绩达到良好及以上"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "h07",
+   "query": "2024年中国画博士班什么时候报名？",
+   "expected_docs": [
+    "中国画博士班招生简章"
+   ],
+   "keywords": [
+    "2024年5月4日10:00"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h08",
+   "query": "博士考试模拟练习系统的准考证号填什么？",
+   "expected_docs": [
+    "2025年博士学位研究生招生考试初试考生须知"
+   ],
+   "keywords": [
+    "demo"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h09",
+   "query": "用Outlook收学校邮箱，收件服务器地址填什么？",
+   "expected_docs": [
+    "Outlook pop3设置"
+   ],
+   "keywords": [
+    "pophz.qiye.163.com"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h10",
+   "query": "在外地成立校友会至少要多少个会员？",
+   "expected_docs": [
+    "国内交流与合作处"
+   ],
+   "keywords": [
+    "50个以上的个人会员"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h11",
+   "query": "就业推荐表丢了去哪补办？",
+   "expected_docs": [
+    "【融合门户】服务_学生工作部"
+   ],
+   "keywords": [
+    "游泳馆3楼308"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h12",
+   "query": "去档案科办学生档案要提前多久预约？",
+   "expected_docs": [
+    "【融合门户】服务_学生工作部"
+   ],
+   "keywords": [
+    "至少提前1个工作日"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h13",
+   "query": "实验室建设项目验收申请去哪个办公室办？",
+   "expected_docs": [
+    "【融合门户】服务_实验室与设备管理处"
+   ],
+   "keywords": [
+    "主楼303"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "h14",
+   "query": "转专业能报几个志愿？",
+   "expected_docs": [
+    "关于启动2025年本科生转专业报名工作的通知"
+   ],
+   "keywords": [
+    "限填报一个转专业志愿"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h15",
+   "query": "教职工去世后家属申请生活困难补助要交哪些材料？",
+   "expected_docs": [
+    "中传人字〔2017〕367号"
+   ],
+   "keywords": [
+    "派出所、街道开具"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h16",
+   "query": "老师调走批下来以后多久要办完手续？",
+   "expected_docs": [
+    "中传人字〔2017〕371号"
+   ],
+   "keywords": [
+    "一个月内办完全部调转手续"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h17",
+   "query": "想来中传做国内访问学者，申请表什么时候寄过去？",
+   "expected_docs": [
+    "中传人字〔2017〕378号"
+   ],
+   "keywords": [
+    "6月底前"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h18",
+   "query": "待聘人员去别的单位试用，试用期多长？",
+   "expected_docs": [
+    "中传人字〔2017〕379号"
+   ],
+   "keywords": [
+    "试用期为三个月"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h19",
+   "query": "学校出钱读博，回来没满服务期就走要赔多少？",
+   "expected_docs": [
+    "中传人字〔2017〕384号"
+   ],
+   "keywords": [
+    "违约金额度=资助总费用"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h20",
+   "query": "委托评审的职称在校内公示几天？",
+   "expected_docs": [
+    "中传人字〔2017〕97号"
+   ],
+   "keywords": [
+    "公示期为5天"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h21",
+   "query": "申请资助去国外开学术会议，要提前多久交材料？",
+   "expected_docs": [
+    "中传人字〔2018〕10号"
+   ],
+   "keywords": [
+    "至少在会议召开前一个月"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h22",
+   "query": "在职老师怎么办残疾证？",
+   "expected_docs": [
+    "中传人字〔2018〕27号"
+   ],
+   "keywords": [
+    "北京市残疾评定申请登记表"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h23",
+   "query": "一年病假超过半年还参加年度考核吗？",
+   "expected_docs": [
+    "中传人字〔2018〕302号",
+    "中传人字〔2020〕132号"
+   ],
+   "keywords": [
+    "病假累计超过六个月"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h24",
+   "query": "编外人员占编制按什么系数算？",
+   "expected_docs": [
+    "中传人字〔2019〕320号"
+   ],
+   "keywords": [
+    "0.7的系数"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h25",
+   "query": "参编人员和学校有劳动纠纷怎么处理？",
+   "expected_docs": [
+    "中传人字〔2019〕319号"
+   ],
+   "keywords": [
+    "劳动争议调解委员会"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h26",
+   "query": "副科干满几年能聘正科？",
+   "expected_docs": [
+    "中传人字〔2019〕321号"
+   ],
+   "keywords": [
+    "任副科级职务2年以上"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h27",
+   "query": "金核桃计划中途考核不过可以申请延期吗？",
+   "expected_docs": [
+    "“金核桃”人才支持计划"
+   ],
+   "keywords": [
+    "一次延期申请的机会"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h28",
+   "query": "以前公派出国过，多久以后能再申请青年骨干教师出国研修？",
+   "expected_docs": [
+    "中传人字〔2024〕188号"
+   ],
+   "keywords": [
+    "回国工作满五年后方可再次申请"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h29",
+   "query": "多少人以上的大型活动需要做风险评估？",
+   "expected_docs": [
+    "中传保卫字〔2015〕86号"
+   ],
+   "keywords": [
+    "1000人以上"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h30",
+   "query": "校内着火了保卫处的报警电话是多少？",
+   "expected_docs": [
+    "中传保工字〔2008〕9号",
+    "中传保工字〔2014〕26号",
+    "2026年迎接新生开学相关工作",
+    "信息化服务常见问题"
+   ],
+   "keywords": [
+    "65783110"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h31",
+   "query": "高层次人才的人才津贴是怎么发的？",
+   "expected_docs": [
+    "中传党字〔2019〕182号"
+   ],
+   "keywords": [
+    "80%按月发放"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h32",
+   "query": "办公室座机每月话费最多能报多少？",
+   "expected_docs": [
+    "中传后勤字〔2008〕97号"
+   ],
+   "keywords": [
+    "不得超过80元"
+   ],
+   "intended_assistant": "中传小勤"
+  },
+  {
+   "id": "h33",
+   "query": "家属院装修要交多少押金？",
+   "expected_docs": [
+    "中传后勤字〔2019〕107号"
+   ],
+   "keywords": [
+    "3000元施工保证金"
+   ],
+   "intended_assistant": "中传小勤"
+  },
+  {
+   "id": "h34",
+   "query": "刚入学还没满一学期能转学吗？",
+   "expected_docs": [
+    "中传学字〔2017〕254号"
+   ],
+   "keywords": [
+    "入学未满一学期的"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "h35",
+   "query": "退学决定书联系不上学生本人怎么送达？",
+   "expected_docs": [
+    "中传学字〔2017〕254号"
+   ],
+   "keywords": [
+    "经过7天，即视为送交"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "h36",
+   "query": "学院多久要查一次实验室安全？",
+   "expected_docs": [
+    "中传实验字〔2018〕306号"
+   ],
+   "keywords": [
+    "每月组织1次"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "h37",
+   "query": "学校科协的秘书处设在哪个部门？",
+   "expected_docs": [
+    "中传政字〔2023〕76号"
+   ],
+   "keywords": [
+    "挂靠在中国传媒大学科学研究处"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h38",
+   "query": "食堂原材料涨价多少学校会启动价格补贴资金？",
+   "expected_docs": [
+    "中传政字〔2025〕197号"
+   ],
+   "keywords": [
+    "超过核算价格的5%"
+   ],
+   "intended_assistant": "中传小勤"
+  },
+  {
+   "id": "h39",
+   "query": "评年度消防安全先进集体有什么硬性条件？",
+   "expected_docs": [
+    "中传政字〔2025〕50号"
+   ],
+   "keywords": [
+    "年度内未发生火情和火灾"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h40",
+   "query": "校办企业的董事会秘书要不要列席董事会？",
+   "expected_docs": [
+    "中传教发字〔2022〕18号"
+   ],
+   "keywords": [
+    "董事会秘书须列席董事会会议"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h41",
+   "query": "校属企业领导被降职，绩效年薪扣多少？",
+   "expected_docs": [
+    "中传教发字〔2022〕20号"
+   ],
+   "keywords": [
+    "30%—40%"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h42",
+   "query": "企业收到审计报告初稿后几天内要反馈意见？",
+   "expected_docs": [
+    "中传教发字〔2022〕22号"
+   ],
+   "keywords": [
+    "5个工作日内，提出书面意见"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h43",
+   "query": "教学成果奖一项最多能署几个主要完成人？",
+   "expected_docs": [
+    "中传教字〔2013〕37"
+   ],
+   "keywords": [
+    "一般不超过5人"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "h44",
+   "query": "校外实习基地的合作协议一般签几年？",
+   "expected_docs": [
+    "中传教字〔2014〕118号"
+   ],
+   "keywords": [
+    "一般为3－5年"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "h45",
+   "query": "出国交换时对方收学费的话，我们学校的学费还要交多少？",
+   "expected_docs": [
+    "中传教字〔2018〕154号"
+   ],
+   "keywords": [
+    "按60%收取我校的学费"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "h46",
+   "query": "国外交换课程拿了B，换算成百分制是多少分？",
+   "expected_docs": [
+    "中传教字〔2018〕154号"
+   ],
+   "keywords": [
+    "B=85分"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "h47",
+   "query": "创新创业学分一般什么时候录进系统？",
+   "expected_docs": [
+    "中传教字〔2018〕30号"
+   ],
+   "keywords": [
+    "5月中旬教务处进行创新"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "h48",
+   "query": "系主任出国超过多久会被免职？",
+   "expected_docs": [
+    "中传教字〔2019〕282号"
+   ],
+   "keywords": [
+    "连续1年以上的"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "h49",
+   "query": "教改项目验收不合格会有什么后果？",
+   "expected_docs": [
+    "中传教字〔2021〕182号"
+   ],
+   "keywords": [
+    "3年内不得申报新项目"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "h50",
+   "query": "论文抄袭拿到的学位证会被收回吗？",
+   "expected_docs": [
+    "中传教字〔2021〕211号"
+   ],
+   "keywords": [
+    "学校依法予以撤销"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "h51",
+   "query": "高职生生病考不了试怎么申请缓考？",
+   "expected_docs": [
+    "中传教字〔2021〕212号"
+   ],
+   "keywords": [
+    "提交医院的相关证明"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "h52",
+   "query": "校办企业超发工资不到10%，负责人绩效扣多少？",
+   "expected_docs": [
+    "中传校企字〔2020〕99号"
+   ],
+   "keywords": [
+    "扣罚绩效年薪的10％"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h53",
+   "query": "退休老师选的就近医院一年能换几次？",
+   "expected_docs": [
+    "中传校医字〔2005〕167号"
+   ],
+   "keywords": [
+    "一年只能变更一次"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h54",
+   "query": "生完孩子30天内办独生子女证有补助吗？",
+   "expected_docs": [
+    "中传校医字〔2008〕87号"
+   ],
+   "keywords": [
+    "营养补助费50元"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h55",
+   "query": "发现有人科研造假可以向哪里举报？",
+   "expected_docs": [
+    "中传科研字〔2016〕19号"
+   ],
+   "keywords": [
+    "科技处、文科科研处举报"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h56",
+   "query": "独立实体科研机构刻章用章需要依托单位审核吗？",
+   "expected_docs": [
+    "中传科研字〔2020〕151号"
+   ],
+   "keywords": [
+    "无需经依托单位审核"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h57",
+   "query": "校级科研项目每年几月开始申报？",
+   "expected_docs": [
+    "中传科研字（2019）151号"
+   ],
+   "keywords": [
+    "每年9月份"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h58",
+   "query": "什么叫小金库？",
+   "expected_docs": [
+    "严禁私设“小金库”"
+   ],
+   "keywords": [
+    "私存私放"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "h59",
+   "query": "用基本科研业务费给校外临时人员发劳务费，每月最多多少？",
+   "expected_docs": [
+    "中传财字〔2019〕196号"
+   ],
+   "keywords": [
+    "5000元/人月"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "h60",
+   "query": "请正高职称专家来评审，一天评审费最多给多少？",
+   "expected_docs": [
+    "中传财字〔2019〕196号"
+   ],
+   "keywords": [
+    "2400元/人天"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "h61",
+   "query": "二级教授用科研经费出差，住宿标准按哪一档？",
+   "expected_docs": [
+    "中传财字〔2020〕108号"
+   ],
+   "keywords": [
+    "参照第一类人员执行"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "h62",
+   "query": "学校能开几个基本存款账户？",
+   "expected_docs": [
+    "中传财字〔2022〕136号"
+   ],
+   "keywords": [
+    "只能开设一个基本存款账户"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "h63",
+   "query": "出国期间临时决定去另一个城市，城市间交通费能报吗？",
+   "expected_docs": [
+    "中传财字〔2023〕132号"
+   ],
+   "keywords": [
+    "未在计划中列明有城市间往来计划的不得报销"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "h64",
+   "query": "学院想在校外办培训，需要谁批准？",
+   "expected_docs": [
+    "中传财字〔2023〕184号"
+   ],
+   "keywords": [
+    "分管业务校领导审批"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "h65",
+   "query": "学校开管理类会议最长能开几天？",
+   "expected_docs": [
+    "中传财字〔2023〕220号"
+   ],
+   "keywords": [
+    "管理会议会期不得超过1天半"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "h66",
+   "query": "库存现金限额一年能调几次？",
+   "expected_docs": [
+    "中传财字〔2023〕39号"
+   ],
+   "keywords": [
+    "原则上一年只能调整一次"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "h67",
+   "query": "学校的收费项目没公示能收钱吗？",
+   "expected_docs": [
+    "中传财字〔2024〕229号"
+   ],
+   "keywords": [
+    "未经公示，不得收费"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "h68",
+   "query": "绩效拨款项目里的科目预算能调剂多少比例？",
+   "expected_docs": [
+    "中传财字〔2024〕313号"
+   ],
+   "keywords": [
+    "不得超过本科目的30%"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "h69",
+   "query": "前一笔借款没还清还能再借吗？",
+   "expected_docs": [
+    "中传财字〔2025〕44号"
+   ],
+   "keywords": [
+    "前款未清、后款不借"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "h70",
+   "query": "持残疾人证的教职工每年补贴多少钱？",
+   "expected_docs": [
+    "人事工作回答-202605"
+   ],
+   "keywords": [
+    "每人每年10000元"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h71",
+   "query": "当博士后合作导师，离退休至少还要有几年？",
+   "expected_docs": [
+    "人事工作回答-202605"
+   ],
+   "keywords": [
+    "退休年龄2年（含）以上"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h72",
+   "query": "党委宣传部在哪栋楼办公？",
+   "expected_docs": [
+    "党委宣传部部门概况"
+   ],
+   "keywords": [
+    "2号楼1212"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h73",
+   "query": "教职工兼职审批找哪个电话？",
+   "expected_docs": [
+    "党委教师工作部基本信息"
+   ],
+   "keywords": [
+    "65783202"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h74",
+   "query": "公共实践场馆批量预约最多能选多少个时间段？",
+   "expected_docs": [
+    "公共实践场馆预约系统正式上线"
+   ],
+   "keywords": [
+    "不超过200个时间段"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h75",
+   "query": "体育场馆约了不去会怎么样？",
+   "expected_docs": [
+    "场馆.docx_view",
+    "体育场馆预约注意事项"
+   ],
+   "keywords": [
+    "累计两次后进入黑名单"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h76",
+   "query": "研究生也要参加课程期末评价吗？",
+   "expected_docs": [
+    "学生版—课程质量评价",
+    "教师版—课程质量评价"
+   ],
+   "keywords": [
+    "本、研课程质量要求一致"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h77",
+   "query": "老师用课堂有我遇到问题打哪个电话？",
+   "expected_docs": [
+    "教师版—课程质量评价"
+   ],
+   "keywords": [
+    "010-65783909"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h78",
+   "query": "学科规划处的发展规划科在哪个办公室？",
+   "expected_docs": [
+    "学科建设与发展规划处职责"
+   ],
+   "keywords": [
+    "2#808"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h79",
+   "query": "社团搞活动可以借教室吗？",
+   "expected_docs": [
+    "教室相关事项",
+    "公共教室管理办法"
+   ],
+   "keywords": [
+    "学生社团活动"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h80",
+   "query": "北京户口的新老师无犯罪记录证明怎么开？",
+   "expected_docs": [
+    "新入职教职工政审材料",
+    "保卫字〔2023〕6"
+   ],
+   "keywords": [
+    "北京警务"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h81",
+   "query": "校园网怎么设置才能不用每次都输密码登录？",
+   "expected_docs": [
+    "无感知认证",
+    "信息化服务常见问题",
+    "信息化服务新生指南"
+   ],
+   "keywords": [
+    "无感知认证"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h82",
+   "query": "公费医疗报销的咨询电话是多少？",
+   "expected_docs": [
+    "校医院关于2025--2026学年第二学期公费医疗报销"
+   ],
+   "keywords": [
+    "65783198"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h83",
+   "query": "在校外怎么访问学校内网的资源？",
+   "expected_docs": [
+    "校外VPN"
+   ],
+   "keywords": [
+    "vpn.cuc.edu.cn"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h84",
+   "query": "校史馆是哪年开放的？",
+   "expected_docs": [
+    "档案馆部门职责情况"
+   ],
+   "keywords": [
+    "2019年6月18日正式开放"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h85",
+   "query": "上传人脸识别照片有什么要求？",
+   "expected_docs": [
+    "自助人脸照片上传",
+    "信息化服务常见问题",
+    "信息化服务新生指南",
+    "2026年迎接新生开学相关工作"
+   ],
+   "keywords": [
+    "正面免冠"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h86",
+   "query": "签报的附件超过多少页要送纸质材料？",
+   "expected_docs": [
+    "签报工作提醒"
+   ],
+   "keywords": [
+    "总页数超过10页"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "h87",
+   "query": "涉密的事情怎么走签报？",
+   "expected_docs": [
+    "签报工作提醒"
+   ],
+   "keywords": [
+    "线下签报单"
+   ],
+   "intended_assistant": "问道中传"
+  }
+ ],
+ "no_answer": [
+  {
+   "id": "hn01",
+   "query": "校医院能打九价HPV疫苗吗？"
+  },
+  {
+   "id": "hn02",
+   "query": "学校健身房的私教课多少钱？"
+  },
+  {
+   "id": "hn03",
+   "query": "毕业典礼的学位服在哪里租？"
+  },
+  {
+   "id": "hn04",
+   "query": "学校游泳馆的年卡多少钱？"
+  },
+  {
+   "id": "hn05",
+   "query": "放假期间学生宿舍能把猫寄养在宿管那里吗？"
+  },
+  {
+   "id": "hn07",
+   "query": "校内打印店几点关门？"
+  },
+  {
+   "id": "hn08",
+   "query": "学校有没有自己的附属医院？"
+  },
+  {
+   "id": "hn09",
+   "query": "冬天学校组织去滑雪吗？"
+  },
+  {
+   "id": "hn11",
+   "query": "无偿献血有什么奖励？"
+  },
+  {
+   "id": "hn12",
+   "query": "选修课抢课有什么技巧？"
+  }
+ ]
+}
