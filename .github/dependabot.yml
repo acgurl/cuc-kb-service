@@ -1,0 +1,8 @@
+# Only GitHub Actions versions. Python packages follow constraints/prod*.txt,
+# which mirror what is deployed on Phoenix and are refreshed from there.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

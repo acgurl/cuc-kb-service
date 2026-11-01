@@ -22,9 +22,10 @@ ssh phoenix 'cd ~/cuc-kb && for f in search_core.py common.py .env; do cp -p $f.
 
 ## Git
 
-- `main` = `0de2705`；`refactor/code-quality` = `d2355fc`（线上跑的就是它，还没合进 main）；`feat/qwen3-rerank` = `a9e19fd`，从 refactor 分支拉出，已推送并设好上游，还没建 MR。
-- 合并时，相对 main 会带上 2 个提交（refactor 和 rerank）。先合 refactor 还是两个一起合，需要用户决定。
-- 不提交的文件：`eval/heldout/_candidates.txt`（出题用的原文样本）、`eval/ab/results_deploycheck.json`。
+- 远端：`github` = https://github.com/acgurl/cuc-kb-service （私有，主仓库，GitHub Actions 跑 CI）；`origin` = 校内 GitLab 镜像（仅校园网可达，不跑 CI）。
+- `main` = `e00c7ff`，refactor 和 qwen3-rerank 两个分支都已合入，并已删除。
+- `ci/gitlab-pipeline`（PR acgurl/cuc-kb-service#1）：GitHub Actions CI、`tests/`、`constraints/prod*.txt`，以及 `_safe_next` 开放跳转修复（`/auth/login?next=/%5Cevil.test` 登录后会跳到外站）。修复已于 2026-11-01 部署到 Phoenix（备份 `app.py.bak-20261101-redirect`），线上冒烟通过；线上代码与该分支一致。
+- 不提交的文件（已加入 `.gitignore`）：`eval/heldout/_candidates.txt`（出题用的原文样本）、`eval/ab/results_deploycheck.json`。
 
 ## 这次做了什么
 
