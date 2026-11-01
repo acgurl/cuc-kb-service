@@ -152,7 +152,7 @@ git lfs ls-files | wc -l     # 查看 LFS 文件数
 | 向量库 | `QDRANT_URL`、`QDRANT_API_KEY` | Qdrant 地址与密钥 |
 | 缓存 | `FASTEMBED_CACHE`、`HF_HOME` | 模型缓存目录 |
 | Rerank | `KB_RERANK_PROVIDER`、`RERANK_API_*`、`KB_RERANK_*` | 云端/本地重排、`KB_RERANK_ALWAYS`、触发阈值、最低分、本地回退 |
-| 排序 | `KB_GENERIC_*`、`KB_CANDIDATE_*`、`KB_COVERAGE_*`、`KB_PHRASE_*` | 通用汇编降权、候选池、覆盖与短语加分 |
+| 排序 | `KB_GENERIC_*`、`KB_CANDIDATE_*`、`KB_COVERAGE_*` | 通用汇编降权、候选池、覆盖度加分 |
 | 可答性 | `KB_ANSWERABILITY_*`、`KB_ANSWER_SPAN_WINDOW` | 答案片段检查；`KB_ANSWERABILITY_OVERRIDE=0` 时只报告、不改写 `no_answer` |
 | OCI | `KB_OCI_*`、`KB_PAR_TTL` | 私有 PDF 桶、PAR 有效期 |
 | 登录 | `KB_OIDC_*`、`KB_SESSION_*`、`KB_PUBLIC_BASE_URL` | OIDC 应用、会话密钥与有效期、对外基址 |
@@ -225,7 +225,7 @@ Authorization: Bearer <KB_API_TOKEN>
 }
 ```
 
-`no_answer=true` 时调用方不应基于知识库作答；可改写问题重试一次。`answerability` 仅在问题涉及价格、时间、数量、渠道、内容或责任主体时出现。
+`no_answer=true` 时，结果不是可靠的直接答案，可以改写问题重试一次。仍为 true 时：`confidence` ≥0.6 一般说明检索到的是相关规定、没有直接答案，只能明确说明“没有直接答案”后引用相关原文；<0.6 时不要基于知识库作答（依据见 `eval/ab/report_na1.md`）。MCP 的 `kb_search` 会据此返回 `answer_mode`（direct / related / none）。`answerability` 仅在问题涉及价格、时间、数量、渠道、内容或责任主体时出现。
 
 ## MCP 接入
 
@@ -292,6 +292,13 @@ python eval/heldout/build_heldout.py
 # 离线 A/B：换向量模型或 reranker，其余复用 search_core（需要 GPU 环境，见 eval/ab/report_ab1.md）
 python eval/ab/ab_embed.py eval --models bge-small-zh --rerankers bge-base,bl-qwen3-rerank --modes prod,always --tag rr
 python eval/ab/calibrate_no_answer.py eval/ab/results_rr.json
+
+# 规则消融与候选规模（qwen3-rerank，线上配置）
+python eval/ab/ablate.py --tag abl1
+
+# 无答案集：重新生成并核验，再复核拒答阈值
+python eval/heldout/build_noanswer.py
+python eval/ab/noanswer_eval.py --base eval/ab/results_abl1.json --tag na1
 ```
 
 2026-11-01 线上切换为百炼 `qwen3-rerank` + `KB_RERANK_ALWAYS=1` + `KB_ANSWERABILITY_OVERRIDE=0` 后，通过线上 API 实测（无指定助手；依据见 `eval/ab/report_rr2.md`）：
@@ -302,9 +309,9 @@ python eval/ab/calibrate_no_answer.py eval/ab/results_rr.json
 | 文档命中@5 | 87/87（切换前 82） | 117/117（切换前 115） |
 | MRR | 0.9649（切换前 0.8851） | 0.9397（切换前 0.8962） |
 | 无答案准确率 | 10/10（切换前 7/10） | 10/10 |
-| P50 / P95 | 1449 / 3035 ms | 1541 / 5145 ms |
+| P50 / P95（两集合并 224 条） | 850 / 1350 ms | |
 
-延迟主要来自美西主机到百炼北京地域的跨境调用；超过 `RERANK_API_TIMEOUT` 的请求会降级为未重排的混合排序（本次复测 204 条中出现 2 次）。
+延迟来自美西主机到百炼北京地域的跨境调用，长尾主要出在每次新建 TCP+TLS 连接。改为线程级 keep-alive 长连接后，P50 从约 1.5 s 降到 0.85 s，P95 从 3～5 s 降到 1.35 s，复测中没有超时降级（`eval/ab/report_abl1.md`）。另外用 65 道无答案题复核了 `KB_RERANK_MIN_SCORE=0.75`：拒答 65/65，有答案题保留 202/204（`eval/ab/report_na1.md`）。
 
 最新一轮（`eval/report_v5_4_p1.md`，2026-10-28，101 条文档检索 + 16 条短问句 + 10 条无答案 + 10 条页码引用）：
 
