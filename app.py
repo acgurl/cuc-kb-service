@@ -66,7 +66,15 @@ def _sso_configured():
 
 
 def _safe_next(value):
-    if value and value.startswith("/") and not value.startswith("//"):
+    # Browsers treat "\" as "/" and drop tabs/newlines, so "/\evil" or "/\t/evil"
+    # would become the protocol-relative "//evil"; real paths arrive percent-encoded.
+    if (
+        value
+        and value.startswith("/")
+        and not value.startswith("//")
+        and "\\" not in value
+        and not any(ord(char) < 0x20 or ord(char) == 0x7F for char in value)
+    ):
         return value
     return "/"
 
