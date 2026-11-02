@@ -16,8 +16,8 @@ from rank_bm25 import BM25Okapi
 
 from tests import support  # noqa: F401
 
-import search_core
-from search_core import KB, CloudReranker
+from kb import search_core
+from kb.search_core import KB, CloudReranker
 
 CHUNKS = [
     {

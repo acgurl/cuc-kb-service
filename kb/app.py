@@ -10,8 +10,8 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import BaseModel, Field
 
-from auth import AuthError, issue_session, require_user, verify_oidc_token
-from common import (
+from kb.auth import AuthError, issue_session, require_user, verify_oidc_token
+from kb.common import (
     BASE_DIR,
     OIDC_CLIENT_ID,
     OIDC_CLIENT_SECRET,
@@ -22,8 +22,8 @@ from common import (
     SESSION_TTL,
     USER_AGENT,
 )
-from file_access import signed_url
-from search_core import KB
+from kb.file_access import signed_url
+from kb.search_core import KB
 
 OAUTH_COOKIES = ("kb_oauth_state", "kb_oauth_nonce", "kb_oauth_next")
 OAUTH_COOKIE_TTL = 600

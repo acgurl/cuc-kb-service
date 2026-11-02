@@ -1,4 +1,4 @@
-# Lint gate used by CI (.gitlab-ci.yml). Production runs Python 3.12.
+# Lint gate used by CI (.github/workflows/ci.yml). Production runs Python 3.12.
 target-version = "py312"
 line-length = 120
 extend-exclude = ["data", "corpus", ".cache"]

@@ -24,7 +24,7 @@ def _env_list(name, default=""):
     return [item.strip() for item in _env(name, default).split(",") if item.strip()]
 
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = Path(_env("KB_DATA_DIR") or BASE_DIR / "data")
 FASTEMBED_CACHE = Path(_env("FASTEMBED_CACHE") or BASE_DIR / ".cache/fastembed")
 USER_AGENT = "Mozilla/5.0 (compatible; CUC-KnowledgeBase/0.1)"

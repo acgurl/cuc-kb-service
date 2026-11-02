@@ -32,7 +32,7 @@ class McpHttpTest(unittest.TestCase):
     def setUpClass(cls):
         from starlette.testclient import TestClient
 
-        import mcp_http_server
+        from kb import mcp_http_server
 
         cls.module = mcp_http_server
         cls.client_cm = TestClient(mcp_http_server.app, base_url=BASE_URL)

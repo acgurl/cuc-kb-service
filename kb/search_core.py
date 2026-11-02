@@ -12,7 +12,7 @@ from fastembed.rerank.cross_encoder import TextCrossEncoder
 from qdrant_client.models import FieldCondition, Filter, MatchAny, MatchValue
 from rank_bm25 import BM25Okapi
 
-from common import (
+from kb.common import (
     ANSWER_SPAN_WINDOW,
     ANSWERABILITY_MAX_CONF,
     ANSWERABILITY_OVERRIDE,

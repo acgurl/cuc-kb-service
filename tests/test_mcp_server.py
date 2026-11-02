@@ -10,7 +10,7 @@ from unittest import mock
 
 from tests import support
 
-import mcp_server
+from kb import mcp_server
 
 AGENT_DIR = support.ROOT / "agent"
 
@@ -162,7 +162,7 @@ class StdioProtocolTest(unittest.TestCase):
             for message in messages
         )
         completed = subprocess.run(
-            [sys.executable, str(support.ROOT / "mcp_server.py")],
+            [sys.executable, str(support.ROOT / "kb" / "mcp_server.py")],
             input=lines.encode("utf-8"),
             capture_output=True,
             timeout=30,

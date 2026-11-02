@@ -45,38 +45,44 @@
 
 | 文件 | 作用 |
 | --- | --- |
-| `app.py` | FastAPI 服务：检索/文档/原文接口、SSO 登录回调 |
-| `static/index.html` | 内置 Web 检索页（由 `app.py` 在 `/` 返回） |
-| `search_core.py` | 载入 `data/` 与 Qdrant，执行向量 + BM25 + RRF + rerank 检索，返回引用与拒答判断 |
-| `ingest.py` | PDF/QA CSV 解析、切块、去重、生成 `data/` 产物并写入 Qdrant |
-| `auth.py` | OIDC id_token 校验（JWKS 缓存）、会话 JWT 签发/读取、服务 Token 校验 |
-| `common.py` | 全部环境变量与默认值、通用汇编标题规则、Qdrant 客户端工厂 |
-| `file_access.py` | OCI 私有桶 PAR 签发与缓存 |
-| `mcp_server.py` | 纯标准库实现的 stdio MCP 服务，转发到 HTTP API；工具定义与 instructions 的唯一来源 |
-| `mcp_http_server.py` | 常驻 Streamable HTTP MCP 端点，含 Token 与 Host 校验 |
-| `mcp_gateway_proxy.py` | 监听 Docker 网桥地址并转发到 `127.0.0.1:8765`，避免服务绑定公网 |
+| `kb/app.py` | FastAPI 服务：检索/文档/原文接口、SSO 登录回调 |
+| `static/index.html` | 内置 Web 检索页（由 `kb/app.py` 在 `/` 返回） |
+| `kb/search_core.py` | 载入 `data/` 与 Qdrant，执行向量 + BM25 + RRF + rerank 检索，返回引用与拒答判断 |
+| `kb/ingest.py` | PDF/QA CSV 解析、切块、去重、生成 `data/` 产物并写入 Qdrant |
+| `kb/auth.py` | OIDC id_token 校验（JWKS 缓存）、会话 JWT 签发/读取、服务 Token 校验 |
+| `kb/common.py` | 全部环境变量与默认值、通用汇编标题规则、Qdrant 客户端工厂 |
+| `kb/file_access.py` | OCI 私有桶 PAR 签发与缓存 |
+| `kb/mcp_server.py` | 纯标准库实现的 stdio MCP 服务，转发到 HTTP API；工具定义与 instructions 的唯一来源 |
+| `kb/mcp_http_server.py` | 常驻 Streamable HTTP MCP 端点，含 Token 与 Host 校验 |
+| `kb/mcp_gateway_proxy.py` | 监听 Docker 网桥地址并转发到 `127.0.0.1:8765`，避免服务绑定公网 |
 | `agent/` | 给通用 Agent 用的 OpenAPI 描述与 OpenAI function-calling 工具定义 |
-| `eval/`、`eval_v2/` | 评测脚本（共享 `eval/kbeval.py`）、数据集、结果与报告；`eval/inspect_queries.py` + `eval/inspect_sets/` 用于逐条排查 |
-| `p0_migrate.py`、`p1_alias.py` | 线上元数据修正与别名重嵌入等一次性脚本 |
+| `deploy/` | 三个 systemd 单元与 stdio MCP 启动包装 `run-mcp.sh` |
+| `scripts/` | 线上元数据修正、别名重嵌入、rerank 连通性检查等一次性脚本 |
+| `eval/` | 评测脚本（共享 `eval/kbeval.py`）、数据集、结果与报告；`eval/inspect_queries.py` + `eval/inspect_sets/` 用于逐条排查；`eval/v2/` 是早期 v2 结果 |
+| `tests/` | 离线单元测试（CI） |
+
+所有命令都在仓库根目录执行：服务代码是 `kb` 包，用 `python -m kb.xxx` / `uvicorn kb.app:app` 启动；`kb/mcp_server.py` 只依赖标准库，也可以直接按路径运行。
 
 ## 目录
 
 ```
 kb-service/
-├── app.py                     # FastAPI 应用
+├── kb/                        # 服务代码（Python 包）
+│   ├── app.py                 # FastAPI 应用
+│   ├── search_core.py         # 检索核心
+│   ├── ingest.py              # 入库脚本
+│   ├── auth.py  common.py  file_access.py
+│   ├── mcp_server.py          # stdio MCP
+│   ├── mcp_http_server.py     # HTTP MCP
+│   └── mcp_gateway_proxy.py   # Docker 转发
 ├── static/index.html          # Web 检索页
-├── search_core.py             # 检索核心
-├── ingest.py                  # 入库脚本
-├── auth.py  common.py  file_access.py
-├── mcp_server.py              # stdio MCP
-├── mcp_http_server.py         # HTTP MCP
-├── mcp_gateway_proxy.py       # Docker 转发
-├── run-mcp.sh                 # stdio MCP 启动包装
-├── cuc-kb-mcp.service         # systemd: HTTP MCP
-├── cuc-kb-mcp-gateway.service # systemd: Docker 网关转发
+├── deploy/                    # systemd 单元 + run-mcp.sh
+├── scripts/                   # 一次性线上脚本
 ├── agent/                     # OpenAPI / tools 定义
 ├── corpus/                    # 知识语料（Git LFS）
-├── eval/  eval_v2/            # 评测
+├── eval/                      # 评测
+├── tests/                     # 单元测试
+├── constraints/               # 线上 venv 版本锁定
 ├── data/                      # 运行时生成，不入库
 └── .env.example
 ```
@@ -115,7 +121,7 @@ docker run -d --name qdrant -p 127.0.0.1:6333:6333 qdrant/qdrant
 入库。`--src` 指向知识文档根目录；目录名作为默认助手，文号/标题规则会再补充文档归属：
 
 ```bash
-python ingest.py \
+python -m kb.ingest \
   --src corpus \
   --qa ../QA知识导入模板.csv \
   --out data \
@@ -127,7 +133,7 @@ python ingest.py \
 启动 API 与 Web 页：
 
 ```bash
-uvicorn app:app --host 127.0.0.1 --port 8000
+uvicorn kb.app:app --host 127.0.0.1 --port 8000
 ```
 
 浏览器打开 `http://127.0.0.1:8000/`；脚本调用用 `Authorization: Bearer $KB_API_TOKEN`。
@@ -239,7 +245,7 @@ Authorization: Bearer <KB_API_TOKEN>
   "mcpServers": {
     "cuc-kb": {
       "command": "python",
-      "args": ["/path/to/kb-service/mcp_server.py"],
+      "args": ["/path/to/kb-service/kb/mcp_server.py"],
       "env": {
         "KB_API_URL": "http://127.0.0.1:8000",
         "KB_API_TOKEN": "<token>"
@@ -254,10 +260,10 @@ Authorization: Bearer <KB_API_TOKEN>
 ### Streamable HTTP
 
 ```bash
-python mcp_http_server.py      # 默认 127.0.0.1:8765/mcp
+python -m kb.mcp_http_server  # 默认 127.0.0.1:8765/mcp
 ```
 
-鉴权三选一：`Authorization: Bearer <KB_MCP_TOKEN>`、`X-MCP-Token: <KB_MCP_TOKEN>`、URL 参数 `?token=<KB_MCP_TOKEN>`。服务默认只绑定回环地址，并校验 Host 白名单；容器访问通过 `mcp_gateway_proxy.py` 从 Docker 网桥地址转发，不要把 8765 直接暴露到公网。HTTP MCP 依赖额外安装 `mcp` 包（线上使用独立虚拟环境 `.venv-mcp`）。
+鉴权三选一：`Authorization: Bearer <KB_MCP_TOKEN>`、`X-MCP-Token: <KB_MCP_TOKEN>`、URL 参数 `?token=<KB_MCP_TOKEN>`。服务默认只绑定回环地址，并校验 Host 白名单；容器访问通过 `kb/mcp_gateway_proxy.py` 从 Docker 网桥地址转发，不要把 8765 直接暴露到公网。HTTP MCP 依赖额外安装 `mcp` 包（线上使用独立虚拟环境 `.venv-mcp`）。
 
 ## 检索流程
 
@@ -361,13 +367,13 @@ CI 的 checkout 不拉取 LFS，不会下载 `corpus/` 的 PDF。检索效果评
 线上按 systemd 管理，工作目录 `/home/ubuntu/cuc-kb`，通过 `EnvironmentFile=.env` 注入配置：
 
 ```bash
-sudo cp cuc-kb-mcp.service cuc-kb-mcp-gateway.service /etc/systemd/system/
+sudo cp deploy/cuc-kb.service deploy/cuc-kb-mcp.service deploy/cuc-kb-mcp-gateway.service /etc/systemd/system/
 sudo systemctl daemon-reload
-sudo systemctl enable --now cuc-kb-mcp cuc-kb-mcp-gateway
+sudo systemctl enable --now cuc-kb cuc-kb-mcp cuc-kb-mcp-gateway
 ```
 
 - API 由反向代理终止 TLS 并转发到 `127.0.0.1:8000`；`KB_OIDC_REDIRECT_URIS` 必须与外部访问地址一致。
-- 部署时 `static/` 目录需与 `app.py` 一起同步。
+- 部署时同步整个 `kb/` 包和 `static/` 目录，服务从仓库根目录（`WorkingDirectory`）以模块方式启动。
 - 源 PDF 桶保持私有，仅通过 `/v1/files/{doc_id}` 鉴权后签发 PAR（默认 900 秒）。
 - MCP HTTP 只绑定回环，容器通过网桥转发访问；公网入口不要直接放开 8765。
 - 带 `--recreate` 重新入库会删除并重建集合；只想解析预览时用 `--skip-embed`。
@@ -377,7 +383,7 @@ sudo systemctl enable --now cuc-kb-mcp cuc-kb-mcp-gateway
 - `.env`、`data/`、模型缓存、日志与备份均不入库。
 - `corpus/` 下的 PDF 与 xlsx 走 Git LFS（见 `.gitattributes`），不要用普通 Git 重新跟踪。
 - `QA知识导入模板.csv` 含个人联系方式，已加入 `.gitignore`；需要版本管理时请先脱敏。
-- 一次性线上修正脚本（`p0_migrate.py`、`p1_alias.py`）默认 dry run，加 `--apply` 才写库。
+- 一次性线上修正脚本（`python -m scripts.p0_migrate`、`python -m scripts.p1_alias`）默认 dry run，加 `--apply` 才写库。
 
 ## 使用范围
 

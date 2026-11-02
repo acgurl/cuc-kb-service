@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 
 import oci
 
-from common import (
+from kb.common import (
     FILE_OBJECT_PREFIX,
     OCI_AUTH,
     OCI_BUCKET,

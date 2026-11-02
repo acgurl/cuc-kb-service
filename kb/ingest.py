@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pymupdf
 
-from common import COLLECTION, EMBED_MODEL, FASTEMBED_CACHE, is_generic_title, qdrant_client
+from kb.common import COLLECTION, EMBED_MODEL, FASTEMBED_CACHE, is_generic_title, qdrant_client
 
 PAGE_ANCHOR_RE = re.compile(r"^<!-- page: (\d+) -->$")
 CLAUSE_RE = re.compile(r"^\s*(第[一二三四五六七八九十百千零〇\d]+条)\s*[、.．:：]?\s*")

@@ -14,8 +14,8 @@ from fastapi.testclient import TestClient
 
 from tests import support
 
-import app as app_module
-import auth
+from kb import app as app_module
+from kb import auth
 
 TOKEN = support.TEST_ENV["KB_API_TOKEN"]
 AUTH = {"Authorization": f"Bearer {TOKEN}"}

@@ -12,8 +12,8 @@ from pathlib import Path
 
 from qdrant_client.models import FieldCondition, Filter, MatchValue
 
-from common import BASE_DIR, COLLECTION, DATA_DIR, is_generic_title, qdrant_client
-from ingest import merge_unique
+from kb.common import BASE_DIR, COLLECTION, DATA_DIR, is_generic_title, qdrant_client
+from kb.ingest import merge_unique
 
 DATA = DATA_DIR
 QA_CSV = BASE_DIR / "QA知识导入模板.csv"

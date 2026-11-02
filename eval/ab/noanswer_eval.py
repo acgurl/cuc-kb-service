@@ -19,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ab_embed  # noqa: E402
 from ab_embed import AB_DIR, OUT_DIR, ROOT, OfflineKB, best_rerank, load_backend  # noqa: E402
 
-import search_core  # noqa: E402
+from kb import search_core  # noqa: E402
 
 THRESHOLDS = [round(0.60 + 0.01 * i, 2) for i in range(26)]
 
