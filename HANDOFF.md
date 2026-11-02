@@ -6,6 +6,8 @@
 
 ## 线上状态（Phoenix `~/cuc-kb`）
 
+> 2026-11-02：仓库已重构为 `kb/` 包（`refactor/kb-package` 分支），systemd 单元移到 `deploy/` 并改为 `uvicorn kb.app:app` / `python -m kb.xxx`。在重新部署之前，Phoenix 上仍是平铺布局，下面的文件名和回滚命令都按平铺布局。
+
 | 项 | 值 |
 |---|---|
 | 服务 | `cuc-kb.service`（uvicorn 127.0.0.1:8000），2026-11-01 08:05 UTC 重启后正常 |

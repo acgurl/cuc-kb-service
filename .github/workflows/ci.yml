@@ -37,7 +37,7 @@ jobs:
       - run: pip install ruff==0.14.3
       - run: ruff check --output-format=github .
       - run: python -m compileall -q -x '/(\.venv[^/]*|\.cache|data)/' .
-      - run: bash -n run-mcp.sh
+      - run: bash -n deploy/run-mcp.sh
 
   # API, auth, retrieval pipeline and stdio MCP server, with the dependencies of
   # the main service venv (requirements.txt).
@@ -56,7 +56,7 @@ jobs:
       - run: pip install -r requirements-dev.txt -c constraints/prod.txt
       - run: python -m unittest discover -s tests -t . -v
 
-  # mcp_http_server.py runs from its own venv in production (.venv-mcp), pinned
+  # kb/mcp_http_server.py runs from its own venv in production (.venv-mcp), pinned
   # to the deployed versions and without requirements.txt.
   mcp-http:
     runs-on: ubuntu-latest

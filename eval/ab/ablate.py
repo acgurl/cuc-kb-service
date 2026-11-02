@@ -18,7 +18,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ab_embed  # noqa: E402
 from ab_embed import AB_DIR, OUT_DIR, OfflineKB, evaluate, load_backend, load_cases, load_chunks, summarize  # noqa: E402
 
-import search_core  # noqa: E402
+from kb import search_core  # noqa: E402
 
 # name -> {search_core constant overrides}. The post-rerank phrase bonuses ablated in
 # abl1 (zero effect) were deleted afterwards, so there is no variant for them any more.

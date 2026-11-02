@@ -8,8 +8,8 @@ import json
 import os
 import shutil
 
-from common import COLLECTION, DATA_DIR, qdrant_client
-from ingest import DOC_SEARCH_ALIASES, chunk_point, embed_texts, load_embedder
+from kb.common import COLLECTION, DATA_DIR, qdrant_client
+from kb.ingest import DOC_SEARCH_ALIASES, chunk_point, embed_texts, load_embedder
 
 STAMP = "20261028-p1-alias"
 

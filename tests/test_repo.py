@@ -7,7 +7,7 @@ import unittest
 from tests import support
 
 ROOT = support.ROOT
-JSON_DIRS = ("agent", "eval", "eval_v2", "corpus")
+JSON_DIRS = ("agent", "eval", "corpus")
 SECRET_NAME = re.compile(r"(KEY|SECRET|TOKEN|PASSWORD)")
 PLACEHOLDERS = ("", "<set-me>")
 
@@ -28,12 +28,21 @@ class RepoTest(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertIn(value.strip(), PLACEHOLDERS)
 
-    def test_systemd_units_start_existing_scripts(self):
-        for unit in ROOT.glob("*.service"):
-            exec_start = re.search(r"^ExecStart=.*?/cuc-kb/(\S+\.py)", unit.read_text(encoding="utf-8"), re.M)
+    def test_systemd_units_start_existing_modules(self):
+        # ExecStart is `python -m kb.x` or `uvicorn kb.x:app`, run from WorkingDirectory=/home/ubuntu/cuc-kb.
+        units = list((ROOT / "deploy").glob("*.service"))
+        self.assertTrue(units)
+        for unit in units:
+            exec_start = re.search(r"^ExecStart=\S+ (?:-m )?([\w.]+)", unit.read_text(encoding="utf-8"), re.M)
             with self.subTest(unit=unit.name):
                 self.assertIsNotNone(exec_start)
-                self.assertTrue((ROOT / exec_start.group(1)).is_file())
+                module = exec_start.group(1).replace(".", "/") + ".py"
+                self.assertTrue((ROOT / module).is_file(), module)
+
+    def test_run_mcp_points_at_existing_script(self):
+        script = re.search(r"/cuc-kb/(\S+\.py)", (ROOT / "deploy" / "run-mcp.sh").read_text(encoding="utf-8"))
+        self.assertIsNotNone(script)
+        self.assertTrue((ROOT / script.group(1)).is_file())
 
 
 if __name__ == "__main__":

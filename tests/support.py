@@ -1,6 +1,6 @@
 """Shared test setup: fixed config and repo root on sys.path.
 
-common.py reads the environment once at import time, so every test module
+kb/common.py reads the environment once at import time, so every test module
 imports this before any project module.
 """
 

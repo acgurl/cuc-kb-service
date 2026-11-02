@@ -21,8 +21,8 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-import search_core  # noqa: E402
-from common import DATA_DIR, FASTEMBED_CACHE  # noqa: E402
+from kb import search_core  # noqa: E402
+from kb.common import DATA_DIR, FASTEMBED_CACHE  # noqa: E402
 
 AB_DIR = DATA_DIR / "ab"
 OUT_DIR = Path(__file__).resolve().parent

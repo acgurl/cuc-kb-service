@@ -25,8 +25,8 @@ from mcp.server.mcpserver import MCPServer
 from mcp.server.transport_security import TransportSecuritySettings
 from starlette.responses import JSONResponse
 
-import mcp_server as core
-from mcp_gateway_proxy import DEFAULT_BIND_HOSTS as DOCKER_GATEWAYS
+from kb import mcp_server as core
+from kb.mcp_gateway_proxy import DEFAULT_BIND_HOSTS as DOCKER_GATEWAYS
 
 SERVER_NAME = core.SERVER_NAME
 SERVER_VERSION = "0.2.0"

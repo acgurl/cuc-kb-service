@@ -1,0 +1,18 @@
+[Unit]
+Description=CUC Knowledge Base API
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/cuc-kb
+EnvironmentFile=/home/ubuntu/cuc-kb/.env
+ExecStartPre=/bin/sh -c '/usr/bin/docker start cuc-qdrant >/dev/null 2>&1 || true'
+ExecStart=/home/ubuntu/cuc-kb/.venv/bin/uvicorn kb.app:app --host 127.0.0.1 --port 8000 --workers 1
+Restart=always
+RestartSec=5
+TimeoutStartSec=180
+
+[Install]
+WantedBy=multi-user.target

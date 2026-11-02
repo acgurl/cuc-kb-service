@@ -7,7 +7,7 @@ import urllib.request
 import jwt
 from fastapi import HTTPException, Request
 
-from common import (
+from kb.common import (
     API_TOKEN,
     OIDC_CLIENT_ID,
     OIDC_ISSUER,

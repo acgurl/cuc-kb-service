@@ -2,7 +2,7 @@
 import json
 import sys
 
-from common import (
+from kb.common import (
     CLOUD_RERANK_PROVIDERS,
     RERANK_API_BASE,
     RERANK_API_KEY,
@@ -10,7 +10,7 @@ from common import (
     RERANK_MIN_SCORE,
     RERANK_PROVIDER,
 )
-from search_core import CloudReranker
+from kb.search_core import CloudReranker
 
 QUERY = "宿舍床尺寸是多少"
 DOCUMENTS = [
