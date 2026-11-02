@@ -6,7 +6,11 @@
 
 ## 线上状态（Phoenix `~/cuc-kb`）
 
-> 2026-11-02：仓库已重构为 `kb/` 包（`refactor/kb-package` 分支），systemd 单元移到 `deploy/` 并改为 `uvicorn kb.app:app` / `python -m kb.xxx`。在重新部署之前，Phoenix 上仍是平铺布局，下面的文件名和回滚命令都按平铺布局。
+> 2026-11-02：仓库已重构为 `kb/` 包（PR acgurl/cuc-kb-service#3），并已于 2026-11-02 03:06 UTC 部署到 Phoenix。三个服务分别以 `uvicorn kb.app:app`、`python -m kb.mcp_http_server`、`python -m kb.mcp_gateway_proxy` 运行（单元在 `deploy/`），`~/cuc-kb/run-mcp.sh` 指向 `kb/mcp_server.py`。根目录旧的平铺 `.py` 文件还在，但已不再使用；下表和下面回滚命令里的平铺文件名都是部署前的历史记录。
+>
+> 布局回滚：`cd ~/cuc-kb && sudo cp backup-20261102-pkg/*.service /etc/systemd/system/ && cp -p backup-20261102-pkg/run-mcp.sh . && sudo systemctl daemon-reload && sudo systemctl restart cuc-kb cuc-kb-mcp cuc-kb-mcp-gateway`。
+>
+> 以后部署：`git archive main kb scripts deploy static | ssh phoenix 'cd ~/cuc-kb && tar -x'`，改了单元文件要再拷到 `/etc/systemd/system/` 并 `daemon-reload`。
 
 | 项 | 值 |
 |---|---|
