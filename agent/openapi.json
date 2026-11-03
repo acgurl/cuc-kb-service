@@ -3,7 +3,7 @@
   "info": {
     "title": "CUC 知识库检索 API",
     "version": "1.0.0",
-    "description": "中国传媒大学校内规章制度与常见问题知识库。回答校内制度、办事流程、FAQ 类问题前先调用 /v1/search。短问题先改写成完整中文问题；no_answer=false 时基于原文回答；no_answer=true 时先改写成更完整、正式的问法重试一次。仍为 true 且 confidence ≥0.6 时，结果多为相关规定而非直接答案：只使用确实相关的原文，先说明“知识库中没有直接回答这个问题的内容”，再给出相关规定或办理渠道并标注出处，不得推断原文没写的具体数字、日期、地点或个人信息；仍为 true 且 confidence <0.6 时，说明知识库没有相关信息，不要基于结果作答。引用时使用 citation 中的 doc_title、doc_no、clause_no、page_start；citation.file_url 可直接打开原文并跳到 page_start 页，page_count 为文档总页数。"
+    "description": "中国传媒大学校内规章制度与常见问题知识库。回答校内制度、办事流程、FAQ 类问题前先调用 /v1/search。短问题先改写成完整中文问题；no_answer=false 时基于原文回答；同一内容换个说法常能检索到：第一轮可并行发起多个不同问法的 /v1/search，个数按问题判断——已用正式用语、指向明确时一个即可，口语化或可能有多种叫法时多发几个（完整问句、制度正式用语或“××管理办法/规定 + 事项”、同义词/上位概念/负责部门、关键词形式）；多要点各发一个；不得只调换词序或改变原意。合并结果，看原文是否真正回答了用户问的那一点（不能只看 no_answer），任一找到即作答；都没找到再并行一轮新问法，可去掉 assistant/doc_type 过滤并把 top_k 提到 10；换了几种说法仍找不到就停止。不支持并行时依次调用。以下结论以所有调用中最好的结果为准：no_answer 仍为 true 且 confidence ≥0.6 时，结果多为相关规定而非直接答案：只使用确实相关的原文，先说明“知识库中没有直接回答这个问题的内容”，再给出相关规定或办理渠道并标注出处，不得推断原文没写的具体数字、日期、地点或个人信息；仍为 true 且 confidence <0.6 时，说明知识库没有相关信息，不要基于结果作答。引用时使用 citation 中的 doc_title、doc_no、clause_no、page_start；citation.file_url 可直接打开原文并跳到 page_start 页，page_count 为文档总页数。"
   },
   "servers": [
     {
