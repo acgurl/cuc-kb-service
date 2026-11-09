@@ -159,18 +159,34 @@ async function search() {
       cite.className = 'cite';
       const parts = [];
       if (item.citation.doc_no) parts.push(item.citation.doc_no);
+      if (item.citation.publish_date) parts.push(item.citation.publish_date);
       if (item.citation.clause_no) parts.push(item.citation.clause_no);
       if (item.citation.section_path && item.citation.section_path.length) parts.push(item.citation.section_path.join(' > '));
       if (item.citation.page_start) parts.push(`第 ${item.citation.page_start} 页`);
       if (item.citation.source_file) parts.push(item.citation.source_file);
       cite.textContent = parts.join(' · ');
+      let src = null;
+      if (item.citation.source_url) {
+        src = document.createElement('div');
+        src.className = 'cite';
+        const a = document.createElement('a');
+        a.href = item.citation.source_url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = '原始出处';
+        a.title = item.citation.source_url;
+        src.appendChild(a);
+        if (item.citation.date_basis && item.citation.date_basis !== '无') {
+          src.appendChild(document.createTextNode(` · 日期依据：${item.citation.date_basis}`));
+        }
+      }
       const text = document.createElement('div');
       text.className = 'text';
       text.textContent = item.text;
       const scores = document.createElement('div');
       scores.className = 'scores';
       scores.textContent = `RRF ${item.score} · dense ${item.dense_score} · bm25 ${item.bm25_score}`;
-      card.append(h, cite, text, scores);
+      card.append(h, cite, ...(src ? [src] : []), text, scores);
       resultsEl.appendChild(card);
     }
   } catch (err) {

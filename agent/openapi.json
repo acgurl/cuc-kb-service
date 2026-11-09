@@ -3,7 +3,7 @@
   "info": {
     "title": "CUC 知识库检索 API",
     "version": "1.0.0",
-    "description": "中国传媒大学校内规章制度与常见问题知识库。回答校内制度、办事流程、FAQ 类问题前先调用 /v1/search。短问题先改写成完整中文问题；no_answer=false 时基于原文回答；no_answer=true 时先改写成更完整、正式的问法重试一次。仍为 true 且 confidence ≥0.6 时，结果多为相关规定而非直接答案：只使用确实相关的原文，先说明“知识库中没有直接回答这个问题的内容”，再给出相关规定或办理渠道并标注出处，不得推断原文没写的具体数字、日期、地点或个人信息；仍为 true 且 confidence <0.6 时，说明知识库没有相关信息，不要基于结果作答。引用时使用 citation 中的 doc_title、doc_no、clause_no、page_start；citation.file_url 可直接打开原文并跳到 page_start 页，page_count 为文档总页数。"
+    "description": "中国传媒大学校内规章制度与常见问题知识库。回答校内制度、办事流程、FAQ 类问题前先调用 /v1/search。短问题先改写成完整中文问题；口语化或可能有多种叫法的问题可在同一次回复里并行发起多个不同问法的 /v1/search 调用，合并结果判断，任一找到直接回答即作答；no_answer=false 时基于原文回答；no_answer=true 时先改写成更完整、正式的问法重试一次。仍为 true 且 confidence ≥0.6 时，结果多为相关规定而非直接答案：只使用确实相关的原文，先说明“知识库中没有直接回答这个问题的内容”，再给出相关规定或办理渠道并标注出处，不得推断原文没写的具体数字、日期、地点或个人信息；仍为 true 且 confidence <0.6 时，说明知识库没有相关信息，不要基于结果作答。引用时使用 citation 中的 doc_title、doc_no、clause_no、page_start；citation.file_url 可直接打开原文并跳到 page_start 页，page_count 为文档总页数；citation.source_url 为原始出处链接（官网页面或 AIHub 文档），publish_date 为文档日期（可能仅年份，date_basis 说明依据），为空表示未标定，不得自行推断。"
   },
   "servers": [
     {
@@ -205,6 +205,18 @@
           "source_file": {
             "type": "string"
           },
+          "source_url": {
+            "type": "string",
+            "description": "原始出处链接（官网页面或 AIHub 文档）；未标定时为空。"
+          },
+          "publish_date": {
+            "type": "string",
+            "description": "文档日期，ISO 日期或仅年份；未标定时为空。"
+          },
+          "date_basis": {
+            "type": "string",
+            "description": "日期依据：发布日期/文内日期/源页日期/文件名日期/文号年份/标题年份/无。"
+          },
           "page_count": {
             "type": "integer",
             "description": "文档总页数。"
@@ -337,6 +349,18 @@
           "file_url": {
             "type": "string",
             "description": "原文 PDF 公网链接。"
+          },
+          "source_url": {
+            "type": "string",
+            "description": "原始出处链接；未标定时为空。"
+          },
+          "publish_date": {
+            "type": "string",
+            "description": "文档日期，ISO 日期或仅年份；未标定时为空。"
+          },
+          "date_basis": {
+            "type": "string",
+            "description": "日期依据。"
           }
         }
       },
@@ -363,6 +387,18 @@
           "file_url": {
             "type": "string",
             "description": "原文 PDF 公网链接。"
+          },
+          "source_url": {
+            "type": "string",
+            "description": "原始出处链接；未标定时为空。"
+          },
+          "publish_date": {
+            "type": "string",
+            "description": "文档日期，ISO 日期或仅年份；未标定时为空。"
+          },
+          "date_basis": {
+            "type": "string",
+            "description": "日期依据。"
           },
           "chunks": {
             "type": "array",

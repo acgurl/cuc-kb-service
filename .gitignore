@@ -6,12 +6,16 @@
 # Runtime data and generated indexes
 data/
 data.bak*/
+data-v*/
+batch-qwen37*/
 docs/
 docs-new*/
 qdrant_storage/
 .cache/
 .venv*/
 venv/
+tmp-*.py
+upload_pdfs_v3_failed.json
 
 # Logs and backups
 *.log
@@ -42,4 +46,7 @@ Thumbs.db
 
 # Local working files (see HANDOFF.md)
 eval/heldout/_candidates.txt
+eval/heldout/_candidates_view.txt
+eval/heldout/_inventory_v3.tsv
+eval/heldout/_peek*.txt
 eval/ab/results_deploycheck.json

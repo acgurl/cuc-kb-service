@@ -1,0 +1,1178 @@
+{
+ "summary": {
+  "tag": "qwen37_v3_live",
+  "curated": 87,
+  "hit@1": 75,
+  "hit@3": 81,
+  "hit@5": 83,
+  "mrr": 0.9023,
+  "answered": 85,
+  "no_answer_rejected": {
+   "heldout": 9,
+   "strict": 43
+  },
+  "no_answer_totals": {
+   "heldout": 10,
+   "strict": 45
+  },
+  "partial_refused": 7,
+  "partial_total": 10,
+  "latency_p50_ms": 1770,
+  "latency_p95_ms": 2935
+ },
+ "curated_rows": [
+  {
+   "id": "h01",
+   "query": "出租车能直接开进学校里吗？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1177,
+   "top_title": "中传保工字〔2014〕26号_关于印发《中国传媒大学校园治安管理规定》（修订）等8个安全稳定工作制度的通知_2014-04-23"
+  },
+  {
+   "id": "h02",
+   "query": "拿政府奖学金的留学生本科生想转去别的学校可以吗？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1874,
+   "top_title": "中传教字〔2025〕196号_中国传媒大学国际本科生学籍管理实施细则_2025-11-18"
+  },
+  {
+   "id": "h03",
+   "query": "留学生入学不买来华留学保险会怎样？",
+   "rank": 2,
+   "no_answer": false,
+   "took_ms": 2261,
+   "top_title": "教育部国际合作与交流司关于印发《高等学校要求外国留学生购买保险暂行规定》的通知"
+  },
+  {
+   "id": "h04",
+   "query": "专业学位博士的选题报告算几个学分？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1385,
+   "top_title": "中传研字〔2026〕225号_中国传媒大学攻读专业学位博士研究生培养工作规定_2026-08-27"
+  },
+  {
+   "id": "h05",
+   "query": "励志奖学金学院初审名单要公示几天？",
+   "rank": null,
+   "no_answer": false,
+   "took_ms": 1276,
+   "top_title": "2021年 中国传媒大学学生规章制度汇编"
+  },
+  {
+   "id": "h06",
+   "query": "评优秀本科生荣誉称号对体测成绩有什么要求？",
+   "rank": 1,
+   "no_answer": true,
+   "took_ms": 1620,
+   "top_title": "中传学字〔2024〕197号_中国传媒大学优秀本科生荣誉称号评选办法（试行）_2024-08-12"
+  },
+  {
+   "id": "h07",
+   "query": "2024年中国画博士班什么时候报名？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1748,
+   "top_title": "20240502中国传媒大学2024年中国画博士班招生简章.docx_view"
+  },
+  {
+   "id": "h08",
+   "query": "博士考试模拟练习系统的准考证号填什么？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1528,
+   "top_title": "2025年博士-中国传媒大学2025年博士学位研究生招生考试初试考生须知.docx_view"
+  },
+  {
+   "id": "h09",
+   "query": "用Outlook收学校邮箱，收件服务器地址填什么？",
+   "rank": 1,
+   "no_answer": true,
+   "took_ms": 1475,
+   "top_title": "@cuc.edu.cn账户添加（Outlook pop3设置）.docx_view"
+  },
+  {
+   "id": "h10",
+   "query": "在外地成立校友会至少要多少个会员？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1474,
+   "top_title": "【融合门户】服务_国内交流与合作处（校友工作办公室）_无链接.docx_view"
+  },
+  {
+   "id": "h11",
+   "query": "就业推荐表丢了去哪补办？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1324,
+   "top_title": "【融合门户】服务_学生工作部(处)(武装部)_无链接.docx_view"
+  },
+  {
+   "id": "h12",
+   "query": "去档案科办学生档案要提前多久预约？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1281,
+   "top_title": "【融合门户】服务_学生工作部(处)(武装部)_有链接.docx_view"
+  },
+  {
+   "id": "h13",
+   "query": "实验室建设项目验收申请去哪个办公室办？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1486,
+   "top_title": "【融合门户】服务_实验室与设备管理处_有链接.docx_view"
+  },
+  {
+   "id": "h14",
+   "query": "转专业能报几个志愿？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1206,
+   "top_title": "【通知】关于启动2025年本科生转专业报名工作的通知"
+  },
+  {
+   "id": "h15",
+   "query": "教职工去世后家属申请生活困难补助要交哪些材料？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1409,
+   "top_title": "中传人字〔2017〕367号_中国传媒大学教职工遗属生活困难补助管理办法_2017-12-28"
+  },
+  {
+   "id": "h16",
+   "query": "老师调走批下来以后多久要办完手续？",
+   "rank": 4,
+   "no_answer": false,
+   "took_ms": 2893,
+   "top_title": "中国传媒大学调出人员暂行规定"
+  },
+  {
+   "id": "h17",
+   "query": "想来中传做国内访问学者，申请表什么时候寄过去？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1766,
+   "top_title": "中传人字〔2017〕378号_中国传媒大学接受国内访问学者管理办法_2017-12-29"
+  },
+  {
+   "id": "h18",
+   "query": "待聘人员去别的单位试用，试用期多长？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2674,
+   "top_title": "中传人字〔2017〕379号_中国传媒大学待聘人员管理办法_2017-12-29"
+  },
+  {
+   "id": "h19",
+   "query": "学校出钱读博，回来没满服务期就走要赔多少？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1519,
+   "top_title": "中传人字〔2017〕384号_中国传媒大学教师学历学位进修暂行规定_2017-12-29"
+  },
+  {
+   "id": "h20",
+   "query": "委托评审的职称在校内公示几天？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2768,
+   "top_title": "中传人字〔2017〕97号_中国传媒大学实行社会化及委托评审系列评审工作实施办法（试行）_2017-04-26"
+  },
+  {
+   "id": "h21",
+   "query": "申请资助去国外开学术会议，要提前多久交材料？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2169,
+   "top_title": "中传人字〔2018〕10号_中国传媒大学资助教师参加境外国际学术会议暂行办法_2018-01-03"
+  },
+  {
+   "id": "h22",
+   "query": "在职老师怎么办残疾证？",
+   "rank": 2,
+   "no_answer": false,
+   "took_ms": 2200,
+   "top_title": "人事工作回答-202605.doc_view"
+  },
+  {
+   "id": "h23",
+   "query": "一年病假超过半年还参加年度考核吗？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1711,
+   "top_title": "中传人字〔2020〕132号_中国传媒大学专任教师年度目标考核管理办法_2020-07-02"
+  },
+  {
+   "id": "h24",
+   "query": "编外人员占编制按什么系数算？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1928,
+   "top_title": "中传人字〔2019〕320号_中国传媒大学编外用工人员管理办法 (试行)_2019-12-20"
+  },
+  {
+   "id": "h25",
+   "query": "参编人员和学校有劳动纠纷怎么处理？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1269,
+   "top_title": "中传人字〔2019〕319号_中国传媒大学参照事业编制管理人员聘用与管理办法_2019-12-20"
+  },
+  {
+   "id": "h26",
+   "query": "副科干满几年能聘正科？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1185,
+   "top_title": "中传人字〔2019〕321号_中国传媒大学科级干部聘任管理办法_2019-12-20"
+  },
+  {
+   "id": "h27",
+   "query": "金核桃计划中途考核不过可以申请延期吗？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1738,
+   "top_title": "中传人字〔2021〕298号_中国传媒大学“金核桃”人才支持计划实施办法_2021-12-01"
+  },
+  {
+   "id": "h28",
+   "query": "以前公派出国过，多久以后能再申请青年骨干教师出国研修？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 3095,
+   "top_title": "中传人字〔2024〕188号_中国传媒大学青年骨干教师出国研修项目与国家留学基金委合作项目实施办法_2024-07-31"
+  },
+  {
+   "id": "h29",
+   "query": "多少人以上的大型活动需要做风险评估？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2045,
+   "top_title": "中传保卫字〔2015〕86号_中国传媒大学重大事项风险评估实施办法_2015-05-13"
+  },
+  {
+   "id": "h30",
+   "query": "校内着火了保卫处的报警电话是多少？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 3271,
+   "top_title": "中传保工字〔2008〕9号_关于印发《中国传媒大学校园治安管理规定》等二十个安全稳定工作制度的通知_2008-01-24"
+  },
+  {
+   "id": "h31",
+   "query": "高层次人才的人才津贴是怎么发的？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1338,
+   "top_title": "中传党字〔2019〕182号_中国传媒大学高层次人才遴选管理办法（试行）_2019-12-11"
+  },
+  {
+   "id": "h32",
+   "query": "办公室座机每月话费最多能报多少？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1763,
+   "top_title": "中传后勤字〔2008〕97号_中国传媒大学办公电话管理办法"
+  },
+  {
+   "id": "h33",
+   "query": "家属院装修要交多少押金？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1256,
+   "top_title": "中传后勤字〔2019〕107号_中国传媒大学家属区管理办法(试行)_2019-05-21"
+  },
+  {
+   "id": "h34",
+   "query": "刚入学还没满一学期能转学吗？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1672,
+   "top_title": "中传学字〔2017〕254号_中国传媒大学学生管理规定"
+  },
+  {
+   "id": "h35",
+   "query": "退学决定书联系不上学生本人怎么送达？",
+   "rank": null,
+   "no_answer": false,
+   "took_ms": 1412,
+   "top_title": "2021年 中国传媒大学学生规章制度汇编"
+  },
+  {
+   "id": "h36",
+   "query": "学院多久要查一次实验室安全？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1428,
+   "top_title": "中传实验字〔2018〕306号_中国传媒大学实验室安全管理办法_2018-12-29"
+  },
+  {
+   "id": "h37",
+   "query": "学校科协的秘书处设在哪个部门？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2702,
+   "top_title": "中传政字〔2023〕76号_中国传媒大学科学技术协会章程_2023-05-23"
+  },
+  {
+   "id": "h38",
+   "query": "食堂原材料涨价多少学校会启动价格补贴资金？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1707,
+   "top_title": "中传政字〔2025〕197号_中国传媒大学学生食堂价格平抑资金管理办法（修订）_2025-11-24"
+  },
+  {
+   "id": "h39",
+   "query": "评年度消防安全先进集体有什么硬性条件？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2424,
+   "top_title": "中传政字〔2025〕50号_中国传媒大学消防安全工作奖惩办法（试行）_2025-03-25"
+  },
+  {
+   "id": "h40",
+   "query": "校办企业的董事会秘书要不要列席董事会？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1538,
+   "top_title": "中传教发字〔2022〕18号_中国传媒大学所属企业董事会建设规定（2021年修订）_2022-01-13"
+  },
+  {
+   "id": "h41",
+   "query": "校属企业领导被降职，绩效年薪扣多少？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1594,
+   "top_title": "中传教发字〔2022〕20号_中国传媒大学所属企业负责人廉洁从业有关规定（2021年修订）_2022-01-13"
+  },
+  {
+   "id": "h42",
+   "query": "企业收到审计报告初稿后几天内要反馈意见？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2049,
+   "top_title": "中传教发字〔2022〕22号_中国传媒大学所属企业审计工作管理办法（2021年修订）_2022-01-13"
+  },
+  {
+   "id": "h43",
+   "query": "教学成果奖一项最多能署几个主要完成人？",
+   "rank": 2,
+   "no_answer": false,
+   "took_ms": 1604,
+   "top_title": "中国传媒大学教学成果评审及奖励办法（修订）"
+  },
+  {
+   "id": "h44",
+   "query": "校外实习基地的合作协议一般签几年？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1481,
+   "top_title": "中传教字〔2014〕118号_中国传媒大学实习教学基地建设与管理规定（修订）_2014-05-30"
+  },
+  {
+   "id": "h45",
+   "query": "出国交换时对方收学费的话，我们学校的学费还要交多少？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2186,
+   "top_title": "中传教字〔2018〕154号_中国传媒大学本科学生境外交流学习管理规定（修订）_2018-06-28"
+  },
+  {
+   "id": "h46",
+   "query": "国外交换课程拿了B，换算成百分制是多少分？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1643,
+   "top_title": "中传教字〔2018〕154号_中国传媒大学本科学生境外交流学习管理规定（修订）_2018-06-28"
+  },
+  {
+   "id": "h47",
+   "query": "创新创业学分一般什么时候录进系统？",
+   "rank": 2,
+   "no_answer": false,
+   "took_ms": 1466,
+   "top_title": "中国传媒大学本科生创新创业学分认定管理办法（试行）"
+  },
+  {
+   "id": "h48",
+   "query": "系主任出国超过多久会被免职？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2013,
+   "top_title": "中传教字〔2019〕282号_中国传媒大学系（部）设置及负责人聘任管理办法_2019-11-11"
+  },
+  {
+   "id": "h49",
+   "query": "教改项目验收不合格会有什么后果？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1815,
+   "top_title": "中传教字〔2021〕182号_中国传媒大学教育教学改革项目管理办法_2021-07-22"
+  },
+  {
+   "id": "h50",
+   "query": "论文抄袭拿到的学位证会被收回吗？",
+   "rank": null,
+   "no_answer": false,
+   "took_ms": 1366,
+   "top_title": "2023修学指南电子版"
+  },
+  {
+   "id": "h51",
+   "query": "高职生生病考不了试怎么申请缓考？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1543,
+   "top_title": "中传教字〔2021〕212号_中国传媒大学高等职业教育学生学籍管理规定"
+  },
+  {
+   "id": "h52",
+   "query": "校办企业超发工资不到10%，负责人绩效扣多少？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1490,
+   "top_title": "中传校企字〔2020〕99号_中国传媒大学所属企业工资总额管理办法_2020-06-29"
+  },
+  {
+   "id": "h53",
+   "query": "退休老师选的就近医院一年能换几次？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1699,
+   "top_title": "中传校医字〔2005〕167号_中国传媒大学离退休人员就近医疗管理规定"
+  },
+  {
+   "id": "h54",
+   "query": "生完孩子30天内办独生子女证有补助吗？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1494,
+   "top_title": "中传校医字〔2008〕87号_中国传媒大学计划生育奖励待遇有关规定.docx_view"
+  },
+  {
+   "id": "h55",
+   "query": "发现有人科研造假可以向哪里举报？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2664,
+   "top_title": "中传科研字〔2016〕19号_中国传媒大学科研信用管理档案制度（试行）_2016-02-26"
+  },
+  {
+   "id": "h56",
+   "query": "独立实体科研机构刻章用章需要依托单位审核吗？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2138,
+   "top_title": "中传科研字〔2020〕151号_中国传媒大学科研机构印章管理办法_2020-07-14"
+  },
+  {
+   "id": "h57",
+   "query": "校级科研项目每年几月开始申报？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1555,
+   "top_title": "中传科研字（2019）151号_中国传媒大学基本科研业务费项目规划_2019-07-01"
+  },
+  {
+   "id": "h58",
+   "query": "什么叫小金库？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1274,
+   "top_title": "中传财字〔2008〕88号_中国传媒大学关于严禁私设“小金库”的规定"
+  },
+  {
+   "id": "h59",
+   "query": "用基本科研业务费给校外临时人员发劳务费，每月最多多少？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1544,
+   "top_title": "中传财字〔2019〕196号_中国传媒大学科研校外劳务酬金管理办法(试行)_2019-07-25"
+  },
+  {
+   "id": "h60",
+   "query": "请正高职称专家来评审，一天评审费最多给多少？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1468,
+   "top_title": "中传财字〔2019〕196号_中国传媒大学科研校外劳务酬金管理办法(试行)_2019-07-25"
+  },
+  {
+   "id": "h61",
+   "query": "二级教授用科研经费出差，住宿标准按哪一档？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1629,
+   "top_title": "中传财字〔2020〕108号_关于印发《中国传媒大学差旅费管理办法》《中国传媒大学科研经费报销实施细则》补充规定的通知"
+  },
+  {
+   "id": "h62",
+   "query": "学校能开几个基本存款账户？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1796,
+   "top_title": "中传财字〔2022〕136号_中国传媒大学银行账户管理办法（修订）_2022-06-29"
+  },
+  {
+   "id": "h63",
+   "query": "出国期间临时决定去另一个城市，城市间交通费能报吗？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1548,
+   "top_title": "中传财字〔2023〕132号_中国传媒大学因公临时出国（境）经费管理办法（2023年修订）_2023-08-01"
+  },
+  {
+   "id": "h64",
+   "query": "学院想在校外办培训，需要谁批准？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1369,
+   "top_title": "中传财字〔2023〕184号_中国传媒大学培训费管理办法 （修订）_2023-10-18"
+  },
+  {
+   "id": "h65",
+   "query": "学校开管理类会议最长能开几天？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2935,
+   "top_title": "中传财字〔2023〕220号_中国传媒大学会议费管理办法（2023年修订）_2023-11-23"
+  },
+  {
+   "id": "h66",
+   "query": "库存现金限额一年能调几次？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2137,
+   "top_title": "中传财字〔2023〕39号_中国传媒大学现金管理办法_2023-03-28"
+  },
+  {
+   "id": "h67",
+   "query": "学校的收费项目没公示能收钱吗？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 3089,
+   "top_title": "中传财字〔2024〕229号_中国传媒大学收费管理办法（试行）_2024-10-12"
+  },
+  {
+   "id": "h68",
+   "query": "绩效拨款项目里的科目预算能调剂多少比例？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2022,
+   "top_title": "中传财字〔2024〕313号_中国传媒大学管理改革等绩效拨款资金管理办法_2024-12-30"
+  },
+  {
+   "id": "h69",
+   "query": "前一笔借款没还清还能再借吗？",
+   "rank": 4,
+   "no_answer": false,
+   "took_ms": 1866,
+   "top_title": "中传财字 [2019] 175号《中国传媒大学科研经费报销实施细则》.docx_view"
+  },
+  {
+   "id": "h70",
+   "query": "持残疾人证的教职工每年补贴多少钱？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1892,
+   "top_title": "人事工作回答-202605.doc_view"
+  },
+  {
+   "id": "h71",
+   "query": "当博士后合作导师，离退休至少还要有几年？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1950,
+   "top_title": "人事工作回答-202605.doc_view"
+  },
+  {
+   "id": "h72",
+   "query": "党委宣传部在哪栋楼办公？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1523,
+   "top_title": "党委宣传部部门概况.docx_view"
+  },
+  {
+   "id": "h73",
+   "query": "教职工兼职审批找哪个电话？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1517,
+   "top_title": "党委教师工作部基本信息（用于问道中传-教工部知识库）.docx_view"
+  },
+  {
+   "id": "h74",
+   "query": "公共实践场馆批量预约最多能选多少个时间段？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1512,
+   "top_title": "公共实践场馆预约系统正式上线.docx_view"
+  },
+  {
+   "id": "h75",
+   "query": "体育场馆约了不去会怎么样？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2186,
+   "top_title": "体育场馆预约注意事项.docx_view"
+  },
+  {
+   "id": "h76",
+   "query": "研究生也要参加课程期末评价吗？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2266,
+   "top_title": "学生版—课程质量评价Q&A"
+  },
+  {
+   "id": "h77",
+   "query": "老师用课堂有我遇到问题打哪个电话？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1771,
+   "top_title": "教师版—课程质量评价Q&A"
+  },
+  {
+   "id": "h78",
+   "query": "学科规划处的发展规划科在哪个办公室？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1906,
+   "top_title": "学科建设与发展规划处职责.docx_view"
+  },
+  {
+   "id": "h79",
+   "query": "社团搞活动可以借教室吗？",
+   "rank": 2,
+   "no_answer": false,
+   "took_ms": 1228,
+   "top_title": "2021年 中国传媒大学学生规章制度汇编"
+  },
+  {
+   "id": "h80",
+   "query": "北京户口的新老师无犯罪记录证明怎么开？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1816,
+   "top_title": "保卫字〔2023〕6 号 关于规范出具无犯罪记录证明和政审材料审核盖章办法的通知.docx_view"
+  },
+  {
+   "id": "h81",
+   "query": "校园网怎么设置才能不用每次都输密码登录？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1762,
+   "top_title": "信息化服务新生指南.docx_view"
+  },
+  {
+   "id": "h82",
+   "query": "公费医疗报销的咨询电话是多少？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1821,
+   "top_title": "校医院关于2025--2026学年第二学期公费医疗报销工作安排的通知(单页).docx_view"
+  },
+  {
+   "id": "h83",
+   "query": "在校外怎么访问学校内网的资源？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2782,
+   "top_title": "校外VPN.docx_view"
+  },
+  {
+   "id": "h84",
+   "query": "校史馆是哪年开放的？",
+   "rank": null,
+   "no_answer": false,
+   "took_ms": 1414,
+   "top_title": "2021年 中国传媒大学学生规章制度汇编"
+  },
+  {
+   "id": "h85",
+   "query": "上传人脸识别照片有什么要求？",
+   "rank": 2,
+   "no_answer": false,
+   "took_ms": 2105,
+   "top_title": "临时人员中传信息化服务指南"
+  },
+  {
+   "id": "h86",
+   "query": "签报的附件超过多少页要送纸质材料？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 2377,
+   "top_title": "签报工作提醒"
+  },
+  {
+   "id": "h87",
+   "query": "涉密的事情怎么走签报？",
+   "rank": 1,
+   "no_answer": false,
+   "took_ms": 1838,
+   "top_title": "签报工作提醒"
+  }
+ ],
+ "no_answer_rows": [
+  {
+   "id": "hn01",
+   "kind": "heldout",
+   "query": "校医院能打九价HPV疫苗吗？",
+   "no_answer": true,
+   "took_ms": 1482
+  },
+  {
+   "id": "hn02",
+   "kind": "heldout",
+   "query": "学校健身房的私教课多少钱？",
+   "no_answer": true,
+   "took_ms": 2017
+  },
+  {
+   "id": "hn03",
+   "kind": "heldout",
+   "query": "毕业典礼的学位服在哪里租？",
+   "no_answer": true,
+   "took_ms": 1446
+  },
+  {
+   "id": "hn04",
+   "kind": "heldout",
+   "query": "学校游泳馆的年卡多少钱？",
+   "no_answer": true,
+   "took_ms": 1960
+  },
+  {
+   "id": "hn05",
+   "kind": "heldout",
+   "query": "放假期间学生宿舍能把猫寄养在宿管那里吗？",
+   "no_answer": true,
+   "took_ms": 2143
+  },
+  {
+   "id": "hn07",
+   "kind": "heldout",
+   "query": "校内打印店几点关门？",
+   "no_answer": true,
+   "took_ms": 1171
+  },
+  {
+   "id": "hn08",
+   "kind": "heldout",
+   "query": "学校有没有自己的附属医院？",
+   "no_answer": false,
+   "took_ms": 3301
+  },
+  {
+   "id": "hn09",
+   "kind": "heldout",
+   "query": "冬天学校组织去滑雪吗？",
+   "no_answer": true,
+   "took_ms": 2873
+  },
+  {
+   "id": "hn11",
+   "kind": "heldout",
+   "query": "无偿献血有什么奖励？",
+   "no_answer": true,
+   "took_ms": 2374
+  },
+  {
+   "id": "hn12",
+   "kind": "heldout",
+   "query": "选修课抢课有什么技巧？",
+   "no_answer": true,
+   "took_ms": 2304
+  },
+  {
+   "id": "na02",
+   "kind": "strict",
+   "query": "宿舍楼下的自动售货机坏了吞钱找谁退？",
+   "no_answer": true,
+   "took_ms": 2142
+  },
+  {
+   "id": "na06",
+   "kind": "strict",
+   "query": "眼镜坏了学校附近有配眼镜的地方吗？",
+   "no_answer": true,
+   "took_ms": 2114
+  },
+  {
+   "id": "na07",
+   "kind": "strict",
+   "query": "学校里哪里有工商银行的ATM机？",
+   "no_answer": true,
+   "took_ms": 1979
+  },
+  {
+   "id": "na08",
+   "kind": "strict",
+   "query": "在食堂丢了耳机去哪里认领？",
+   "no_answer": true,
+   "took_ms": 1686
+  },
+  {
+   "id": "na14",
+   "kind": "strict",
+   "query": "校园里有流浪猫救助社团吗？",
+   "no_answer": true,
+   "took_ms": 1726
+  },
+  {
+   "id": "na15",
+   "kind": "strict",
+   "query": "四六级考试的报名费是多少钱？",
+   "no_answer": false,
+   "took_ms": 1770
+  },
+  {
+   "id": "na18",
+   "kind": "strict",
+   "query": "计算机二级考试学校是考点吗？",
+   "no_answer": true,
+   "took_ms": 1430
+  },
+  {
+   "id": "na19",
+   "kind": "strict",
+   "query": "研究生宿舍可以申请换成单人间吗？",
+   "no_answer": true,
+   "took_ms": 1350
+  },
+  {
+   "id": "na21",
+   "kind": "strict",
+   "query": "本科生毕业照统一拍摄是哪天？",
+   "no_answer": true,
+   "took_ms": 1597
+  },
+  {
+   "id": "na24",
+   "kind": "strict",
+   "query": "教职工子女上北京市重点高中学校有指标吗？",
+   "no_answer": true,
+   "took_ms": 1720
+  },
+  {
+   "id": "na28",
+   "kind": "strict",
+   "query": "校园马拉松比赛怎么报名？",
+   "no_answer": true,
+   "took_ms": 1595
+  },
+  {
+   "id": "na29",
+   "kind": "strict",
+   "query": "学校的心理咨询可以线上视频咨询吗？",
+   "no_answer": true,
+   "took_ms": 1944
+  },
+  {
+   "id": "na30",
+   "kind": "strict",
+   "query": "转专业考试的历年真题在哪里能找到？",
+   "no_answer": true,
+   "took_ms": 1437
+  },
+  {
+   "id": "na31",
+   "kind": "strict",
+   "query": "教师职称评审答辩的PPT有模板吗？",
+   "no_answer": true,
+   "took_ms": 1645
+  },
+  {
+   "id": "na33",
+   "kind": "strict",
+   "query": "北京市应届毕业生落户的积分标准是什么？",
+   "no_answer": true,
+   "took_ms": 1627
+  },
+  {
+   "id": "na36",
+   "kind": "strict",
+   "query": "个税专项附加扣除里子女教育每月扣多少？",
+   "no_answer": true,
+   "took_ms": 1985
+  },
+  {
+   "id": "na37",
+   "kind": "strict",
+   "query": "北京住房公积金贷款最高能贷多少？",
+   "no_answer": true,
+   "took_ms": 1867
+  },
+  {
+   "id": "na39",
+   "kind": "strict",
+   "query": "出国留学的签证面签要准备什么材料？",
+   "no_answer": true,
+   "took_ms": 2161
+  },
+  {
+   "id": "na44",
+   "kind": "strict",
+   "query": "2026年11月的党委常委会决定了哪些事项？",
+   "no_answer": true,
+   "took_ms": 1763
+  },
+  {
+   "id": "na45",
+   "kind": "strict",
+   "query": "这学期校运动会是几号开？",
+   "no_answer": false,
+   "took_ms": 1726
+  },
+  {
+   "id": "na46",
+   "kind": "strict",
+   "query": "今年元旦晚会在哪个礼堂办？",
+   "no_answer": true,
+   "took_ms": 1613
+  },
+  {
+   "id": "na48",
+   "kind": "strict",
+   "query": "明天上午图书馆会停电吗？",
+   "no_answer": true,
+   "took_ms": 1886
+  },
+  {
+   "id": "na49",
+   "kind": "strict",
+   "query": "第35期中传校报头版讲的是什么？",
+   "no_answer": true,
+   "took_ms": 2099
+  },
+  {
+   "id": "na51",
+   "kind": "strict",
+   "query": "我上学期高数考了多少分？",
+   "no_answer": true,
+   "took_ms": 1863
+  },
+  {
+   "id": "na53",
+   "kind": "strict",
+   "query": "我的报销单现在审批到哪一步了？",
+   "no_answer": true,
+   "took_ms": 1391
+  },
+  {
+   "id": "na55",
+   "kind": "strict",
+   "query": "明天北京会下雨吗？",
+   "no_answer": true,
+   "took_ms": 1054
+  },
+  {
+   "id": "na56",
+   "kind": "strict",
+   "query": "红烧肉怎么做才好吃？",
+   "no_answer": true,
+   "took_ms": 2588
+  },
+  {
+   "id": "na57",
+   "kind": "strict",
+   "query": "Python里怎么把列表倒序？",
+   "no_answer": true,
+   "took_ms": 1703
+  },
+  {
+   "id": "na58",
+   "kind": "strict",
+   "query": "比特币现在多少钱一个？",
+   "no_answer": true,
+   "took_ms": 1701
+  },
+  {
+   "id": "na59",
+   "kind": "strict",
+   "query": "推荐几部好看的科幻电影",
+   "no_answer": true,
+   "took_ms": 3082
+  },
+  {
+   "id": "na60",
+   "kind": "strict",
+   "query": "猫咪不吃饭是生病了吗？",
+   "no_answer": true,
+   "took_ms": 2016
+  },
+  {
+   "id": "na61",
+   "kind": "strict",
+   "query": "iPhone怎么截长图？",
+   "no_answer": true,
+   "took_ms": 1101
+  },
+  {
+   "id": "na62",
+   "kind": "strict",
+   "query": "去云南旅游七天怎么安排路线？",
+   "no_answer": true,
+   "took_ms": 1824
+  },
+  {
+   "id": "na63",
+   "kind": "strict",
+   "query": "学校有没有能免费借雨伞的地方？",
+   "no_answer": true,
+   "took_ms": 1714
+  },
+  {
+   "id": "na64",
+   "kind": "strict",
+   "query": "校园里哪里能买到鲜花？",
+   "no_answer": true,
+   "took_ms": 1867
+  },
+  {
+   "id": "na65",
+   "kind": "strict",
+   "query": "学校的乒乓球台需要自己带球拍吗？",
+   "no_answer": true,
+   "took_ms": 1544
+  },
+  {
+   "id": "na66",
+   "kind": "strict",
+   "query": "学校附近有没有便宜的打印复印店推荐？",
+   "no_answer": true,
+   "took_ms": 1545
+  },
+  {
+   "id": "na69",
+   "kind": "strict",
+   "query": "教职工的年度体检能带家属一起去吗？",
+   "no_answer": true,
+   "took_ms": 3273
+  },
+  {
+   "id": "na71",
+   "kind": "strict",
+   "query": "校医院可以开具新冠疫苗接种证明吗？",
+   "no_answer": true,
+   "took_ms": 3169
+  },
+  {
+   "id": "na73",
+   "kind": "strict",
+   "query": "北京大学的博士生每月补助是多少？",
+   "no_answer": true,
+   "took_ms": 2816
+  },
+  {
+   "id": "na74",
+   "kind": "strict",
+   "query": "教育部今年的“强基计划”招哪些专业？",
+   "no_answer": true,
+   "took_ms": 2579
+  },
+  {
+   "id": "na76",
+   "kind": "strict",
+   "query": "这周三下午的全校教职工大会在哪开？",
+   "no_answer": true,
+   "took_ms": 2211
+  },
+  {
+   "id": "na78",
+   "kind": "strict",
+   "query": "我的四级成绩什么时候能查？",
+   "no_answer": true,
+   "took_ms": 2586
+  },
+  {
+   "id": "na79",
+   "kind": "strict",
+   "query": "怎么提高手机电池续航？",
+   "no_answer": true,
+   "took_ms": 2706
+  },
+  {
+   "id": "na80",
+   "kind": "strict",
+   "query": "世界杯下一届在哪个国家举办？",
+   "no_answer": true,
+   "took_ms": 2092
+  },
+  {
+   "id": "na11",
+   "kind": "partial",
+   "query": "期末周通宵自习室在哪？",
+   "no_answer": true,
+   "took_ms": 1760
+  },
+  {
+   "id": "na16",
+   "kind": "partial",
+   "query": "教师资格证面试学校统一组织培训吗？",
+   "no_answer": true,
+   "took_ms": 2026
+  },
+  {
+   "id": "na22",
+   "kind": "partial",
+   "query": "留学生的汉语言补习班怎么报名？",
+   "no_answer": false,
+   "took_ms": 2005
+  },
+  {
+   "id": "na26",
+   "kind": "partial",
+   "query": "实验室的3D打印机怎么预约使用？",
+   "no_answer": false,
+   "took_ms": 2068
+  },
+  {
+   "id": "na43",
+   "kind": "partial",
+   "query": "上周五新闻学院学术讲座的课件能下载吗？",
+   "no_answer": true,
+   "took_ms": 2520
+  },
+  {
+   "id": "na50",
+   "kind": "partial",
+   "query": "我的校园卡余额还剩多少？",
+   "no_answer": false,
+   "took_ms": 1829
+  },
+  {
+   "id": "na52",
+   "kind": "partial",
+   "query": "我的奖学金什么时候到账？",
+   "no_answer": true,
+   "took_ms": 1810
+  },
+  {
+   "id": "na54",
+   "kind": "partial",
+   "query": "我的宿舍分到了哪栋楼？",
+   "no_answer": true,
+   "took_ms": 1628
+  },
+  {
+   "id": "na68",
+   "kind": "partial",
+   "query": "研究生毕业论文查重可以免费查几次？",
+   "no_answer": true,
+   "took_ms": 1779
+  },
+  {
+   "id": "na77",
+   "kind": "partial",
+   "query": "今年春季学期的期末考试安排表出来了吗？",
+   "no_answer": true,
+   "took_ms": 2084
+  }
+ ]
+}

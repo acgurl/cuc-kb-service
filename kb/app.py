@@ -207,6 +207,9 @@ def document_chunks(doc_id: str, http_request: Request, user: dict = Depends(req
         "doc_id": doc_id,
         "page_count": kb.page_count(doc_id),
         "file_url": kb.file_url(doc_id),
+        "source_url": chunks[0].get("source_url", ""),
+        "publish_date": chunks[0].get("publish_date", ""),
+        "date_basis": chunks[0].get("date_basis", ""),
         "chunks": chunks,
     }
     _localize_file_url(payload, http_request)

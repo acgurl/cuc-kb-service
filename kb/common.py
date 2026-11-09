@@ -33,6 +33,23 @@ USER_AGENT = "Mozilla/5.0 (compatible; CUC-KnowledgeBase/0.1)"
 COLLECTION = _env("KB_COLLECTION", "cuc_kb")
 EMBED_MODEL = _env("KB_EMBED_MODEL", "BAAI/bge-small-zh-v1.5")
 QUERY_INSTRUCTION = "为这个句子生成表示以用于检索相关文章："
+
+# Query-side embedding provider. "fastembed" keeps the local model; the cloud
+# providers call an OpenAI-compatible /embeddings endpoint and must match the
+# model/dimension used to build the collection (see scripts/batch_embed.py).
+CLOUD_EMBED_PROVIDERS = ("openai", "cloud", "openai-compatible")
+EMBED_PROVIDER = _env("KB_EMBED_PROVIDER", "fastembed").lower()
+EMBED_API_BASE = _env("EMBED_API_BASE", "https://dashscope.aliyuncs.com").rstrip("/")
+EMBED_API_PATH = _env("EMBED_API_PATH", "/compatible-mode/v1/embeddings")
+EMBED_API_MODEL = _env("EMBED_API_MODEL", "qwen3.7-text-embedding")
+EMBED_API_KEY = _env("EMBED_API_KEY")
+EMBED_API_TIMEOUT = _env_float("EMBED_API_TIMEOUT", 10)
+EMBED_DIM = _env_int("KB_EMBED_DIM", 1024)
+# Applied to queries only; documents are embedded plain (asymmetric retrieval).
+EMBED_QUERY_INSTRUCT = _env(
+    "KB_EMBED_QUERY_INSTRUCT",
+    "Given a Chinese university regulation search query, retrieve relevant passages that answer the query",
+)
 API_TOKEN = _env("KB_API_TOKEN")
 PUBLIC_BASE_URL = _env("KB_PUBLIC_BASE_URL").rstrip("/")
 FILE_OBJECT_PREFIX = _env("KB_FILE_OBJECT_PREFIX", "cuc-kb/docs").strip("/")
@@ -64,6 +81,8 @@ RERANK_API_USER_AGENT = _env(
     "Mozilla/5.0 (compatible; CUC-KnowledgeBase/0.1; +https://cuc.edu.cn)",
 )
 RERANK_API_TIMEOUT = _env_float("RERANK_API_TIMEOUT", 3)
+# Same Bailian account serves rerank and embeddings unless overridden.
+EMBED_API_KEY = EMBED_API_KEY or RERANK_API_KEY
 # Rerank every query instead of only when the trigger heuristics fire.
 RERANK_ALWAYS = _env_bool("KB_RERANK_ALWAYS", False)
 

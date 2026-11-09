@@ -18,13 +18,22 @@ from kb.common import (
     ANSWERABILITY_OVERRIDE,
     CANDIDATE_LIMIT,
     CANDIDATE_POOL,
+    CLOUD_EMBED_PROVIDERS,
     CLOUD_RERANK_PROVIDERS,
     COLLECTION,
     CONTENT_ANSWERABILITY_MAX_CONF,
     COVERAGE_BONUS,
     COVERAGE_MAX_BONUS,
     DATA_DIR,
+    EMBED_API_BASE,
+    EMBED_API_KEY,
+    EMBED_API_MODEL,
+    EMBED_API_PATH,
+    EMBED_API_TIMEOUT,
+    EMBED_DIM,
     EMBED_MODEL,
+    EMBED_PROVIDER,
+    EMBED_QUERY_INSTRUCT,
     FASTEMBED_CACHE,
     GENERIC_CLOSE_MARGIN,
     GENERIC_RERANK_PENALTY,
@@ -199,6 +208,102 @@ def best_split(items, is_generic, score):
     return generic_best, specific_best
 
 
+class CloudEmbedder:
+    """Query-side encoder against an OpenAI-compatible /embeddings endpoint.
+
+    Mirrors CloudReranker's per-thread keep-alive connection: a fresh TCP+TLS
+    handshake to Beijing adds ~0.7 s per query. Documents are embedded offline
+    via scripts/batch_embed.py with the same model/dimension and no instruct.
+    """
+
+    def __init__(self, base, path, model, api_key, dim, instruct, timeout):
+        self.url = base.rstrip("/") + "/" + path.lstrip("/")
+        self.model = model
+        self.api_key = api_key
+        self.dim = dim
+        self.instruct = instruct
+        self.timeout = timeout
+        self._local = threading.local()
+
+    @classmethod
+    def from_env(cls):
+        return cls(
+            base=EMBED_API_BASE,
+            path=EMBED_API_PATH,
+            model=EMBED_API_MODEL,
+            api_key=EMBED_API_KEY,
+            dim=EMBED_DIM,
+            instruct=EMBED_QUERY_INSTRUCT,
+            timeout=EMBED_API_TIMEOUT,
+        )
+
+    def _connection(self, parts):
+        conn = getattr(self._local, "conn", None)
+        if conn is None or getattr(self._local, "netloc", None) != parts.netloc:
+            if conn is not None:
+                conn.close()
+            factory = (
+                http.client.HTTPSConnection if parts.scheme == "https" else http.client.HTTPConnection
+            )
+            conn = factory(parts.netloc, timeout=self.timeout)
+            self._local.conn, self._local.netloc = conn, parts.netloc
+        return conn
+
+    def _drop_connection(self):
+        conn = getattr(self._local, "conn", None)
+        if conn is not None:
+            conn.close()
+        self._local.conn = None
+
+    def embed(self, query: str):
+        payload = {
+            "model": self.model,
+            "input": query,
+            "dimensions": self.dim,
+            "encoding_format": "float",
+        }
+        if self.instruct:
+            payload["instruct"] = self.instruct
+        headers = {
+            "Content-Type": "application/json; charset=utf-8",
+            "Accept": "application/json",
+            "User-Agent": RERANK_API_USER_AGENT,
+        }
+        if self.api_key:
+            headers["Authorization"] = "Bearer " + self.api_key
+        parts = urlsplit(self.url)
+        path = parts.path + ("?" + parts.query if parts.query else "")
+        data = json.dumps(payload).encode("utf-8")
+        for attempt in range(2):
+            conn = self._connection(parts)
+            reused = conn.sock is not None
+            try:
+                conn.request("POST", path, body=data, headers=headers)
+                response = conn.getresponse()
+                body = response.read()
+            except TimeoutError:
+                self._drop_connection()
+                raise
+            except (http.client.HTTPException, OSError):
+                self._drop_connection()
+                if reused and attempt == 0:
+                    continue
+                raise
+            if response.will_close:
+                self._drop_connection()
+            if response.status >= 400:
+                detail = body.decode("utf-8", "ignore")[:300]
+                raise RuntimeError(f"HTTP {response.status}: {detail}")
+            parsed = json.loads(body.decode("utf-8"))
+            vector = np.asarray(parsed["data"][0]["embedding"], dtype=np.float32)
+            if vector.shape[0] != self.dim:
+                raise RuntimeError(
+                    f"embedding dim {vector.shape[0]} != KB_EMBED_DIM {self.dim}"
+                )
+            return vector / max(float(np.linalg.norm(vector)), 1e-12)
+        raise RuntimeError("embedding request failed after reconnect")
+
+
 class CloudReranker:
     def __init__(self, base, path, model, api_key, header, timeout):
         self.url = base.rstrip("/") + "/" + path.lstrip("/")
@@ -337,6 +442,7 @@ class KB:
         self.page_counts = {}
         self.bm25 = None
         self.model = None
+        self.cloud_embedder = None
         self.reranker = None
         self.cloud_reranker = None
         self.client = None
@@ -353,7 +459,16 @@ class KB:
         tokenized = [jieba.lcut_for_search(chunk["embed_text"]) for chunk in self.chunks]
         self.bm25 = BM25Okapi(tokenized) if tokenized else None
 
-        self.model = TextEmbedding(model_name=EMBED_MODEL, cache_dir=str(FASTEMBED_CACHE))
+        if EMBED_PROVIDER in CLOUD_EMBED_PROVIDERS:
+            if not EMBED_API_KEY:
+                raise RuntimeError("KB_EMBED_PROVIDER=cloud requires EMBED_API_KEY (or RERANK_API_KEY)")
+            self.cloud_embedder = CloudEmbedder.from_env()
+            print(
+                f"cloud embedder: {self.cloud_embedder.url} model={EMBED_API_MODEL} dim={EMBED_DIM}",
+                flush=True,
+            )
+        else:
+            self.model = TextEmbedding(model_name=EMBED_MODEL, cache_dir=str(FASTEMBED_CACHE))
         self._load_rerankers()
         self.client = qdrant_client(timeout=60)
         self.loaded_at = time.time()
@@ -414,6 +529,8 @@ class KB:
     # ---- helpers -----------------------------------------------------------
 
     def encode_query(self, query: str):
+        if self.cloud_embedder is not None:
+            return self.cloud_embedder.embed(query)
         with self.lock:
             try:
                 vector = list(self.model.query_embed(query))[0]
@@ -626,6 +743,9 @@ class KB:
             "page_end": chunk.get("page_end", 0),
             "section_path": chunk.get("section_path", []),
             "source_file": chunk.get("source_file", ""),
+            "source_url": chunk.get("source_url", ""),
+            "publish_date": chunk.get("publish_date", ""),
+            "date_basis": chunk.get("date_basis", ""),
             "page_count": self.page_count(chunk["doc_id"]),
             "file_url": self.file_url(chunk["doc_id"], chunk.get("page_start") or None),
         }
@@ -759,6 +879,9 @@ class KB:
                     "department": first.get("department", ""),
                     "assistants": first.get("assistants", []),
                     "source_file": first.get("source_file", ""),
+                    "source_url": first.get("source_url", ""),
+                    "publish_date": first.get("publish_date", ""),
+                    "date_basis": first.get("date_basis", ""),
                     "pages": self.page_count(doc_id),
                     "chunks": len(chunks),
                     "file_url": self.file_url(doc_id),

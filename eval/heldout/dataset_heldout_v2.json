@@ -1,0 +1,1376 @@
+{
+ "meta": {
+  "name": "CUC KB held-out v2 (official-site corpus)",
+  "created": "2026-11-07",
+  "corpus": "data-v3 (cuc_kb_v3, 2247 docs / 49571 chunks)",
+  "note": "事实题针对 2026-11-07 官网批次新增文档、问点均未被 v1-v5/heldout-v1 使用；口语化改写；关键词逐条在 active chunk 原文核验；个别规章与旧语料同名同文（官网重复采集，如创新创业学分/境外交流），期望命中任一副本均计对；引用题页码取自含关键词 chunk 的 page_start；未参与任何调参"
+ },
+ "curated": [
+  {
+   "id": "v01",
+   "dept": "国有资产管理处",
+   "query": "批量买低值易耗品，多少台件以上要按固定资产管理？",
+   "expected_docs": [
+    "低值易耗品管理办法"
+   ],
+   "keywords": [
+    "批量50台件以上"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "v02",
+   "dept": "国有资产管理处",
+   "query": "单位给职工配笔记本电脑，数量上限按实有人数的多少算？",
+   "expected_docs": [
+    "通用办公设备及家具配置标准"
+   ],
+   "keywords": [
+    "便携式计算机配置数量上限为单位编制内实有人数的50%"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "v03",
+   "dept": "国有资产管理处",
+   "query": "自己保管的相机弄丢了，要按设备原值的多少赔偿？",
+   "expected_docs": [
+    "仪器设备损坏、丢失赔偿实施细则"
+   ],
+   "keywords": [
+    "设备原值50%—100%的赔款"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "v04",
+   "dept": "国有资产管理处",
+   "query": "学生戴的校徽胸徽是什么配色？",
+   "expected_docs": [
+    "校名、校徽使用管理办法"
+   ],
+   "keywords": [
+    "学生佩戴的胸徽为黄框、白底、红字"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "v05",
+   "dept": "国有资产管理处",
+   "query": "学校周转房最长可以租住几年？",
+   "expected_docs": [
+    "周转房屋管理办法"
+   ],
+   "keywords": [
+    "租住期最长为三年"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "v06",
+   "dept": "国有资产管理处",
+   "query": "科研用的单台套设备价值多少万以上必须进国家网络管理平台？",
+   "expected_docs": [
+    "大型仪器设备开放共享管理办法"
+   ],
+   "keywords": [
+    "单台套价值50万元（含）以上的科研用途仪器设备"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "v07",
+   "dept": "国有资产管理处",
+   "query": "公租房合同到期想续租，要提前多久申请？",
+   "expected_docs": [
+    "公共租赁住房申请和配租指南"
+   ],
+   "keywords": [
+    "合同期满前3个月"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "v08",
+   "dept": "国有资产管理处",
+   "query": "实验室里化学试剂溅进眼睛，至少要冲洗多长时间？",
+   "expected_docs": [
+    "实验室安全事故应急预案"
+   ],
+   "keywords": [
+    "时间应不少于15分钟"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "v09",
+   "dept": "国有资产管理处",
+   "query": "学校的互联网域名归哪个部门管？",
+   "expected_docs": [
+    "无形资产管理办法（修订）"
+   ],
+   "keywords": [
+    "信息化处负责学校互联网域名"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "v10",
+   "dept": "国有资产管理处",
+   "query": "两百万以上的实验室建设项目验收，至少要请几名校外专家？",
+   "expected_docs": [
+    "实验室建设项目验收工作指南"
+   ],
+   "keywords": [
+    "至少2名校外"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "v11",
+   "dept": "国有资产管理处",
+   "query": "海南国际学院借摄像器材有问题找哪位老师？",
+   "expected_docs": [
+    "海南国际学院仪器设备借用操作指南"
+   ],
+   "keywords": [
+    "19903917681"
+   ],
+   "intended_assistant": "中传小资"
+  },
+  {
+   "id": "v12",
+   "dept": "本科生院",
+   "query": "学校绩点算法里考60分对应绩点是多少？",
+   "expected_docs": [
+    "百分制分数转换绩点"
+   ],
+   "keywords": [
+    "60分绩点为1"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "v13",
+   "dept": "本科生院",
+   "query": "英语四六级下半年一般什么时候报名？",
+   "expected_docs": [
+    "关于参加全国大学英语等级考试的规定"
+   ],
+   "keywords": [
+    "九月底或十月初"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "v14",
+   "dept": "本科生院",
+   "query": "2026级本科新生哪天开始上课？",
+   "expected_docs": [
+    "2026—2027学年校历"
+   ],
+   "keywords": [
+    "本科新生上课：10月8日"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "v15",
+   "dept": "本科生院",
+   "query": "现在转专业一次能填几个志愿？",
+   "expected_docs": [
+    "本科生转专业管理办法（2025年修订）"
+   ],
+   "keywords": [
+    "每人可填报两个目标专业志愿"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "v16",
+   "dept": "本科生院",
+   "query": "缺课超过总学时多少会被取消期末考试资格？",
+   "expected_docs": [
+    "全日制本科生课程考核及成绩管理办法"
+   ],
+   "keywords": [
+    "累计缺课（含请假）超过课程总学时1/3"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "v17",
+   "dept": "本科生院",
+   "query": "申请缓考原则上要提前多久在教务系统里发起？",
+   "expected_docs": [
+    "全日制本科生课程考核及成绩管理办法"
+   ],
+   "keywords": [
+    "至少提前24小时在教务管理系统发起"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "v18",
+   "dept": "本科生院",
+   "query": "退役大学生士兵申请体测免测通过后按多少分记？",
+   "expected_docs": [
+    "〔2024〕115号"
+   ],
+   "keywords": [
+    "申请通过的当年测试成绩以95分计入"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "v19",
+   "dept": "本科生院",
+   "query": "少数民族预科生休学能办几次？",
+   "expected_docs": [
+    "少数民族预科生管理办法（修订）"
+   ],
+   "keywords": [
+    "预科阶段休学只能办理一次"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "v20",
+   "dept": "本科生院",
+   "query": "体育课必选项目不及格最多能重考几次？",
+   "expected_docs": [
+    "关于印发《中国传媒大学本科生体育课程管理规定》的通知"
+   ],
+   "keywords": [
+    "必选项目最多可重考四次"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "v21",
+   "dept": "本科生院",
+   "query": "辅修双学位平均绩点要达到多少才能拿学位证？",
+   "expected_docs": [
+    "辅修_双学位管理办法"
+   ],
+   "keywords": [
+    "平均学分绩点不低于2.0"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "v22",
+   "dept": "本科生院",
+   "query": "往届生自助办中英文成绩单，第二份起收多少钱？",
+   "expected_docs": [
+    "往届生自助开成绩单指南"
+   ],
+   "keywords": [
+    "第二份起10元/份"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "v23",
+   "dept": "本科生院",
+   "query": "补办毕业证明书交的照片要压缩到多大？",
+   "expected_docs": [
+    "毕业证明书_学位证明书办理流程"
+   ],
+   "keywords": [
+    "照片大小压缩在30K之内"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "v24",
+   "dept": "本科生院",
+   "query": "辅修课程补考一般安排在什么时候？",
+   "expected_docs": [
+    "辅修双学位常见问题"
+   ],
+   "keywords": [
+    "一般安排在5月初"
+   ],
+   "intended_assistant": "中传教务君"
+  },
+  {
+   "id": "v25",
+   "dept": "学生工作部",
+   "query": "团体参观传媒博物馆要提前几个工作日预约？",
+   "expected_docs": [
+    "传媒博物馆团体参观预约办法"
+   ],
+   "keywords": [
+    "提前至少2个工作日进行线上预约"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "v26",
+   "dept": "学生工作部",
+   "query": "校内单位想用传媒博物馆临展展厅，要提前多久申请？",
+   "expected_docs": [
+    "传媒博物馆临时展厅管理办法"
+   ],
+   "keywords": [
+    "至少提前30天向传媒博物馆提交场地使用申请"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "v27",
+   "dept": "学生工作部",
+   "query": "新生户口迁移证最晚什么时候交？",
+   "expected_docs": [
+    "集体户口管理暂行规定"
+   ],
+   "keywords": [
+    "截止时间为入学当年的10月15日"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "v28",
+   "dept": "学生工作部",
+   "query": "毕业论文用了AI但没交使用情况说明会怎样？",
+   "expected_docs": [
+    "人工智能使用规范实施细则"
+   ],
+   "keywords": [
+    "未提交人工智能使用情况说明者，不得参加答辩"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "v29",
+   "dept": "学生工作部",
+   "query": "硕士论文查重总文字复制比要低于多少才算合格？",
+   "expected_docs": [
+    "研究生学位论文查重检测的暂行规定"
+   ],
+   "keywords": [
+    "硕士学位论文查重检测总文字复制比应低于20%"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "v30",
+   "dept": "学生工作部",
+   "query": "博士入学取得学籍满多久可以申请转成硕士培养？",
+   "expected_docs": [
+    "硕博连读生、直博生转为硕士生培养管理办法"
+   ],
+   "keywords": [
+    "取得博士生学籍满一年后"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "v31",
+   "dept": "学生工作部",
+   "query": "博士论文匿名评阅最多可以申请几位专家回避？",
+   "expected_docs": [
+    "博士学位论文匿名评阅办法"
+   ],
+   "keywords": [
+    "需回避的专家最多为三名"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "v32",
+   "dept": "学生工作部",
+   "query": "图书馆弄丢一本1975年出版的书要赔原价的多少倍？",
+   "expected_docs": [
+    "图书馆文献借阅规定"
+   ],
+   "keywords": [
+    "按原书价的50倍赔偿"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "v33",
+   "dept": "学生工作部",
+   "query": "得到读书奖学金每年奖多少人、每人多少？",
+   "expected_docs": [
+    "得到读书奖学金"
+   ],
+   "keywords": [
+    "奖励人数40人，奖励标准为2500元/人"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "v34",
+   "dept": "学生工作部",
+   "query": "毕业生暂缓发档的档案最晚能在学校保留到什么时候？",
+   "expected_docs": [
+    "2026届毕业生档案转寄信息填写须知"
+   ],
+   "keywords": [
+    "最晚保留至2028年6月15日"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "v35",
+   "dept": "财务处",
+   "query": "国际会议的工作人员数量要控制在正式代表的多少以内？",
+   "expected_docs": [
+    "会议费管理办法（修订）"
+   ],
+   "keywords": [
+    "国际会议工作人员人数控制在会议正式代表人数的10％以内"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "v36",
+   "dept": "财务处",
+   "query": "教职工借款原则上最长多久要冲账？",
+   "expected_docs": [
+    "《中国传媒大学往来款项管理办法（试行）》（中传财字〔2022〕135号）"
+   ],
+   "keywords": [
+    "所有借款业务冲账期限不超过三个月"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "v37",
+   "dept": "财务处",
+   "query": "批量买东西超过几件发票就要附销售清单？",
+   "expected_docs": [
+    "关于税务发票报销的说明"
+   ],
+   "keywords": [
+    "单次购买在8件（不含）以上"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "v38",
+   "dept": "财务处",
+   "query": "校外人员劳务费必须用哪家银行的卡发？",
+   "expected_docs": [
+    "财务综合服务平台常见问题解答"
+   ],
+   "keywords": [
+    "校外人员劳务发放必须使用工商银行卡号"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "v39",
+   "dept": "财务处",
+   "query": "项目聘用人员参与本单位科研项目多久以上才能申办公务卡？",
+   "expected_docs": [
+    "项目聘用人员申办公务卡情况说明"
+   ],
+   "keywords": [
+    "参与本单位科研项目一年以上"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "v40",
+   "dept": "财务处",
+   "query": "海南国际学院新生入学发的是哪家银行的卡？",
+   "expected_docs": [
+    "2024-2025学年学生缴费通知"
+   ],
+   "keywords": [
+    "为每位新生配备一张招商银行借记卡"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "v41",
+   "dept": "财务处",
+   "query": "基金会公益科研项目餐费人均不能超过多少？",
+   "expected_docs": [
+    "传媒教基字〔2026〕4号"
+   ],
+   "keywords": [
+    "人均标准不超过80元"
+   ],
+   "intended_assistant": "财务处小助手"
+  },
+  {
+   "id": "v42",
+   "dept": "档案馆",
+   "query": "科研项目档案要在项目完成后多久内归档？",
+   "expected_docs": [
+    "档案问答"
+   ],
+   "keywords": [
+    "科研类档案应当在项目完成后两个月内归档"
+   ],
+   "intended_assistant": "档小管"
+  },
+  {
+   "id": "v43",
+   "dept": "档案馆",
+   "query": "暑假办综合档案业务打哪个电话？",
+   "expected_docs": [
+    "关于2026年暑假期间学校综合档案业务办理的通知"
+   ],
+   "keywords": [
+    "010-65779232"
+   ],
+   "intended_assistant": "档小管"
+  },
+  {
+   "id": "v44",
+   "dept": "档案馆",
+   "query": "给校史馆捐赠史料后，捐赠人对捐赠品享有什么权利？",
+   "expected_docs": [
+    "校史馆接受校史资料（实物）捐赠工作管理办法"
+   ],
+   "keywords": [
+    "甲方对其捐赠的史料与实物享有无偿利用的权利"
+   ],
+   "intended_assistant": "档小管"
+  },
+  {
+   "id": "v45",
+   "dept": "档案馆",
+   "query": "校史馆收藏的那面天安门国旗编号是多少？",
+   "expected_docs": [
+    "校史馆馆藏国旗教育活动管理办法"
+   ],
+   "keywords": [
+    "编号2024-0270"
+   ],
+   "intended_assistant": "档小管"
+  },
+  {
+   "id": "v46",
+   "dept": "档案馆",
+   "query": "纸质档案库房的温度要控制在什么范围？",
+   "expected_docs": [
+    "档案馆库房管理制度"
+   ],
+   "keywords": [
+    "环境温度应控制在14-24℃"
+   ],
+   "intended_assistant": "档小管"
+  },
+  {
+   "id": "v47",
+   "dept": "后勤保障处",
+   "query": "学校每年哪几个月集中办理退宿？",
+   "expected_docs": [
+    "学生公寓退宿管理规定"
+   ],
+   "keywords": [
+    "原则上每年1月、6月、9月学校集中受理"
+   ],
+   "intended_assistant": "新生帮手"
+  },
+  {
+   "id": "v48",
+   "dept": "后勤保障处",
+   "query": "望京方向的班车早上几点发车？",
+   "expected_docs": [
+    "班车路线通告"
+   ],
+   "keywords": [
+    "每天早上7：10分发车"
+   ],
+   "intended_assistant": "中传小勤"
+  },
+  {
+   "id": "v49",
+   "dept": "后勤保障处",
+   "query": "校内挂横幅最长能挂几天？",
+   "expected_docs": [
+    "校内悬挂横幅标语、设置宣传广告管理办法"
+   ],
+   "keywords": [
+    "悬挂和设置期限最长为7天"
+   ],
+   "intended_assistant": "中传小勤"
+  },
+  {
+   "id": "v50",
+   "dept": "督导处",
+   "query": "上课迟到超过多少分钟算重大教学事故？",
+   "expected_docs": [
+    "教学事故认定和处理办法"
+   ],
+   "keywords": [
+    "时长超过20分钟"
+   ],
+   "intended_assistant": "督导处小助手"
+  },
+  {
+   "id": "v51",
+   "dept": "督导处",
+   "query": "督导专家常规随堂听课津贴一课时多少钱？",
+   "expected_docs": [
+    "教学督导工作细则"
+   ],
+   "keywords": [
+    "常规督导听课、思政课日常督导听课津贴标准为150元/课时"
+   ],
+   "intended_assistant": "督导处小助手"
+  },
+  {
+   "id": "v52",
+   "dept": "督导处",
+   "query": "课堂有我随堂评价的有效期是多久？",
+   "expected_docs": [
+    "“课堂有我”系统操作手册（学生版）"
+   ],
+   "keywords": [
+    "有效期为72小时"
+   ],
+   "intended_assistant": "督导处小助手"
+  },
+  {
+   "id": "v53",
+   "dept": "党委组织部",
+   "query": "没有工资收入的学生党员每月交多少党费？",
+   "expected_docs": [
+    "党费收缴、管理和使用办法"
+   ],
+   "keywords": [
+    "每月交纳党费0.2元"
+   ],
+   "intended_assistant": "党建知识助手"
+  },
+  {
+   "id": "v54",
+   "dept": "党委组织部",
+   "query": "无正当理由连续多久不交党费按自行脱党处理？",
+   "expected_docs": [
+    "党费收缴、管理和使用办法"
+   ],
+   "keywords": [
+    "连续6个月不交纳党费的党员，按自行脱党处理"
+   ],
+   "intended_assistant": "党建知识助手"
+  },
+  {
+   "id": "v55",
+   "dept": "党委组织部",
+   "query": "党员组织关系介绍信有效期一般最长多久？",
+   "expected_docs": [
+    "接转组织关系知识问答"
+   ],
+   "keywords": [
+    "一般不应超过3个月"
+   ],
+   "intended_assistant": "党建知识助手"
+  },
+  {
+   "id": "v56",
+   "dept": "党委组织部",
+   "query": "学校按每名党员每年多少钱标准预算党建活动经费？",
+   "expected_docs": [
+    "基层党组织党建活动经费管理办法"
+   ],
+   "keywords": [
+    "每名党员每年300元标准"
+   ],
+   "intended_assistant": "党建知识助手"
+  },
+  {
+   "id": "v57",
+   "dept": "团委",
+   "query": "每个学生每学年最多能参加几个社团？",
+   "expected_docs": [
+    "学生社团建设管理办法"
+   ],
+   "keywords": [
+    "每名学生每学年最多参与2个学生社团"
+   ],
+   "intended_assistant": "团委小助手"
+  },
+  {
+   "id": "v58",
+   "dept": "团委",
+   "query": "中传青年五四奖章参评青年的年龄范围是多少？",
+   "expected_docs": [
+    "中传青年五四奖章"
+   ],
+   "keywords": [
+    "年龄在14岁至35岁之间"
+   ],
+   "intended_assistant": "团委小助手"
+  },
+  {
+   "id": "v59",
+   "dept": "培训学院",
+   "query": "非学历教育项目收入要上缴学校百分之多少？",
+   "expected_docs": [
+    "非学历教育管理规定"
+   ],
+   "keywords": [
+    "非学历教育项目总收入的20%上缴学校"
+   ],
+   "intended_assistant": "中传培训小帮手"
+  },
+  {
+   "id": "v60",
+   "dept": "培训学院",
+   "query": "继续教育7月批次注册的毕业证一般几月发？",
+   "expected_docs": [
+    "高等学历继续教育毕业审核流程和毕业证书发放时间安排的说明"
+   ],
+   "keywords": [
+    "毕业证一般于4月、10月发放"
+   ],
+   "intended_assistant": "中传培训小帮手"
+  },
+  {
+   "id": "v61",
+   "dept": "培训学院",
+   "query": "2026年普通话水平测试培训班第五期培训费多少？",
+   "expected_docs": [
+    "普通话水平测试培训班（第五期）"
+   ],
+   "keywords": [
+    "每人4980元"
+   ],
+   "intended_assistant": "中传培训小帮手"
+  },
+  {
+   "id": "v62",
+   "dept": "信息与通信工程学院",
+   "query": "信通学院AI实验班三年必修限选课平均绩点不能低于多少？",
+   "expected_docs": [
+    "信通学院政〔2026〕5号"
+   ],
+   "keywords": [
+    "三学年必修限选课平均学分绩点不低于3.3"
+   ],
+   "intended_assistant": "信通迎新助手"
+  },
+  {
+   "id": "v63",
+   "dept": "国有资产管理处",
+   "query": "信通学院科研实验室开放到晚上几点？",
+   "expected_docs": [
+    "信息与通信工程学院科研实验室安全管理办法"
+   ],
+   "keywords": [
+    "实验室开放时间为上午8:00到晚上21:30"
+   ],
+   "intended_assistant": "信通迎新助手"
+  },
+  {
+   "id": "v64",
+   "dept": "信息与通信工程学院",
+   "query": "考试开始多久之后允许交卷出场？",
+   "expected_docs": [
+    "考场规则及监考人员守则（2026）"
+   ],
+   "keywords": [
+    "考试30分钟后，允许交卷出场"
+   ],
+   "intended_assistant": "信通迎新助手"
+  },
+  {
+   "id": "v65",
+   "dept": "信息化处",
+   "query": "学校的大模型服务现在收费吗？",
+   "expected_docs": [
+    "大模型服务管理实施细则"
+   ],
+   "keywords": [
+    "大模型服务目前免费提供"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v66",
+   "dept": "信息化处",
+   "query": "校园网每月给多少免费基础流量？",
+   "expected_docs": [
+    "校园网管理办法（试行）"
+   ],
+   "keywords": [
+    "50GB的免费基础流量"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v67",
+   "dept": "信息化处",
+   "query": "学校正版Adobe可以在几台电脑上激活？",
+   "expected_docs": [
+    "Adobe正版化服务使用指南"
+   ],
+   "keywords": [
+    "可在两台计算机上登录（激活）"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v68",
+   "dept": "信息化处",
+   "query": "校园统一支付平台学生账号的初始密码是什么？",
+   "expected_docs": [
+    "新生缴费指南"
+   ],
+   "keywords": [
+    "初始密码为身份证后六位"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v69",
+   "dept": "信息化处",
+   "query": "三年制硕士申请提前毕业要在什么时候提出？",
+   "expected_docs": [
+    "三年制硕士研究生提前毕业的规定"
+   ],
+   "keywords": [
+    "申请人于第3学期末提出申请"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v70",
+   "dept": "信息化处",
+   "query": "博士生基本文献阅读至少要多少种？",
+   "expected_docs": [
+    "博士候选人资格考试管理规定"
+   ],
+   "keywords": [
+    "基本文献阅读数量不少于150种"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v71",
+   "dept": "信息化处",
+   "query": "学硕基本文献考试前要读多少种文献？",
+   "expected_docs": [
+    "学术学位硕士研究生基本文献考试管理规定"
+   ],
+   "keywords": [
+    "基本文献阅读数量不少于80种"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v72",
+   "dept": "档案馆",
+   "query": "已毕业学生想在线查本人录取名册用哪个平台？",
+   "expected_docs": [
+    "关于2026年寒假期间学校综合档案业务办理的通知"
+   ],
+   "keywords": [
+    "daly.cuc.edu.cn"
+   ],
+   "intended_assistant": "档小管"
+  },
+  {
+   "id": "v73",
+   "dept": "信息化处",
+   "query": "教授连续两年不给本科生上课会怎样？",
+   "expected_docs": [
+    "教授、副教授为本科生上课的规定"
+   ],
+   "keywords": [
+    "连续两年不讲授本科课程的，不再聘任其担任现任职务"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v74",
+   "dept": "信息化处",
+   "query": "优秀教学奖每次评多少名？",
+   "expected_docs": [
+    "优秀教学奖评选及奖励办法"
+   ],
+   "keywords": [
+    "每次15名"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v75",
+   "dept": "信息化处",
+   "query": "学术伦理委员会多久开展一次伦理审查？",
+   "expected_docs": [
+    "伦理审查流程及申请表"
+   ],
+   "keywords": [
+    "每月最后一周学术伦理委员会开展审查"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v76",
+   "dept": "信息化处",
+   "query": "自行委托专利代理后，受理通知书要在多少个工作日内交科技处？",
+   "expected_docs": [
+    "发明人自行委托专利代理机构申请专利流程"
+   ],
+   "keywords": [
+    "在15个工作日到30个工作日之间"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v77",
+   "dept": "信息化处",
+   "query": "教职工停车年度申报有问题打哪个咨询电话？",
+   "expected_docs": [
+    "停车年度申报审核"
+   ],
+   "keywords": [
+    "65783111"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v78",
+   "dept": "信息化处",
+   "query": "集体政审用的无犯罪证明要在哪个APP上开？",
+   "expected_docs": [
+    "10人以上集体政审说明"
+   ],
+   "keywords": [
+    "公安一网通办"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v79",
+   "dept": "本科生院",
+   "query": "全国性学科竞赛一等奖能认几个创新学分？",
+   "expected_docs": [
+    "本科生创新创业学分认定管理办法"
+   ],
+   "keywords": [
+    "全国性竞赛、国际性竞赛一等奖可获得5个创新学分"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v80",
+   "dept": "本科生院",
+   "query": "出国交流超过一学期要办什么手续？",
+   "expected_docs": [
+    "本科学生境外交流学习管理规定（修订）"
+   ],
+   "keywords": [
+    "需办理保留学籍手续"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v81",
+   "dept": "信息化处",
+   "query": "外来务工人员进校几天内要办临时出入证？",
+   "expected_docs": [
+    "外来务工经商人员管理规定"
+   ],
+   "keywords": [
+    "进校五日内，须到保卫处办理"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v82",
+   "dept": "信息化处",
+   "query": "办大型文体活动要提前几天填登记审批表？",
+   "expected_docs": [
+    "大型文体活动安全管理规定"
+   ],
+   "keywords": [
+    "应在活动举办的三日前填写"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v83",
+   "dept": "信息化处",
+   "query": "国际加速专线申请由哪个部门审批？",
+   "expected_docs": [
+    "国际加速专线服务管理实施细则"
+   ],
+   "keywords": [
+    "党委宣传部审批"
+   ],
+   "intended_assistant": "问道中传"
+  },
+  {
+   "id": "v84",
+   "dept": "本科生院",
+   "query": "少数民族预科生第二学期最多选修几学分的本科通识拓展课？",
+   "expected_docs": [
+    "少数民族预科生管理办法（修订）"
+   ],
+   "keywords": [
+    "不多于2学分的本科层次通识教育拓展课"
+   ],
+   "intended_assistant": "中传教务君"
+  }
+ ],
+ "short": [
+  {
+   "id": "s01",
+   "dept": "后勤保障处",
+   "query": "退宿",
+   "expected_docs": [
+    "学生公寓退宿管理规定"
+   ],
+   "keywords": [
+    "退宿"
+   ]
+  },
+  {
+   "id": "s02",
+   "dept": "后勤保障处",
+   "query": "班车",
+   "expected_docs": [
+    "班车路线通告"
+   ],
+   "keywords": [
+    "班车"
+   ]
+  },
+  {
+   "id": "s03",
+   "dept": "党委组织部",
+   "query": "党费",
+   "expected_docs": [
+    "党费收缴、管理和使用办法",
+    "交纳党费知识问答"
+   ],
+   "keywords": [
+    "党费"
+   ]
+  },
+  {
+   "id": "s04",
+   "dept": "学生工作部",
+   "query": "论文查重",
+   "expected_docs": [
+    "研究生学位论文查重检测的暂行规定"
+   ],
+   "keywords": [
+    "复制比"
+   ]
+  },
+  {
+   "id": "s05",
+   "dept": "本科生院",
+   "query": "缓考",
+   "expected_docs": [
+    "全日制本科生课程考核及成绩管理办法",
+    "关于学生因病办理免修、缓考等管理规定"
+   ],
+   "keywords": [
+    "缓考"
+   ]
+  },
+  {
+   "id": "s06",
+   "dept": "国有资产管理处",
+   "query": "校徽",
+   "expected_docs": [
+    "校名、校徽使用管理办法"
+   ],
+   "keywords": [
+    "校徽"
+   ]
+  },
+  {
+   "id": "s07",
+   "dept": "国有资产管理处",
+   "query": "周转房",
+   "expected_docs": [
+    "周转房屋管理办法"
+   ],
+   "keywords": [
+    "周转房"
+   ]
+  },
+  {
+   "id": "s08",
+   "dept": "本科生院",
+   "query": "辅修",
+   "expected_docs": [
+    "辅修_双学位管理办法",
+    "辅修双学位常见问题"
+   ],
+   "keywords": [
+    "辅修"
+   ]
+  },
+  {
+   "id": "s09",
+   "dept": "本科生院",
+   "query": "学分绩点",
+   "expected_docs": [
+    "百分制分数转换绩点",
+    "全日制本科生课程考核及成绩管理办法"
+   ],
+   "keywords": [
+    "绩点"
+   ]
+  },
+  {
+   "id": "s10",
+   "dept": "学生工作部",
+   "query": "户口迁移",
+   "expected_docs": [
+    "集体户口管理暂行规定"
+   ],
+   "keywords": [
+    "户口迁移"
+   ]
+  },
+  {
+   "id": "s11",
+   "dept": "督导处",
+   "query": "教学事故",
+   "expected_docs": [
+    "教学事故认定和处理办法"
+   ],
+   "keywords": [
+    "教学事故"
+   ]
+  },
+  {
+   "id": "s12",
+   "dept": "团委",
+   "query": "社团注册",
+   "expected_docs": [
+    "学生社团建设管理办法"
+   ],
+   "keywords": [
+    "社团"
+   ]
+  },
+  {
+   "id": "s13",
+   "dept": "培训学院",
+   "query": "普通话培训",
+   "expected_docs": [
+    "普通话水平测试培训班"
+   ],
+   "keywords": [
+    "普通话"
+   ]
+  },
+  {
+   "id": "s14",
+   "dept": "档案馆",
+   "query": "查档案",
+   "expected_docs": [
+    "档案问答",
+    "关于2026年暑假期间学校综合档案业务办理的通知"
+   ],
+   "keywords": [
+    "档案"
+   ]
+  },
+  {
+   "id": "s15",
+   "dept": "财务处",
+   "query": "公务卡",
+   "expected_docs": [
+    "项目聘用人员申办公务卡情况说明"
+   ],
+   "keywords": [
+    "公务卡"
+   ]
+  },
+  {
+   "id": "s16",
+   "dept": "国有资产管理处",
+   "query": "实验室开放时间",
+   "expected_docs": [
+    "信息与通信工程学院科研实验室安全管理办法"
+   ],
+   "keywords": [
+    "开放时间"
+   ]
+  }
+ ],
+ "no_answer": [],
+ "isolation": [
+  {
+   "id": "i01",
+   "assistant": "财务处小助手",
+   "query": "借款原则上多久必须冲账？",
+   "expected_docs": [
+    "往来款项管理办法"
+   ]
+  },
+  {
+   "id": "i02",
+   "assistant": "档小管",
+   "query": "科研类档案项目完成后多久归档？",
+   "expected_docs": [
+    "档案问答"
+   ]
+  },
+  {
+   "id": "i03",
+   "assistant": "中传小资",
+   "query": "多少万以上的科研设备要进国家网络平台？",
+   "expected_docs": [
+    "大型仪器设备开放共享管理办法"
+   ]
+  },
+  {
+   "id": "i04",
+   "assistant": "中传教务君",
+   "query": "转专业能填几个志愿？",
+   "expected_docs": [
+    "本科生转专业管理办法（2025年修订）"
+   ]
+  },
+  {
+   "id": "i05",
+   "assistant": "新生帮手",
+   "query": "博士论文匿名评阅能申请几位专家回避？",
+   "expected_docs": [
+    "博士学位论文匿名评阅办法"
+   ]
+  },
+  {
+   "id": "i06",
+   "assistant": "党建知识助手",
+   "query": "学生党员每月交多少党费？",
+   "expected_docs": [
+    "党费收缴、管理和使用办法"
+   ]
+  },
+  {
+   "id": "i07",
+   "assistant": "团委小助手",
+   "query": "一学年最多参加几个社团？",
+   "expected_docs": [
+    "学生社团建设管理办法"
+   ]
+  },
+  {
+   "id": "i08",
+   "assistant": "中传培训小帮手",
+   "query": "非学历教育收入上缴学校多少？",
+   "expected_docs": [
+    "非学历教育管理规定"
+   ]
+  },
+  {
+   "id": "i09",
+   "assistant": "督导处小助手",
+   "query": "常规督导听课津贴多少一课时？",
+   "expected_docs": [
+    "教学督导工作细则"
+   ]
+  },
+  {
+   "id": "i10",
+   "assistant": "中传小勤",
+   "query": "学校哪几个月集中办退宿？",
+   "expected_docs": [
+    "学生公寓退宿管理规定"
+   ]
+  }
+ ],
+ "citation": [
+  {
+   "id": "c01",
+   "query": "笔记本电脑配置数量上限是多少？",
+   "expected_docs": [
+    "通用办公设备及家具配置标准"
+   ],
+   "expected_page": 5,
+   "page_phrase": "便携式计算机配置数量上限为单位编制内实有人数的50%"
+  },
+  {
+   "id": "c02",
+   "query": "化学试剂溅入眼睛要冲洗多久？",
+   "expected_docs": [
+    "实验室安全事故应急预案"
+   ],
+   "expected_page": 6,
+   "page_phrase": "时间应不少于15分钟"
+  },
+  {
+   "id": "c03",
+   "query": "大型仪器验收后多久要纳入共享平台？",
+   "expected_docs": [
+    "大型仪器设备开放共享管理办法"
+   ],
+   "expected_page": 4,
+   "page_phrase": "完成验收之日起30个工作日内"
+  },
+  {
+   "id": "c04",
+   "query": "学生党员每月交多少党费？",
+   "expected_docs": [
+    "党费收缴、管理和使用办法"
+   ],
+   "expected_page": 4,
+   "page_phrase": "每月交纳党费0.2元"
+  },
+  {
+   "id": "c05",
+   "query": "每名学生每学年最多参与几个社团？",
+   "expected_docs": [
+    "学生社团建设管理办法"
+   ],
+   "expected_page": 12,
+   "page_phrase": "每名学生每学年最多参与2个学生社团"
+  },
+  {
+   "id": "c06",
+   "query": "国际会议工作人员比例限制是多少？",
+   "expected_docs": [
+    "会议费管理办法（修订）"
+   ],
+   "expected_page": 4,
+   "page_phrase": "国际会议工作人员人数控制在会议正式代表人数的10％以内"
+  },
+  {
+   "id": "c07",
+   "query": "科研档案和基建档案分别多久归档？",
+   "expected_docs": [
+    "档案问答"
+   ],
+   "expected_page": 1,
+   "page_phrase": "科研类档案应当在项目完成后两个月内归档"
+  },
+  {
+   "id": "c08",
+   "query": "公益科研项目餐费人均标准是多少？",
+   "expected_docs": [
+    "传媒教基字〔2026〕4号"
+   ],
+   "expected_page": 6,
+   "page_phrase": "人均标准不超过80元"
+  },
+  {
+   "id": "c09",
+   "query": "毕业生在线查档平台的网址是什么？",
+   "expected_docs": [
+    "关于2026年寒假期间学校综合档案业务办理的通知"
+   ],
+   "expected_page": 1,
+   "page_phrase": "daly.cuc.edu.cn"
+  },
+  {
+   "id": "c10",
+   "query": "校园网免费基础流量是多少？",
+   "expected_docs": [
+    "校园网管理办法（试行）"
+   ],
+   "expected_page": 10,
+   "page_phrase": "50GB的免费基础流量"
+  }
+ ]
+}

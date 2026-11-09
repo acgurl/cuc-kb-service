@@ -1,0 +1,953 @@
+{
+ "meta": {
+  "name": "CUC KB no-answer v2 (official-site corpus)",
+  "created": "2026-11-07",
+  "corpus": "data-v3 (cuc_kb_v3, 2247 docs / 49571 chunks)",
+  "note": "每题探测词在 data-v3 active 语料（正文+标题）零命中；v1 旧题重新校验，命中新语料的剔除；旧 partial 判定沿用；高分题 Top1 人工复核在 live 评测后进行"
+ },
+ "no_answer": [
+  {
+   "id": "hn01",
+   "category": "heldout",
+   "query": "校医院能打九价HPV疫苗吗？",
+   "probes": [
+    "HPV",
+    "九价"
+   ]
+  },
+  {
+   "id": "hn02",
+   "category": "heldout",
+   "query": "学校健身房的私教课多少钱？",
+   "probes": [
+    "私教"
+   ]
+  },
+  {
+   "id": "hn03",
+   "category": "heldout",
+   "query": "毕业典礼的学位服在哪里租？",
+   "probes": [
+    "学位服"
+   ]
+  },
+  {
+   "id": "hn04",
+   "category": "heldout",
+   "query": "学校游泳馆的年卡多少钱？",
+   "probes": [
+    "游泳馆年卡",
+    "游泳年卡"
+   ]
+  },
+  {
+   "id": "hn12",
+   "category": "heldout",
+   "query": "选修课抢课有什么技巧？",
+   "probes": [
+    "选修课抢课",
+    "抢课"
+   ]
+  },
+  {
+   "id": "na02",
+   "category": "campus",
+   "query": "宿舍楼下的自动售货机坏了吞钱找谁退？",
+   "probes": [
+    "售货机"
+   ]
+  },
+  {
+   "id": "na06",
+   "category": "campus",
+   "query": "眼镜坏了学校附近有配眼镜的地方吗？",
+   "probes": [
+    "配眼镜",
+    "眼镜店"
+   ]
+  },
+  {
+   "id": "na08",
+   "category": "campus",
+   "query": "在食堂丢了耳机去哪里认领？",
+   "probes": [
+    "失物招领"
+   ]
+  },
+  {
+   "id": "na14",
+   "category": "campus",
+   "query": "校园里有流浪猫救助社团吗？",
+   "probes": [
+    "流浪猫"
+   ]
+  },
+  {
+   "id": "na18",
+   "category": "adjacent",
+   "query": "计算机二级考试学校是考点吗？",
+   "probes": [
+    "计算机二级",
+    "计算机等级考试"
+   ]
+  },
+  {
+   "id": "na19",
+   "category": "adjacent",
+   "query": "研究生宿舍可以申请换成单人间吗？",
+   "probes": [
+    "单人间"
+   ]
+  },
+  {
+   "id": "na24",
+   "category": "adjacent",
+   "query": "教职工子女上北京市重点高中学校有指标吗？",
+   "probes": [
+    "重点高中"
+   ]
+  },
+  {
+   "id": "na29",
+   "category": "adjacent",
+   "query": "学校的心理咨询可以线上视频咨询吗？",
+   "probes": [
+    "视频咨询"
+   ]
+  },
+  {
+   "id": "na30",
+   "category": "adjacent",
+   "query": "转专业考试的历年真题在哪里能找到？",
+   "probes": [
+    "历年真题"
+   ]
+  },
+  {
+   "id": "na33",
+   "category": "external",
+   "query": "北京市应届毕业生落户的积分标准是什么？",
+   "probes": [
+    "落户积分",
+    "积分落户"
+   ]
+  },
+  {
+   "id": "na36",
+   "category": "external",
+   "query": "个税专项附加扣除里子女教育每月扣多少？",
+   "probes": [
+    "专项附加扣除"
+   ]
+  },
+  {
+   "id": "na37",
+   "category": "external",
+   "query": "北京住房公积金贷款最高能贷多少？",
+   "probes": [
+    "公积金贷款"
+   ]
+  },
+  {
+   "id": "na48",
+   "category": "instance",
+   "query": "明天上午图书馆会停电吗？",
+   "probes": [
+    "停电通知"
+   ]
+  },
+  {
+   "id": "na49",
+   "category": "instance",
+   "query": "第35期中传校报头版讲的是什么？",
+   "probes": [
+    "第35期"
+   ]
+  },
+  {
+   "id": "na53",
+   "category": "personal",
+   "query": "我的报销单现在审批到哪一步了？",
+   "probes": [
+    "审批到哪"
+   ]
+  },
+  {
+   "id": "na56",
+   "category": "offtopic",
+   "query": "红烧肉怎么做才好吃？",
+   "probes": [
+    "红烧肉"
+   ]
+  },
+  {
+   "id": "na58",
+   "category": "offtopic",
+   "query": "比特币现在多少钱一个？",
+   "probes": [
+    "比特币"
+   ]
+  },
+  {
+   "id": "na60",
+   "category": "offtopic",
+   "query": "猫咪不吃饭是生病了吗？",
+   "probes": [
+    "猫咪"
+   ]
+  },
+  {
+   "id": "na62",
+   "category": "offtopic",
+   "query": "去云南旅游七天怎么安排路线？",
+   "probes": [
+    "云南旅游"
+   ]
+  },
+  {
+   "id": "na63",
+   "category": "campus",
+   "query": "学校有没有能免费借雨伞的地方？",
+   "probes": [
+    "借雨伞",
+    "共享雨伞"
+   ]
+  },
+  {
+   "id": "na64",
+   "category": "campus",
+   "query": "校园里哪里能买到鲜花？",
+   "probes": [
+    "鲜花店",
+    "花店"
+   ]
+  },
+  {
+   "id": "na65",
+   "category": "campus",
+   "query": "学校的乒乓球台需要自己带球拍吗？",
+   "probes": [
+    "乒乓球台",
+    "球拍"
+   ]
+  },
+  {
+   "id": "na66",
+   "category": "campus",
+   "query": "学校附近有没有便宜的打印复印店推荐？",
+   "probes": [
+    "复印店"
+   ]
+  },
+  {
+   "id": "na69",
+   "category": "adjacent",
+   "query": "教职工的年度体检能带家属一起去吗？",
+   "probes": [
+    "带家属体检",
+    "家属体检"
+   ]
+  },
+  {
+   "id": "na71",
+   "category": "adjacent",
+   "query": "校医院可以开具新冠疫苗接种证明吗？",
+   "probes": [
+    "新冠疫苗",
+    "接种证明"
+   ]
+  },
+  {
+   "id": "na73",
+   "category": "external",
+   "query": "北京大学的博士生每月补助是多少？",
+   "probes": [
+    "北京大学博士"
+   ]
+  },
+  {
+   "id": "na74",
+   "category": "external",
+   "query": "教育部今年的“强基计划”招哪些专业？",
+   "probes": [
+    "强基计划"
+   ]
+  },
+  {
+   "id": "na79",
+   "category": "offtopic",
+   "query": "怎么提高手机电池续航？",
+   "probes": [
+    "电池续航"
+   ]
+  },
+  {
+   "id": "nb06",
+   "category": "campus",
+   "query": "宿舍楼电梯晚上几点停运？",
+   "probes": [
+    "电梯停运"
+   ]
+  },
+  {
+   "id": "nb07",
+   "category": "campus",
+   "query": "学校快递柜超时取件收费吗？",
+   "probes": [
+    "快递柜",
+    "超时取件"
+   ]
+  },
+  {
+   "id": "nb09",
+   "category": "campus",
+   "query": "学校浴室插卡出水怎么计费？",
+   "probes": [
+    "插卡出水",
+    "浴室计费"
+   ]
+  },
+  {
+   "id": "nb10",
+   "category": "adjacent",
+   "query": "转专业面试一般考什么内容？",
+   "probes": [
+    "转专业面试"
+   ]
+  },
+  {
+   "id": "nb11",
+   "category": "adjacent",
+   "query": "重修一门课要交多少重修费？",
+   "probes": [
+    "重修费"
+   ]
+  },
+  {
+   "id": "nb12",
+   "category": "adjacent",
+   "query": "学校承认雅思成绩免修大学英语吗？",
+   "probes": [
+    "雅思免修",
+    "免修英语"
+   ]
+  },
+  {
+   "id": "nb13",
+   "category": "adjacent",
+   "query": "本科生毕业论文开题报告要写多少字？",
+   "probes": [
+    "开题报告字数",
+    "开题多少字"
+   ]
+  },
+  {
+   "id": "nb17",
+   "category": "external",
+   "query": "考研政治科目怎么复习比较好？",
+   "probes": [
+    "考研政治"
+   ]
+  },
+  {
+   "id": "nb18",
+   "category": "external",
+   "query": "天津的高校承认我校辅修学位吗？",
+   "probes": [
+    "天津的高校"
+   ]
+  },
+  {
+   "id": "nb19",
+   "category": "instance",
+   "query": "下周五教务处开什么会？",
+   "probes": [
+    "下周五"
+   ]
+  },
+  {
+   "id": "nb20",
+   "category": "instance",
+   "query": "今天食堂推出了什么新菜？",
+   "probes": [
+    "新菜"
+   ]
+  },
+  {
+   "id": "nb21",
+   "category": "instance",
+   "query": "昨晚学校停电是因为什么？",
+   "probes": [
+    "昨晚学校停电"
+   ]
+  },
+  {
+   "id": "nb22",
+   "category": "personal",
+   "query": "我的体测成绩是多少分？",
+   "probes": [
+    "我的体测"
+   ]
+  },
+  {
+   "id": "nb24",
+   "category": "offtopic",
+   "query": "周杰伦演唱会什么时候开票？",
+   "probes": [
+    "周杰伦"
+   ]
+  },
+  {
+   "id": "nb25",
+   "category": "offtopic",
+   "query": "怎么做PPT的平滑切换动画？",
+   "probes": [
+    "平滑切换",
+    "PPT动画"
+   ]
+  }
+ ],
+ "partial": [
+  {
+   "id": "na11",
+   "category": "campus",
+   "query": "期末周通宵自习室在哪？",
+   "probes": [
+    "通宵自习"
+   ],
+   "review": "公共教室：延时自习室开放到 22:00，无通宵"
+  },
+  {
+   "id": "na16",
+   "category": "adjacent",
+   "query": "教师资格证面试学校统一组织培训吗？",
+   "probes": [
+    "教师资格证面试",
+    "教资面试"
+   ],
+   "review": "人事：高校教师资格认定需参加学校岗前培训"
+  },
+  {
+   "id": "na43",
+   "category": "instance",
+   "query": "上周五新闻学院学术讲座的课件能下载吗？",
+   "probes": [
+    "上周五"
+   ],
+   "review": "图书馆手册：讲座及培训课件挂在图书馆页面下载"
+  },
+  {
+   "id": "na50",
+   "category": "personal",
+   "query": "我的校园卡余额还剩多少？",
+   "probes": [
+    "余额查询结果"
+   ],
+   "review": "校园卡在中传 APP/公众号界面查余额，个人余额无法回答"
+  },
+  {
+   "id": "na52",
+   "category": "personal",
+   "query": "我的奖学金什么时候到账？",
+   "probes": [
+    "到账时间"
+   ],
+   "review": "资助资金管理办法：奖学金于每年 12 月 31 日前发放"
+  },
+  {
+   "id": "na54",
+   "category": "personal",
+   "query": "我的宿舍分到了哪栋楼？",
+   "probes": [
+    "分到了哪"
+   ],
+   "review": "学生公寓服务中心：各楼对应的学生类别，个人分配无法回答"
+  },
+  {
+   "id": "na77",
+   "category": "instance",
+   "query": "今年春季学期的期末考试安排表出来了吗？",
+   "probes": [
+    "期末考试安排表"
+   ],
+   "review": "本科生院 FAQ：期末考试安排通常在第 17 周前公布"
+  }
+ ],
+ "dropped": [
+  {
+   "id": "hn05",
+   "query": "放假期间学生宿舍能把猫寄养在宿管那里吗？",
+   "reason": "probe-hit",
+   "hits": {
+    "寄养": 4
+   }
+  },
+  {
+   "id": "hn07",
+   "query": "校内打印店几点关门？",
+   "reason": "probe-hit",
+   "hits": {
+    "打印店": 7
+   }
+  },
+  {
+   "id": "hn08",
+   "query": "学校有没有自己的附属医院？",
+   "reason": "probe-hit",
+   "hits": {
+    "附属医院": 39
+   }
+  },
+  {
+   "id": "hn09",
+   "query": "冬天学校组织去滑雪吗？",
+   "reason": "probe-hit",
+   "hits": {
+    "滑雪": 2
+   }
+  },
+  {
+   "id": "hn11",
+   "query": "无偿献血有什么奖励？",
+   "reason": "probe-hit",
+   "hits": {
+    "献血": 2
+   }
+  },
+  {
+   "id": "na01",
+   "query": "学校里的快递驿站晚上几点关门？",
+   "reason": "probe-hit",
+   "hits": {
+    "快递驿站": 3,
+    "菜鸟驿站": 1
+   }
+  },
+  {
+   "id": "na03",
+   "query": "电动车在学校哪里可以充电？",
+   "reason": "probe-hit",
+   "hits": {
+    "充电桩": 3,
+    "电动车充电": 3
+   }
+  },
+  {
+   "id": "na04",
+   "query": "学校篮球场晚上需要预约吗？",
+   "reason": "probe-hit",
+   "hits": {
+    "篮球场": 10
+   }
+  },
+  {
+   "id": "na05",
+   "query": "校园里有咖啡店吗，营业到几点？",
+   "reason": "probe-hit",
+   "hits": {
+    "咖啡店": 2,
+    "星巴克": 3
+   }
+  },
+  {
+   "id": "na07",
+   "query": "学校里哪里有工商银行的ATM机？",
+   "reason": "probe-hit",
+   "hits": {
+    "ATM": 13
+   }
+  },
+  {
+   "id": "na09",
+   "query": "学校的羽毛球馆怎么订场？",
+   "reason": "v1-answerable"
+  },
+  {
+   "id": "na10",
+   "query": "校园里能骑共享单车进来吗？",
+   "reason": "probe-hit",
+   "hits": {
+    "共享单车": 3
+   }
+  },
+  {
+   "id": "na12",
+   "query": "学校超市能用支付宝吗？",
+   "reason": "probe-hit",
+   "hits": {
+    "支付宝": 57
+   }
+  },
+  {
+   "id": "na13",
+   "query": "宿舍可以用吹风机吗，功率限制多少瓦？",
+   "reason": "probe-hit",
+   "hits": {
+    "吹风机": 9
+   }
+  },
+  {
+   "id": "na15",
+   "query": "四六级考试的报名费是多少钱？",
+   "reason": "v1-answerable"
+  },
+  {
+   "id": "na17",
+   "query": "普通话水平测试在学校哪里报名？",
+   "reason": "probe-hit",
+   "hits": {
+    "普通话水平测试": 32,
+    "普通话测试": 1
+   }
+  },
+  {
+   "id": "na20",
+   "query": "校医院看牙可以镶牙吗，费用多少？",
+   "reason": "probe-hit",
+   "hits": {
+    "镶牙": 5
+   }
+  },
+  {
+   "id": "na21",
+   "query": "本科生毕业照统一拍摄是哪天？",
+   "reason": "probe-hit",
+   "hits": {
+    "毕业照": 3
+   }
+  },
+  {
+   "id": "na22",
+   "query": "留学生的汉语言补习班怎么报名？",
+   "reason": "probe-hit",
+   "hits": {
+    "汉语补习": 7
+   }
+  },
+  {
+   "id": "na23",
+   "query": "新生军训服装尺码报错了能换吗？",
+   "reason": "probe-hit",
+   "hits": {
+    "军训服": 4
+   }
+  },
+  {
+   "id": "na25",
+   "query": "老师出国开会可以坐商务舱吗？",
+   "reason": "probe-hit",
+   "hits": {
+    "商务舱": 4
+   }
+  },
+  {
+   "id": "na26",
+   "query": "实验室的3D打印机怎么预约使用？",
+   "reason": "probe-hit",
+   "hits": {
+    "3D打印": 3
+   }
+  },
+  {
+   "id": "na27",
+   "query": "学生社团招新摆摊要提前几天申请场地？",
+   "reason": "probe-hit",
+   "hits": {
+    "百团大战": 4
+   }
+  },
+  {
+   "id": "na28",
+   "query": "校园马拉松比赛怎么报名？",
+   "reason": "probe-hit",
+   "hits": {
+    "马拉松": 2
+   }
+  },
+  {
+   "id": "na31",
+   "query": "教师职称评审答辩的PPT有模板吗？",
+   "reason": "probe-hit",
+   "hits": {
+    "答辩PPT": 1
+   }
+  },
+  {
+   "id": "na32",
+   "query": "研究生可以申请去企业挂职锻炼吗？",
+   "reason": "probe-hit",
+   "hits": {
+    "挂职锻炼": 33
+   }
+  },
+  {
+   "id": "na34",
+   "query": "清华大学转专业需要什么条件？",
+   "reason": "probe-hit",
+   "hits": {
+    "清华大学": 119
+   }
+  },
+  {
+   "id": "na35",
+   "query": "今年考研新闻传播学的国家线是多少分？",
+   "reason": "probe-hit",
+   "hits": {
+    "国家线": 20
+   }
+  },
+  {
+   "id": "na38",
+   "query": "国家公务员考试应届生报名有年龄限制吗？",
+   "reason": "probe-hit",
+   "hits": {
+    "国考": 61
+   }
+  },
+  {
+   "id": "na39",
+   "query": "出国留学的签证面签要准备什么材料？",
+   "reason": "probe-hit",
+   "hits": {
+    "面签": 2
+   }
+  },
+  {
+   "id": "na40",
+   "query": "北京地铁学生卡怎么办理？",
+   "reason": "v1-answerable"
+  },
+  {
+   "id": "na41",
+   "query": "雅思考试一年有几次考试机会？",
+   "reason": "probe-hit",
+   "hits": {
+    "雅思": 139
+   }
+  },
+  {
+   "id": "na42",
+   "query": "中国人民大学的研究生宿舍是几人间？",
+   "reason": "probe-hit",
+   "hits": {
+    "中国人民大学": 151,
+    "人民大学": 151
+   }
+  },
+  {
+   "id": "na44",
+   "query": "2026年11月的党委常委会决定了哪些事项？",
+   "reason": "probe-hit",
+   "hits": {
+    "2026年11月": 16
+   }
+  },
+  {
+   "id": "na45",
+   "query": "这学期校运动会是几号开？",
+   "reason": "probe-hit",
+   "hits": {
+    "校运动会": 1
+   }
+  },
+  {
+   "id": "na46",
+   "query": "今年元旦晚会在哪个礼堂办？",
+   "reason": "probe-hit",
+   "hits": {
+    "元旦晚会": 1
+   }
+  },
+  {
+   "id": "na47",
+   "query": "播音学院张老师的办公室在几号楼？",
+   "reason": "probe-hit",
+   "hits": {
+    "张老师": 33
+   }
+  },
+  {
+   "id": "na51",
+   "query": "我上学期高数考了多少分？",
+   "reason": "probe-hit",
+   "hits": {
+    "高数": 41
+   }
+  },
+  {
+   "id": "na55",
+   "query": "明天北京会下雨吗？",
+   "reason": "probe-hit",
+   "hits": {
+    "下雨": 2
+   }
+  },
+  {
+   "id": "na57",
+   "query": "Python里怎么把列表倒序？",
+   "reason": "probe-hit",
+   "hits": {
+    "Python": 17
+   }
+  },
+  {
+   "id": "na59",
+   "query": "推荐几部好看的科幻电影",
+   "reason": "probe-hit",
+   "hits": {
+    "科幻电影": 6
+   }
+  },
+  {
+   "id": "na61",
+   "query": "iPhone怎么截长图？",
+   "reason": "probe-hit",
+   "hits": {
+    "iPhone": 2
+   }
+  },
+  {
+   "id": "na67",
+   "query": "宿舍楼有没有公共微波炉可以热饭？",
+   "reason": "probe-hit",
+   "hits": {
+    "微波炉": 5
+   }
+  },
+  {
+   "id": "na68",
+   "query": "研究生毕业论文查重可以免费查几次？",
+   "reason": "probe-hit",
+   "hits": {
+    "免费查重": 1,
+    "查重次数": 1
+   }
+  },
+  {
+   "id": "na70",
+   "query": "本科生可以申请去校外实习抵学分吗，能抵几个学分？",
+   "reason": "v1-answerable"
+  },
+  {
+   "id": "na72",
+   "query": "毕业生离校时校园卡里的余额怎么退？",
+   "reason": "probe-hit",
+   "hits": {
+    "退余额": 1
+   }
+  },
+  {
+   "id": "na75",
+   "query": "托福考试成绩有效期是几年？",
+   "reason": "probe-hit",
+   "hits": {
+    "托福": 60
+   }
+  },
+  {
+   "id": "na76",
+   "query": "这周三下午的全校教职工大会在哪开？",
+   "reason": "probe-hit",
+   "hits": {
+    "教职工大会": 11
+   }
+  },
+  {
+   "id": "na78",
+   "query": "我的四级成绩什么时候能查？",
+   "reason": "probe-hit",
+   "hits": {
+    "四级成绩": 26
+   }
+  },
+  {
+   "id": "na80",
+   "query": "世界杯下一届在哪个国家举办？",
+   "reason": "probe-hit",
+   "hits": {
+    "世界杯": 4
+   }
+  },
+  {
+   "id": "nb01",
+   "query": "校医院周末能拍X光片吗？",
+   "reason": "probe-hit",
+   "hits": {
+    "X光片": 1
+   }
+  },
+  {
+   "id": "nb02",
+   "query": "留学生宿舍能自己做饭吗？",
+   "reason": "probe-hit",
+   "hits": {
+    "留学生宿舍": 4
+   }
+  },
+  {
+   "id": "nb03",
+   "query": "学校有没有母婴室？",
+   "reason": "probe-hit",
+   "hits": {
+    "母婴室": 1
+   }
+  },
+  {
+   "id": "nb04",
+   "query": "校内哪里能配钥匙？",
+   "reason": "probe-hit",
+   "hits": {
+    "配钥匙": 1
+   }
+  },
+  {
+   "id": "nb05",
+   "query": "操场跑道一圈多少米？",
+   "reason": "probe-hit",
+   "hits": {
+    "跑道一圈": 1
+   }
+  },
+  {
+   "id": "nb08",
+   "query": "校内能飞无人机航拍吗？",
+   "reason": "probe-hit",
+   "hits": {
+    "无人机": 37
+   }
+  },
+  {
+   "id": "nb14",
+   "query": "学生证火车票优惠卡一年充几次？",
+   "reason": "probe-hit",
+   "hits": {
+    "优惠卡": 4,
+    "火车票优惠": 2
+   }
+  },
+  {
+   "id": "nb15",
+   "query": "休学创业最多能休几年？",
+   "reason": "probe-hit",
+   "hits": {
+    "休学创业": 25
+   }
+  },
+  {
+   "id": "nb16",
+   "query": "北京市每年给高校多少落户指标？",
+   "reason": "probe-hit",
+   "hits": {
+    "落户指标": 3
+   }
+  },
+  {
+   "id": "nb23",
+   "query": "我这学期的课表在哪看？",
+   "reason": "probe-hit",
+   "hits": {
+    "我的课表": 8
+   }
+  }
+ ]
+}

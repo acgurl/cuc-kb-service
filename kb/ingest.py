@@ -12,7 +12,15 @@ from pathlib import Path
 
 import pymupdf
 
-from kb.common import COLLECTION, EMBED_MODEL, FASTEMBED_CACHE, is_generic_title, qdrant_client
+from kb.common import (
+    COLLECTION,
+    CLOUD_EMBED_PROVIDERS,
+    EMBED_MODEL,
+    EMBED_PROVIDER,
+    FASTEMBED_CACHE,
+    is_generic_title,
+    qdrant_client,
+)
 
 PAGE_ANCHOR_RE = re.compile(r"^<!-- page: (\d+) -->$")
 CLAUSE_RE = re.compile(r"^\s*(第[一二三四五六七八九十百千零〇\d]+条)\s*[、.．:：]?\s*")
@@ -465,6 +473,10 @@ def chunk_document(record):
                 "page_start": page_start,
                 "page_end": page_end,
                 "source_file": record["source_file"],
+                "source_url": record.get("source_url", ""),
+                "publish_date": record.get("publish_date", ""),
+                "date_basis": record.get("date_basis", ""),
+                "provenance": record.get("provenance", ""),
                 "text": text,
                 "embed_text": (alias + "\n" if alias else "") + prefix + "\n" + text,
                 "is_qa": False,
@@ -592,7 +604,11 @@ def parse_documents(src: Path, pdfs, with_tables=True):
     for pdf in pdfs:
         rel = pdf.relative_to(src)
         assistant = rel.parts[0] if len(rel.parts) > 1 else "shared"
-        md, plain, page_count = extract_pdf(pdf, with_tables)
+        try:
+            md, plain, page_count = extract_pdf(pdf, with_tables)
+        except Exception as exc:  # noqa: BLE001
+            print(f"skip unreadable: {rel} {type(exc).__name__}: {exc}", flush=True)
+            continue
         if len(plain) < MIN_DOC_CHARS:
             print(f"skip empty: {rel}", flush=True)
             continue
@@ -741,6 +757,11 @@ def ensure_collection(client, dim, recreate):
 
 
 def embed_and_upsert(chunks, recreate: bool):
+    if EMBED_PROVIDER in CLOUD_EMBED_PROVIDERS:
+        raise RuntimeError(
+            "KB_EMBED_PROVIDER is cloud: local fastembed vectors would not match the "
+            "collection. Use scripts/batch_embed.py + scripts/load_vectors.py instead."
+        )
     model = load_embedder()
     started = time.time()
     vectors = embed_texts(model, [chunk["embed_text"] for chunk in chunks])
