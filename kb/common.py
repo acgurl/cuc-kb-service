@@ -89,6 +89,13 @@ RERANK_API_TIMEOUT = _env_float("RERANK_API_TIMEOUT", 3)
 EMBED_API_KEY = EMBED_API_KEY or RERANK_API_KEY
 # Rerank every query instead of only when the trigger heuristics fire.
 RERANK_ALWAYS = _env_bool("KB_RERANK_ALWAYS", False)
+# What to do when a rerank was needed but no reranker produced scores (cloud
+# timeout/error and no local fallback). The un-reranked dense/BM25 floor
+# accepts almost anything, so "refuse" marks the search no_answer; "keep" keeps
+# the old floor decision. Either way the response carries degraded=true.
+RERANK_FAILURE_POLICY = _env("KB_RERANK_FAILURE_POLICY", "refuse").lower()
+if RERANK_FAILURE_POLICY not in ("refuse", "keep"):
+    raise ValueError("KB_RERANK_FAILURE_POLICY must be 'refuse' or 'keep'")
 
 # Ranking and answerability knobs (see search_core.py)
 GENERIC_RERANK_PENALTY = _env_float("KB_GENERIC_RERANK_PENALTY", 0.10)

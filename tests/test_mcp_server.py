@@ -117,6 +117,20 @@ class SearchAnswerModeTest(unittest.TestCase):
         self.assertEqual(result["results"], [])
         self.assertIn("answer_mode=none", result["note"])
 
+    def test_degraded_shows_results_as_related(self):
+        response = {**search_response(True, 0.3), "degraded": True}
+        result, _ = self.run_search(response)
+        self.assertEqual(result["answer_mode"], "related")
+        self.assertTrue(result["degraded"])
+        self.assertEqual(len(result["results"]), 1)
+        self.assertIn("degraded=true", result["note"])
+
+    def test_degraded_without_results_is_none(self):
+        response = {**search_response(True, 0.9, results=0), "degraded": True}
+        result, _ = self.run_search(response)
+        self.assertEqual(result["answer_mode"], "none")
+        self.assertTrue(result["degraded"])
+
     def test_none_without_results_or_confidence(self):
         for response in (search_response(True, 0.9, results=0), search_response(True, None)):
             with self.subTest(response=response):

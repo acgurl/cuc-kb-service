@@ -1,5 +1,24 @@
 # HANDOFF — 检索质量优化（2026-11-01）
 
+## 2026-11-12 评测多答案标注 + 精排失败降级（LIVE）
+
+**一句话现状**：① held-out v2 新增**多答案标注**（`dataset_heldout_v2_altgold.json`，原数据集不动）：同一事实在汇编/FAQ/新版/副本里也能答时计为命中，和严格指标并列报告；② 精排需要但失败（云端超时/报错、无本地兜底）时，响应带 `degraded=true, degraded_reason="rerank_unavailable"`，默认 `KB_RERANK_FAILURE_POLICY=refuse` 判 `no_answer`；MCP 对 degraded 且有结果的返回 `answer_mode=related` + 「先用同一问法重试」提示。排序逻辑零改动。
+
+| 项 | 值 |
+|---|---|
+| 多答案规则 | curated：active chunk 原文逐字含已核验答案关键词的其他文档，逐条人工读上下文，剔除 8 题答非所问的候选（`REJECT`，附理由）；另补 3 题措辞改写的新版（`MANUAL_ADD`：v25/v29/v31）。short：标题含查询词的 active 文档（确定性规则）。37 道 curated、8 道 short 有备选答案。脚本 `eval/heldout/build_altgold_v2.py --data data-v9` |
+| 评测 | `eval/heldout/results_v10_altgold_degraded_20261112.json`：严格指标与 v9 逐项一致（curated 66/77/80、keyword@5 83/84、MRR .8516、short 8/10/10、iso 9/10 leak 0、cite 10/10、no-answer 47/48、partial 6/7）；**多答案 curated any@1/@3/@5 = 79/83/84、MRR .9627；short any 12/15/15、MRR .8229**；P50/P95 943/1551ms（重启后首轮冷缓存 1369/2452） |
+| 降级实测 | 线上临时进程设 `RERANK_API_TIMEOUT=0.001`：dense 0.7491 原本会判有答案，现 `no_answer=true, degraded=true`，MCP related+3 条结果。评测中真实超时 1 次（v60），排名正确但被判 no_answer → curated_answered 84→83，这是该策略的代价，靠 agent 重试恢复 |
+| 剩余 any@1 未中 | curated 5 题 v14(3)/v15(2)/v20(2)/v27(5)/v75(3)，均在 top5；short s04(2)/s05(3)/s14(3)/s10(未进 top10)：多为问法歧义或答案在长文档非首块，留给 agent 层多问法检索与后续端到端评测 |
+| 代码 | `kb/common.py`（`KB_RERANK_FAILURE_POLICY` refuse/keep）、`kb/search_core.py`（`degraded`/`degraded_reason`）、`kb/mcp_server.py`（degraded→related+note）、`eval/live_check_v2.py`（`*_any_*` 指标 + `any_rank`）；+5 单测，68 tests OK、ruff 干净 |
+| 备份 | Phoenix `kb/{common,search_core,mcp_server}.py.bak-20261112-degraded`、`eval/live_check_v2.py.bak-20261112-degraded`、`.env.bak-20261112-degraded`；`.env` 追加 `KB_RERANK_FAILURE_POLICY=refuse` |
+
+**回滚**（只改策略不回代码：`.env` 改 `KB_RERANK_FAILURE_POLICY=keep` 后重启 cuc-kb；完全回滚）：
+
+```bash
+ssh phoenix 'cd ~/cuc-kb && for f in kb/common.py kb/search_core.py kb/mcp_server.py eval/live_check_v2.py .env; do cp -p $f.bak-20261112-degraded $f; done && sudo systemctl restart cuc-kb cuc-kb-mcp'
+```
+
 ## 2026-11-10 汇编版本收敛（LIVE，内容零改动）
 
 **一句话现状**：修正「2022/2026 学工汇编」的版本判定——**2026 汇编补 中传教务君 归属与 2026 年份；2022 汇编的 `publish_date` 从错配的 2025-11-18 改回 2022，并统一按汇编降权；2019 资助办法（含 16 个附件的汇编）也按汇编降权；新增「同族新版优先」排序（`KB_VERSION_FAMILY_PENALTY` 默认 0.05）**。查「国家助学贷款管理办法」在 中传教务君 / 新生帮手 / 无过滤 三个口径的 top-1 均变为 **2026 汇编 p337（date 2026）**，此前三个口径 top-1 全是 2022 汇编 p284（date 2025-11-18）。collection 仍 `cuc_kb_v4` = 2290 docs / 52,322 chunks，向量零改动。

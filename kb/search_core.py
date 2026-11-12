@@ -52,6 +52,7 @@ from kb.common import (
     RERANK_API_TIMEOUT,
     RERANK_ALWAYS,
     RERANK_API_USER_AGENT,
+    RERANK_FAILURE_POLICY,
     RERANK_LOCAL_FALLBACK,
     RERANK_LONG_MIN_CHARS,
     RERANK_LONG_TRIGGER,
@@ -958,6 +959,7 @@ class KB:
 
         candidates = self._select_candidates(fused)
         rerank_scores = {}
+        rerank_failed = False
         best_dense_all = max(dense_scores.values(), default=0.0)
         if (
             (self.cloud_reranker or self.reranker)
@@ -965,6 +967,9 @@ class KB:
             and self._should_rerank(query, best_dense_all)
         ):
             candidates, rerank_scores = self._rerank(query, candidates)
+            # The rerank was needed but nothing scored: the hybrid floor below
+            # is not calibrated for this, so flag the response as degraded.
+            rerank_failed = not rerank_scores
         if not rerank_scores and candidates:
             self._demote_generic_rrf(candidates)
 
@@ -990,12 +995,16 @@ class KB:
             )
 
         no_answer, confidence, answerability = self._judge_answer(query, results)
+        if rerank_failed and RERANK_FAILURE_POLICY == "refuse":
+            no_answer = True
         return {
             "query": query,
             "results": results,
             "no_answer": no_answer,
             "confidence": round(float(confidence), 4),
             "answerability": answerability,
+            "degraded": rerank_failed,
+            "degraded_reason": "rerank_unavailable" if rerank_failed else None,
             "took_ms": int((time.time() - started) * 1000),
         }
 

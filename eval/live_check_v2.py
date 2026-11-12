@@ -45,9 +45,29 @@ def active_texts():
     return texts
 
 
-def run_curated(cases, doc_map, latencies, counters, label):
+def load_altgold():
+    path = ROOT / "eval/heldout/dataset_heldout_v2_altgold.json"
+    if not path.exists():
+        return {}
+    labels = json.loads(path.read_text(encoding="utf-8"))["labels"]
+    return {case_id: set(v.get("alt_doc_ids") or []) for case_id, v in labels.items()}
+
+
+def any_rank(results, expected, alt_ids):
+    """Rank of the first result that is the expected doc or a verified alternate."""
+    for rank, item in enumerate(results, 1):
+        title = item.get("citation", {}).get("doc_title", "")
+        if any(e in title for e in expected) or item.get("doc_id") in alt_ids:
+            return rank
+    return None
+
+
+def run_curated(cases, doc_map, latencies, counters, label, altgold=None):
+    altgold = altgold or {}
     rows = []
     hits = {1: 0, 3: 0, 5: 0, 10: 0}
+    any_hits = {1: 0, 3: 0, 5: 0}
+    any_mrr = 0.0
     kw = 0
     mrr = 0.0
     answered = 0
@@ -64,17 +84,23 @@ def run_curated(cases, doc_map, latencies, counters, label):
                 hits[k] += 1
         if rank:
             mrr += 1.0 / rank
+        arank = any_rank(results, case["expected_docs"], altgold.get(case["id"], set()))
+        for k in any_hits:
+            if arank is not None and arank <= k:
+                any_hits[k] += 1
+        if arank:
+            any_mrr += 1.0 / arank
         if keyword_hit(results, case.get("keywords", []), top=5):
             kw += 1
         if not body.get("no_answer"):
             answered += 1
         rows.append({
-            "id": case["id"], "query": case["query"], "rank": rank,
+            "id": case["id"], "query": case["query"], "rank": rank, "any_rank": arank,
             "no_answer": body.get("no_answer"),
             "keyword@5": keyword_hit(results, case.get("keywords", []), top=5),
             "top_title": results[0]["citation"]["doc_title"] if results else None,
         })
-        print(f"{case['id']} rank={rank} na={body.get('no_answer')}", flush=True)
+        print(f"{case['id']} rank={rank} any={arank} na={body.get('no_answer')}", flush=True)
     n = len(cases)
     return rows, {
         f"{label}_total": n,
@@ -83,6 +109,9 @@ def run_curated(cases, doc_map, latencies, counters, label):
         f"{label}_keyword@5": kw,
         f"{label}_mrr": round(mrr / n, 4) if n else 0.0,
         f"{label}_answered": answered,
+        f"{label}_any_hit@1": any_hits[1], f"{label}_any_hit@3": any_hits[3],
+        f"{label}_any_hit@5": any_hits[5],
+        f"{label}_any_mrr": round(any_mrr / n, 4) if n else 0.0,
     }
 
 
@@ -97,16 +126,17 @@ def main():
     heldout = json.loads((ROOT / "eval/heldout/dataset_heldout_v2.json").read_text(encoding="utf-8"))
     na_set = json.loads((ROOT / "eval/heldout/dataset_noanswer_v2.json").read_text(encoding="utf-8"))
     doc_map = load_docs_map()
+    altgold = load_altgold()
     latencies = []
     counters = {"rerank_used": 0}
     summary = {"tag": args.tag}
     details = {}
 
     if args.set in ("heldout", "both"):
-        rows, s = run_curated(heldout["curated"], doc_map, latencies, counters, "curated")
+        rows, s = run_curated(heldout["curated"], doc_map, latencies, counters, "curated", altgold)
         summary.update(s)
         details["curated"] = rows
-        rows, s = run_curated(heldout["short"], doc_map, latencies, counters, "short")
+        rows, s = run_curated(heldout["short"], doc_map, latencies, counters, "short", altgold)
         summary.update({k: v for k, v in s.items() if k != "short_answered"})
         summary["short_answered"] = s["short_answered"]
         details["short"] = rows

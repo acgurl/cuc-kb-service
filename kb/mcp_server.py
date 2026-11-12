@@ -214,8 +214,13 @@ def tool_search(arguments):
 
     no_answer = bool(data.get("no_answer"))
     confidence = data.get("confidence")
+    degraded = bool(data.get("degraded"))
     if not no_answer:
         answer_mode = "direct"
+    elif degraded and results:
+        # Rerank was unavailable, so confidence is not on the calibrated scale:
+        # show the results for the agent to judge, never as a direct answer.
+        answer_mode = "related"
     elif results and isinstance(confidence, (int, float)) and confidence >= RELATED_MIN_CONFIDENCE:
         answer_mode = "related"
     else:
@@ -228,7 +233,15 @@ def tool_search(arguments):
         "took_ms": data.get("took_ms"),
         "results": results if answer_mode != "none" else [],
     }
-    if answer_mode == "related":
+    if degraded:
+        result["degraded"] = True
+    if degraded and answer_mode == "related":
+        result["note"] = (
+            "degraded=true：本次检索的精排服务暂时不可用，结果未经精排、可信度无法判断。"
+            "先用同一问法重试一次；重试仍为 degraded 时，只有原文确实直接回答了问题才能使用并标注出处，"
+            "否则按 related 处理，不得推断原文没写的内容。"
+        )
+    elif answer_mode == "related":
         result["note"] = (
             "answer_mode=related：知识库没有直接回答该问题的条款，以下是可能相关的内容。"
             "先换成更完整、正式的问法重试一次；仍为 related 时，只有确实相关的原文才能使用，"

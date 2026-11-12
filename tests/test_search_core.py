@@ -255,6 +255,29 @@ class SearchPipelineTest(unittest.TestCase):
             result = kb.search("学生公寓床铺尺寸")
         self.assertEqual(result["results"][0]["chunk_id"], "dorm-1")
         self.assertIsNone(result["results"][0]["rerank_score"])
+        # The hybrid floor would accept this (dense 0.8); the default policy refuses.
+        self.assertTrue(result["degraded"])
+        self.assertEqual(result["degraded_reason"], "rerank_unavailable")
+        self.assertTrue(result["no_answer"])
+
+    def test_failed_rerank_keep_policy_uses_hybrid_floor(self):
+        kb = build_kb({"dorm-1": 0.8, "guide-1": 0.5})
+        kb.cloud_reranker = mock.Mock(rerank=mock.Mock(side_effect=TimeoutError("slow")))
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True), mock.patch.object(
+            search_core, "RERANK_FAILURE_POLICY", "keep"
+        ):
+            result = kb.search("学生公寓床铺尺寸")
+        self.assertTrue(result["degraded"])
+        self.assertFalse(result["no_answer"])
+
+    def test_successful_or_skipped_rerank_is_not_degraded(self):
+        kb = build_kb({"dorm-1": 0.9}, rerank={"dorm-1": 0.92})
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True):
+            reranked = kb.search("学生公寓床铺尺寸")
+        skipped = build_kb({"dorm-1": 0.9}).search("学生公寓床铺尺寸")
+        for result in (reranked, skipped):
+            self.assertFalse(result["degraded"])
+            self.assertIsNone(result["degraded_reason"])
 
     def test_meta_and_documents(self):
         kb = build_kb({})
