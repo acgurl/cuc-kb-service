@@ -3,6 +3,8 @@ import json
 import re
 import threading
 import time
+from collections import OrderedDict
+from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import quote, urlsplit
 
 import jieba
@@ -33,6 +35,7 @@ from kb.common import (
     EMBED_DIM,
     EMBED_MODEL,
     EMBED_PROVIDER,
+    EMBED_QUERY_CACHE_SIZE,
     EMBED_QUERY_INSTRUCT,
     FASTEMBED_CACHE,
     GENERIC_CLOSE_MARGIN,
@@ -57,8 +60,11 @@ from kb.common import (
     RERANK_PROVIDER,
     RERANK_SHORTLIST,
     RERANK_TRIGGER,
+    VERSION_FAMILY_PENALTY,
+    edition_year,
     is_generic_title,
     qdrant_client,
+    version_family,
 )
 
 DOC_NO_RE = re.compile(r"[〔\[（(]\s*\d{4}\s*[〕\]）)]\s*\d+\s*号")
@@ -448,6 +454,11 @@ class KB:
         self.client = None
         self.lock = threading.Lock()
         self.loaded_at = None
+        self.bm25_postings = None
+        self.bm25_doc_len = None
+        self.bm25_masks = None
+        self._embed_cache = OrderedDict()
+        self._embed_cache_lock = threading.Lock()
 
     # ---- loading -----------------------------------------------------------
 
@@ -458,6 +469,8 @@ class KB:
 
         tokenized = [jieba.lcut_for_search(chunk["embed_text"]) for chunk in self.chunks]
         self.bm25 = BM25Okapi(tokenized) if tokenized else None
+        if self.bm25:
+            self._build_bm25_index()
 
         if EMBED_PROVIDER in CLOUD_EMBED_PROVIDERS:
             if not EMBED_API_KEY:
@@ -529,15 +542,27 @@ class KB:
     # ---- helpers -----------------------------------------------------------
 
     def encode_query(self, query: str):
+        with self._embed_cache_lock:
+            cached = self._embed_cache.get(query)
+            if cached is not None:
+                self._embed_cache.move_to_end(query)
+                return cached
         if self.cloud_embedder is not None:
-            return self.cloud_embedder.embed(query)
-        with self.lock:
-            try:
-                vector = list(self.model.query_embed(query))[0]
-            except AttributeError:
-                vector = list(self.model.embed([QUERY_INSTRUCTION + query]))[0]
-        vector = np.asarray(vector, dtype=np.float32)
-        return vector / max(float(np.linalg.norm(vector)), 1e-12)
+            vector = self.cloud_embedder.embed(query)
+        else:
+            with self.lock:
+                try:
+                    vector = list(self.model.query_embed(query))[0]
+                except AttributeError:
+                    vector = list(self.model.embed([QUERY_INSTRUCTION + query]))[0]
+            vector = np.asarray(vector, dtype=np.float32)
+            vector = vector / max(float(np.linalg.norm(vector)), 1e-12)
+        if EMBED_QUERY_CACHE_SIZE > 0:
+            with self._embed_cache_lock:
+                self._embed_cache[query] = vector
+                if len(self._embed_cache) > EMBED_QUERY_CACHE_SIZE:
+                    self._embed_cache.popitem(last=False)
+        return vector
 
     def _filter(self, assistant, doc_types):
         conditions = [FieldCondition(key="status", match=MatchValue(value="active"))]
@@ -586,7 +611,9 @@ class KB:
                 using="dense",
                 query_filter=query_filter,
                 limit=limit,
-                with_payload=True,
+                # Only chunk_id is consumed; fetching full payloads (chunk text
+                # included) wastes serialization on every query.
+                with_payload=["chunk_id"],
             )
         except Exception as exc:
             print(f"qdrant search failed: {exc}", flush=True)
@@ -601,16 +628,103 @@ class KB:
     def bm25_search(self, query, limit, assistant, doc_types):
         if not self.bm25:
             return []
-        scores = self.bm25.get_scores(jieba.lcut_for_search(query))
-        candidates = []
-        for index, score in enumerate(scores):
-            if score <= 0:
+        if self.bm25_postings is None:
+            # Manually assembled KB (tests): build the index on first use.
+            with self.lock:
+                if self.bm25_postings is None:
+                    self._build_bm25_index()
+        scores = self._bm25_scores(jieba.lcut_for_search(query))
+        mask = self.bm25_masks["active"]
+        if assistant:
+            assistant_mask = self.bm25_masks["assistants"].get(assistant)
+            shared_mask = self.bm25_masks["assistants"]["shared"]
+            mask = mask & (shared_mask if assistant_mask is None else assistant_mask | shared_mask)
+        if doc_types:
+            type_mask = self.bm25_masks["empty"]
+            for doc_type in doc_types:
+                found = self.bm25_masks["doc_types"].get(doc_type)
+                if found is not None:
+                    type_mask = type_mask | found
+            mask = mask & type_mask
+        indexes = np.flatnonzero(mask & (scores > 0))
+        if indexes.size == 0:
+            return []
+        # Stable sort keeps index order among equal scores, matching the
+        # original append-then-sort behaviour exactly.
+        indexes = indexes[np.argsort(-scores[indexes], kind="stable")][:limit]
+        return [(self.chunks[index]["chunk_id"], float(scores[index])) for index in indexes]
+
+    def _build_bm25_index(self):
+        """Sparse postings + filter masks over the BM25 corpus.
+
+        rank_bm25's get_scores scans all 52k doc Counters per query term
+        (~100-200 ms/query). Scoring only the documents that contain each term
+        is mathematically identical: a zero frequency contributes exactly 0.0,
+        and per-document additions keep the original query-term order.
+        """
+        postings = {}
+        for index, freqs in enumerate(self.bm25.doc_freqs):
+            for term, freq in freqs.items():
+                entry = postings.get(term)
+                if entry is None:
+                    postings[term] = ([index], [freq])
+                else:
+                    entry[0].append(index)
+                    entry[1].append(freq)
+        self.bm25_postings = {
+            term: (np.asarray(indexes, dtype=np.int64), np.asarray(freqs, dtype=np.int64))
+            for term, (indexes, freqs) in postings.items()
+        }
+        self.bm25_doc_len = np.asarray(self.bm25.doc_len)
+        size = len(self.chunks)
+        assistants = sorted(
+            {
+                assistant
+                for chunk in self.chunks
+                for assistant in (chunk.get("assistants") or [])
+            }
+        )
+        doc_types = sorted({chunk.get("doc_type") for chunk in self.chunks if chunk.get("doc_type")})
+        self.bm25_masks = {
+            "active": np.fromiter(
+                (chunk.get("status") == "active" for chunk in self.chunks),
+                dtype=bool, count=size,
+            ),
+            "empty": np.zeros(size, dtype=bool),
+            "assistants": {
+                assistant: np.fromiter(
+                    (assistant in (chunk.get("assistants") or []) for chunk in self.chunks),
+                    dtype=bool, count=size,
+                )
+                for assistant in assistants
+            },
+            "doc_types": {
+                doc_type: np.fromiter(
+                    (chunk.get("doc_type") == doc_type for chunk in self.chunks),
+                    dtype=bool, count=size,
+                )
+                for doc_type in doc_types
+            },
+        }
+        if "shared" not in self.bm25_masks["assistants"]:
+            self.bm25_masks["assistants"]["shared"] = self.bm25_masks["empty"]
+
+    def _bm25_scores(self, tokens):
+        """Bit-identical to BM25Okapi.get_scores, restricted to term postings."""
+        bm25 = self.bm25
+        scores = np.zeros(bm25.corpus_size)
+        doc_len = self.bm25_doc_len
+        for term in tokens:
+            idf = bm25.idf.get(term) or 0
+            posting = self.bm25_postings.get(term)
+            if posting is None or not idf:
                 continue
-            chunk = self.chunks[index]
-            if self._matches(chunk, assistant, doc_types):
-                candidates.append((chunk["chunk_id"], float(score)))
-        candidates.sort(key=lambda item: item[1], reverse=True)
-        return candidates[:limit]
+            indexes, freqs = posting
+            scores[indexes] += idf * (
+                freqs * (bm25.k1 + 1)
+                / (freqs + bm25.k1 * (1 - bm25.b + bm25.b * doc_len[indexes] / bm25.avgdl))
+            )
+        return scores
 
     def _apply_fusion_bonuses(self, query, fused):
         doc_no_match = DOC_NO_RE.search(query)
@@ -682,6 +796,28 @@ class KB:
             return score - GENERIC_RERANK_PENALTY
         return score
 
+    def _newest_editions(self, items):
+        """Newest edition year per compilation family among the candidates."""
+        newest = {}
+        for item in items:
+            chunk_id = item[0]
+            chunk = self.chunk_map.get(chunk_id) or {}
+            if not is_generic_chunk(chunk):
+                continue
+            family = version_family(chunk.get("doc_title", ""))
+            year = edition_year(chunk.get("doc_title", ""))
+            if not family or year is None:
+                continue
+            newest[family] = max(year, newest.get(family, year))
+        return newest
+
+    def _is_older_edition(self, chunk, newest):
+        if not is_generic_chunk(chunk):
+            return False
+        family = version_family(chunk.get("doc_title", ""))
+        year = edition_year(chunk.get("doc_title", ""))
+        return family in newest and year is not None and year < newest[family]
+
     def _rerank(self, query, candidates):
         """Return (reordered candidates, rerank scores by chunk_id)."""
         shortlist = candidates[: max(RERANK_SHORTLIST, CANDIDATE_LIMIT)]
@@ -706,32 +842,43 @@ class KB:
             and specific_best is not None
             and specific_best >= generic_best - GENERIC_CLOSE_MARGIN
         )
-        reranked.sort(
-            key=lambda item: self._adjusted_rerank_score(
-                self.chunk_map.get(item[0]) or {},
-                rerank_scores[item[0]],
-                generic_penalty,
-            ),
-            reverse=True,
-        )
+        newest = self._newest_editions(reranked)
+
+        def adjusted(item):
+            chunk = self.chunk_map.get(item[0]) or {}
+            score = self._adjusted_rerank_score(chunk, rerank_scores[item[0]], generic_penalty)
+            if self._is_older_edition(chunk, newest):
+                score -= VERSION_FAMILY_PENALTY
+            return score
+
+        reranked.sort(key=adjusted, reverse=True)
         others = [item for item in candidates if item[0] not in rerank_scores]
         return reranked + others, rerank_scores
 
     def _demote_generic_rrf(self, candidates):
-        """Without rerank, down-weight generic compilations when a specific doc is close."""
+        """Without rerank, down-weight generic compilations and older editions."""
         generic_best, specific_best = best_split(
             candidates, lambda item: self._is_generic_id(item[0]), lambda item: item[1]
         )
-        if (
+        generic_penalty = (
             generic_best is not None
             and specific_best is not None
             and specific_best >= generic_best * GENERIC_RRF_FACTOR
-        ):
-            candidates.sort(
-                key=lambda item: item[1]
-                * (GENERIC_RRF_FACTOR if self._is_generic_id(item[0]) else 1.0),
-                reverse=True,
-            )
+        )
+        newest = self._newest_editions(candidates)
+        if not generic_penalty and not newest:
+            return
+
+        def adjusted(item):
+            chunk = self.chunk_map.get(item[0]) or {}
+            score = item[1]
+            if generic_penalty and self._is_generic_id(item[0]):
+                score *= GENERIC_RRF_FACTOR
+            if self._is_older_edition(chunk, newest):
+                score -= VERSION_FAMILY_PENALTY
+            return score
+
+        candidates.sort(key=adjusted, reverse=True)
 
     def _citation(self, chunk):
         return {
@@ -793,9 +940,13 @@ class KB:
         if not query:
             return {"query": query, "results": [], "no_answer": True, "took_ms": 0}
 
-        vector = self.encode_query(query)
-        dense_hits = self.dense_search(vector, self._filter(assistant, doc_types), DENSE_LIMIT)
-        bm25_hits = self.bm25_search(query, BM25_LIMIT, assistant, doc_types)
+        # BM25 is independent of the query vector: run it while the cloud
+        # embedding round-trip and the Qdrant lookup happen on this thread.
+        with ThreadPoolExecutor(max_workers=1, thread_name_prefix="kb-bm25") as pool:
+            bm25_future = pool.submit(self.bm25_search, query, BM25_LIMIT, assistant, doc_types)
+            vector = self.encode_query(query)
+            dense_hits = self.dense_search(vector, self._filter(assistant, doc_types), DENSE_LIMIT)
+            bm25_hits = bm25_future.result()
 
         dense_scores = dict(dense_hits)
         bm25_scores = dict(bm25_hits)

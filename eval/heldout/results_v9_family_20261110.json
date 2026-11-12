@@ -1,0 +1,1380 @@
+{
+ "summary": {
+  "tag": "v9_family_20261110",
+  "curated_total": 84,
+  "curated_hit@1": 66,
+  "curated_hit@3": 77,
+  "curated_hit@5": 80,
+  "curated_hit@10": 80,
+  "curated_keyword@5": 83,
+  "curated_mrr": 0.8516,
+  "curated_answered": 84,
+  "short_total": 16,
+  "short_hit@1": 8,
+  "short_hit@3": 10,
+  "short_hit@5": 10,
+  "short_hit@10": 10,
+  "short_keyword@5": 16,
+  "short_mrr": 0.5417,
+  "short_answered": 15,
+  "isolation_total": 10,
+  "isolation_pass": 9,
+  "isolation_hit": 9,
+  "isolation_leak": 0,
+  "citation_total": 10,
+  "citation_pass": 10,
+  "no_answer_total": 48,
+  "no_answer_pass": 47,
+  "no_answer_invalidated": [],
+  "no_answer_valid_total": 48,
+  "no_answer_valid_pass": 47,
+  "partial_total": 7,
+  "partial_refused": 6,
+  "latency_p50": 1251,
+  "latency_p95": 2224,
+  "rerank_used": 148
+ },
+ "details": {
+  "curated": [
+   {
+    "id": "v01",
+    "query": "批量买低值易耗品，多少台件以上要按固定资产管理？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "《中国传媒大学低值易耗品管理办法》"
+   },
+   {
+    "id": "v02",
+    "query": "单位给职工配笔记本电脑，数量上限按实有人数的多少算？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "《中国传媒大学通用办公设备及家具配置标准》"
+   },
+   {
+    "id": "v03",
+    "query": "自己保管的相机弄丢了，要按设备原值的多少赔偿？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学仪器设备损坏、丢失赔偿实施细则"
+   },
+   {
+    "id": "v04",
+    "query": "学生戴的校徽胸徽是什么配色？",
+    "rank": null,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学章程"
+   },
+   {
+    "id": "v05",
+    "query": "学校周转房最长可以租住几年？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学周转房屋管理办法"
+   },
+   {
+    "id": "v06",
+    "query": "科研用的单台套设备价值多少万以上必须进国家网络管理平台？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "实管字〔2024〕12号 关于印发《中国传媒大学大型仪器设备开放共享管理办法》的通知"
+   },
+   {
+    "id": "v07",
+    "query": "公租房合同到期想续租，要提前多久申请？",
+    "rank": 2,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "北京市公共租赁住房申请、审核及配租管理办法"
+   },
+   {
+    "id": "v08",
+    "query": "实验室里化学试剂溅进眼睛，至少要冲洗多长时间？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中传实验字（2018）307号 关于印发《中国传媒大学实验室安全事故应急预案》的通知"
+   },
+   {
+    "id": "v09",
+    "query": "学校的互联网域名归哪个部门管？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中传资产字〔2024〕105号 关于印发《中国传媒大学无形资产管理办法（修订）》的通知"
+   },
+   {
+    "id": "v10",
+    "query": "两百万以上的实验室建设项目验收，至少要请几名校外专家？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学实验室建设项目验收工作指南（0430）"
+   },
+   {
+    "id": "v11",
+    "query": "海南国际学院借摄像器材有问题找哪位老师？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "海南国际学院仪器设备借用操作指南(试行）"
+   },
+   {
+    "id": "v12",
+    "query": "学校绩点算法里考60分对应绩点是多少？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "【学籍管理】中国传媒大学百分制分数转换绩点（GPA）算法对应说明"
+   },
+   {
+    "id": "v13",
+    "query": "英语四六级下半年一般什么时候报名？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "【考试】中传教字〔2007〕340号中国传媒大学关于参加全国大学英语等级考试的规定"
+   },
+   {
+    "id": "v14",
+    "query": "2026级本科新生哪天开始上课？",
+    "rank": 3,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "2026级本科生入学须知（校本部）"
+   },
+   {
+    "id": "v15",
+    "query": "现在转专业一次能填几个志愿？",
+    "rank": 2,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "【通知】关于启动2025年本科生转专业报名工作的通知"
+   },
+   {
+    "id": "v16",
+    "query": "缺课超过总学时多少会被取消期末考试资格？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "本科生院〔2025〕69号 关于印发《中国传媒大学全日制本科生课程考核及成绩管理办法》的通知"
+   },
+   {
+    "id": "v17",
+    "query": "申请缓考原则上要提前多久在教务系统里发起？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "本科生院〔2025〕69号 关于印发《中国传媒大学全日制本科生课程考核及成绩管理办法》的通知"
+   },
+   {
+    "id": "v18",
+    "query": "退役大学生士兵申请体测免测通过后按多少分记？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "本科生院〔2024〕115号关于印发《中国传媒大学《国家学生体质健康标准》实施办法（2024年修订）》的通知"
+   },
+   {
+    "id": "v19",
+    "query": "少数民族预科生休学能办几次？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中传教字〔2024〕315号 关于印发《中国传媒大学少数民族预科生管理办法（修订）》的通知"
+   },
+   {
+    "id": "v20",
+    "query": "体育课必选项目不及格最多能重考几次？",
+    "rank": 3,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "本科生院服务常见问题【汇总】.docx_view"
+   },
+   {
+    "id": "v21",
+    "query": "辅修双学位平均绩点要达到多少才能拿学位证？",
+    "rank": null,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "本科生院服务常见问题【汇总】.docx_view"
+   },
+   {
+    "id": "v22",
+    "query": "往届生自助办中英文成绩单，第二份起收多少钱？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "往届生自助开成绩单指南"
+   },
+   {
+    "id": "v23",
+    "query": "补办毕业证明书交的照片要压缩到多大？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "毕业证明书_学位证明书办理流程_1"
+   },
+   {
+    "id": "v24",
+    "query": "辅修课程补考一般安排在什么时候？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "辅修双学位常见问题（2020）"
+   },
+   {
+    "id": "v25",
+    "query": "团体参观传媒博物馆要提前几个工作日预约？",
+    "rank": 3,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学传媒博物馆场馆管理规定"
+   },
+   {
+    "id": "v26",
+    "query": "校内单位想用传媒博物馆临展展厅，要提前多久申请？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学传媒博物馆临时展厅管理办法"
+   },
+   {
+    "id": "v27",
+    "query": "新生户口迁移证最晚什么时候交？",
+    "rank": 5,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "新生入学须知（校本部）"
+   },
+   {
+    "id": "v28",
+    "query": "毕业论文用了AI但没交使用情况说明会怎样？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学本科毕业论文（设计） 人工智能使用规范实施细则 （试行）"
+   },
+   {
+    "id": "v29",
+    "query": "硕士论文查重总文字复制比要低于多少才算合格？",
+    "rank": null,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学研究生学位论文查重检测办法"
+   },
+   {
+    "id": "v30",
+    "query": "博士入学取得学籍满多久可以申请转成硕士培养？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学硕博连读生、直博生转为硕士生培养管理办法"
+   },
+   {
+    "id": "v31",
+    "query": "博士论文匿名评阅最多可以申请几位专家回避？",
+    "rank": null,
+    "no_answer": false,
+    "keyword@5": false,
+    "top_title": "中国传媒大学博士研究生学位论文及毕业作品匿名评阅办法（研究生院〔2026〕8号）"
+   },
+   {
+    "id": "v32",
+    "query": "图书馆弄丢一本1975年出版的书要赔原价的多少倍？",
+    "rank": 2,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学图书馆手册（20241128）"
+   },
+   {
+    "id": "v33",
+    "query": "得到读书奖学金每年奖多少人、每人多少？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学“得到读书奖学金”评审细则（教务字〔2021〕81号）"
+   },
+   {
+    "id": "v34",
+    "query": "毕业生暂缓发档的档案最晚能在学校保留到什么时候？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "2026届毕业生档案转寄信息填写须知"
+   },
+   {
+    "id": "v35",
+    "query": "国际会议的工作人员数量要控制在正式代表的多少以内？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "《中国传媒大学会议费管理办法（修订）》（中传财字〔2019〕194号）"
+   },
+   {
+    "id": "v36",
+    "query": "教职工借款原则上最长多久要冲账？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "《中国传媒大学往来款项管理办法（试行）》（中传财字〔2022〕135号）"
+   },
+   {
+    "id": "v37",
+    "query": "批量买东西超过几件发票就要附销售清单？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "《关于税务发票报销的说明》"
+   },
+   {
+    "id": "v38",
+    "query": "校外人员劳务费必须用哪家银行的卡发？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "财务综合服务平台常见问题解答（第一期）.pdf"
+   },
+   {
+    "id": "v39",
+    "query": "项目聘用人员参与本单位科研项目多久以上才能申办公务卡？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "项目聘用人员申办公务卡情况说明"
+   },
+   {
+    "id": "v40",
+    "query": "海南国际学院新生入学发的是哪家银行的卡？",
+    "rank": 2,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学2025-2026学年学生缴费通知，发oa 公众号 财务网站，终版，20250815发布.docx_view"
+   },
+   {
+    "id": "v41",
+    "query": "基金会公益科研项目餐费人均不能超过多少？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "传媒大学教育基金会公益项目经费管理办法（修订）传媒教基字〔2026〕4号"
+   },
+   {
+    "id": "v42",
+    "query": "科研项目档案要在项目完成后多久内归档？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "档案问答"
+   },
+   {
+    "id": "v43",
+    "query": "暑假办综合档案业务打哪个电话？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "关于2026年暑假期间学校综合档案业务办理的通知"
+   },
+   {
+    "id": "v44",
+    "query": "给校史馆捐赠史料后，捐赠人对捐赠品享有什么权利？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "校史馆〔2023〕1号-关于印发《中国传媒大学校史馆接受校史资料（实物）捐赠工作管理办法》的通知"
+   },
+   {
+    "id": "v45",
+    "query": "校史馆收藏的那面天安门国旗编号是多少？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "校史馆〔2025〕1号-关于印发《中国传媒大学校史馆馆藏国旗教育活动管理办法》的通知"
+   },
+   {
+    "id": "v46",
+    "query": "纸质档案库房的温度要控制在什么范围？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "档案馆〔2023〕22号-关于印发《中国传媒大学档案馆库房管理制度》的通知"
+   },
+   {
+    "id": "v47",
+    "query": "学校每年哪几个月集中办理退宿？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学后勤保障处学生公寓退宿管理规定"
+   },
+   {
+    "id": "v48",
+    "query": "望京方向的班车早上几点发车？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "关于中国传媒大学班车路线通告"
+   },
+   {
+    "id": "v49",
+    "query": "校内挂横幅最长能挂几天？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学校内悬挂横幅标语、设置宣传广告管理办法（试行）"
+   },
+   {
+    "id": "v50",
+    "query": "上课迟到超过多少分钟算重大教学事故？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中传政字〔2024〕15号 关于印发《中国传媒大学教学事故认定和处理办法》的通知"
+   },
+   {
+    "id": "v51",
+    "query": "督导专家常规随堂听课津贴一课时多少钱？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中传评督字〔2022〕105号 关于印发《中国传媒大学教学督导工作细则》通知"
+   },
+   {
+    "id": "v52",
+    "query": "课堂有我随堂评价的有效期是多久？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "“课堂有我”系统操作手册（学生版）（V2.0）"
+   },
+   {
+    "id": "v53",
+    "query": "没有工资收入的学生党员每月交多少党费？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "《中国传媒大学党费收缴、管理和使用办法》（中传党组字〔2019〕85号）"
+   },
+   {
+    "id": "v54",
+    "query": "无正当理由连续多久不交党费按自行脱党处理？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "《中国传媒大学党费收缴、管理和使用办法》（中传党组字〔2019〕85号）"
+   },
+   {
+    "id": "v55",
+    "query": "党员组织关系介绍信有效期一般最长多久？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "接转组织关系知识问答"
+   },
+   {
+    "id": "v56",
+    "query": "学校按每名党员每年多少钱标准预算党建活动经费？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学基层党组织党建活动经费管理办法"
+   },
+   {
+    "id": "v57",
+    "query": "每个学生每学年最多能参加几个社团？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中传党团字〔2024〕81号 关于印发《中国传媒大学学生社团建设管理办法》的通知"
+   },
+   {
+    "id": "v58",
+    "query": "中传青年五四奖章参评青年的年龄范围是多少？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "附件2：“中传青年五四奖章”评选表彰办法"
+   },
+   {
+    "id": "v59",
+    "query": "非学历教育项目收入要上缴学校百分之多少？",
+    "rank": 2,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "AI中国传媒大学非学历教育项目办学指导快问快答.docx_view"
+   },
+   {
+    "id": "v60",
+    "query": "继续教育7月批次注册的毕业证一般几月发？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "关于高等学历继续教育毕业审核流程和毕业证书发放时间安排的说明"
+   },
+   {
+    "id": "v61",
+    "query": "2026年普通话水平测试培训班第五期培训费多少？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "招生简章 _ 2026年中国传媒大学普通话水平测试培训班（第五期）招生简章"
+   },
+   {
+    "id": "v62",
+    "query": "信通学院AI实验班三年必修限选课平均绩点不能低于多少？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "信通学院政〔2026〕5号-信息与通信工程学院人工智能（智能视听卓越人才）实验班培养与管理办法"
+   },
+   {
+    "id": "v63",
+    "query": "信通学院科研实验室开放到晚上几点？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学信息与通信工程学院科研实验室安全管理办法"
+   },
+   {
+    "id": "v64",
+    "query": "考试开始多久之后允许交卷出场？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "期末考试-中国传媒大学考场规则及监考人员守则（2026）"
+   },
+   {
+    "id": "v65",
+    "query": "学校的大模型服务现在收费吗？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学大模型服务管理实施细则"
+   },
+   {
+    "id": "v66",
+    "query": "校园网每月给多少免费基础流量？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中传政字〔2026〕243号 关于印发《中国传媒大学校园网管理办法（试行）》的通知"
+   },
+   {
+    "id": "v67",
+    "query": "学校正版Adobe可以在几台电脑上激活？",
+    "rank": 2,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "信息化服务常见问题_20260909"
+   },
+   {
+    "id": "v68",
+    "query": "校园统一支付平台学生账号的初始密码是什么？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学新生缴费指南"
+   },
+   {
+    "id": "v69",
+    "query": "三年制硕士申请提前毕业要在什么时候提出？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学关于三年制硕士研究生提前毕业的规定"
+   },
+   {
+    "id": "v70",
+    "query": "博士生基本文献阅读至少要多少种？",
+    "rank": 4,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学攻读博士学位研究生培养工作规定"
+   },
+   {
+    "id": "v71",
+    "query": "学硕基本文献考试前要读多少种文献？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学学术学位硕士研究生基本文献考试管理规定"
+   },
+   {
+    "id": "v72",
+    "query": "已毕业学生想在线查本人录取名册用哪个平台？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "关于2026年寒假期间学校综合档案业务办理的通知"
+   },
+   {
+    "id": "v73",
+    "query": "教授连续两年不给本科生上课会怎样？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学关于教授、副教授为本科生上课的规定"
+   },
+   {
+    "id": "v74",
+    "query": "优秀教学奖每次评多少名？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学优秀教学奖评选及奖励办法"
+   },
+   {
+    "id": "v75",
+    "query": "学术伦理委员会多久开展一次伦理审查？",
+    "rank": 3,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "科字〔2023〕101号-关于印发《中国传媒大学学术伦理委员会章程》的通知"
+   },
+   {
+    "id": "v76",
+    "query": "自行委托专利代理后，受理通知书要在多少个工作日内交科技处？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学发明人自行委托专利代理机构申请专利流程"
+   },
+   {
+    "id": "v77",
+    "query": "教职工停车年度申报有问题打哪个咨询电话？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "《关于启动教职工及家属停车年度申报审核的通知及线上申报系统使用说明》"
+   },
+   {
+    "id": "v78",
+    "query": "集体政审用的无犯罪证明要在哪个APP上开？",
+    "rank": 4,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "关于学生就业实习和新入职教工政审相关事项说明"
+   },
+   {
+    "id": "v79",
+    "query": "全国性学科竞赛一等奖能认几个创新学分？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中传教字〔2018〕30号_中国传媒大学本科生创新创业学分认定管理办法（试行）_2018-01-19"
+   },
+   {
+    "id": "v80",
+    "query": "出国交流超过一学期要办什么手续？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中传教字〔2018〕154号_中国传媒大学本科学生境外交流学习管理规定（修订）_2018-06-28"
+   },
+   {
+    "id": "v81",
+    "query": "外来务工人员进校几天内要办临时出入证？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学外来务工经商人员管理规定"
+   },
+   {
+    "id": "v82",
+    "query": "办大型文体活动要提前几天填登记审批表？",
+    "rank": 2,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中传保工字〔2008〕9号_关于印发《中国传媒大学校园治安管理规定》等二十个安全稳定工作制度的通知_2008-01-24"
+   },
+   {
+    "id": "v83",
+    "query": "国际加速专线申请由哪个部门审批？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学国际加速专线服务管理实施细则"
+   },
+   {
+    "id": "v84",
+    "query": "少数民族预科生第二学期最多选修几学分的本科通识拓展课？",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中传教字〔2024〕315号 关于印发《中国传媒大学少数民族预科生管理办法（修订）》的通知"
+   }
+  ],
+  "short": [
+   {
+    "id": "s01",
+    "query": "退宿",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学后勤保障处学生公寓退宿管理规定"
+   },
+   {
+    "id": "s02",
+    "query": "班车",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "关于中国传媒大学班车路线通告"
+   },
+   {
+    "id": "s03",
+    "query": "党费",
+    "rank": 1,
+    "no_answer": true,
+    "keyword@5": true,
+    "top_title": "交纳党费知识问答"
+   },
+   {
+    "id": "s04",
+    "query": "论文查重",
+    "rank": null,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学图书馆手册（20241128）"
+   },
+   {
+    "id": "s05",
+    "query": "缓考",
+    "rank": 3,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "2018年研究生手册"
+   },
+   {
+    "id": "s06",
+    "query": "校徽",
+    "rank": null,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "国资字〔2024〕8号 关于印发《中国传媒大学校名、校徽使用实施细则》的通知"
+   },
+   {
+    "id": "s07",
+    "query": "周转房",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学周转房屋管理办法"
+   },
+   {
+    "id": "s08",
+    "query": "辅修",
+    "rank": null,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学辅修管理办法"
+   },
+   {
+    "id": "s09",
+    "query": "学分绩点",
+    "rank": null,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学研究生学分绩点说明"
+   },
+   {
+    "id": "s10",
+    "query": "户口迁移",
+    "rank": null,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "新生入学须知（2026级博士、全日制硕士、非全日制硕士、港澳台硕士研究生）"
+   },
+   {
+    "id": "s11",
+    "query": "教学事故",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中传政字〔2024〕15号 关于印发《中国传媒大学教学事故认定和处理办法》的通知"
+   },
+   {
+    "id": "s12",
+    "query": "社团注册",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中传党团字〔2024〕81号 关于印发《中国传媒大学学生社团建设管理办法》的通知"
+   },
+   {
+    "id": "s13",
+    "query": "普通话培训",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "招生简章 _ 2026年中国传媒大学普通话水平测试培训班（第四期）正在招生"
+   },
+   {
+    "id": "s14",
+    "query": "查档案",
+    "rank": 3,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "人事工作回答-202605.doc_view"
+   },
+   {
+    "id": "s15",
+    "query": "公务卡",
+    "rank": null,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中传财字〔2019〕176号_中国传媒大学公务卡管理办法 (修订)_2019-07-11"
+   },
+   {
+    "id": "s16",
+    "query": "实验室开放时间",
+    "rank": 1,
+    "no_answer": false,
+    "keyword@5": true,
+    "top_title": "中国传媒大学信息与通信工程学院科研实验室安全管理办法"
+   }
+  ],
+  "isolation": [
+   {
+    "id": "i01",
+    "rank": 1,
+    "leak": [],
+    "pass": true
+   },
+   {
+    "id": "i02",
+    "rank": 3,
+    "leak": [],
+    "pass": true
+   },
+   {
+    "id": "i03",
+    "rank": 1,
+    "leak": [],
+    "pass": true
+   },
+   {
+    "id": "i04",
+    "rank": 2,
+    "leak": [],
+    "pass": true
+   },
+   {
+    "id": "i05",
+    "rank": null,
+    "leak": [],
+    "pass": false
+   },
+   {
+    "id": "i06",
+    "rank": 1,
+    "leak": [],
+    "pass": true
+   },
+   {
+    "id": "i07",
+    "rank": 1,
+    "leak": [],
+    "pass": true
+   },
+   {
+    "id": "i08",
+    "rank": 2,
+    "leak": [],
+    "pass": true
+   },
+   {
+    "id": "i09",
+    "rank": 1,
+    "leak": [],
+    "pass": true
+   },
+   {
+    "id": "i10",
+    "rank": 1,
+    "leak": [],
+    "pass": true
+   }
+  ],
+  "citation": [
+   {
+    "id": "c01",
+    "pass": true,
+    "expected_page": 5
+   },
+   {
+    "id": "c02",
+    "pass": true,
+    "expected_page": 6
+   },
+   {
+    "id": "c03",
+    "pass": true,
+    "expected_page": 4
+   },
+   {
+    "id": "c04",
+    "pass": true,
+    "expected_page": 4
+   },
+   {
+    "id": "c05",
+    "pass": true,
+    "expected_page": 12
+   },
+   {
+    "id": "c06",
+    "pass": true,
+    "expected_page": 4
+   },
+   {
+    "id": "c07",
+    "pass": true,
+    "expected_page": 1
+   },
+   {
+    "id": "c08",
+    "pass": true,
+    "expected_page": 6
+   },
+   {
+    "id": "c09",
+    "pass": true,
+    "expected_page": 1
+   },
+   {
+    "id": "c10",
+    "pass": true,
+    "expected_page": 10
+   }
+  ],
+  "no_answer": [
+   {
+    "id": "hn01",
+    "query": "校医院能打九价HPV疫苗吗？",
+    "no_answer": true,
+    "confidence": 0.6659,
+    "invalidated_by_new_corpus": false,
+    "top_title": "学生公费医疗常见问题解答"
+   },
+   {
+    "id": "hn02",
+    "query": "学校健身房的私教课多少钱？",
+    "no_answer": true,
+    "confidence": 0.4401,
+    "invalidated_by_new_corpus": false,
+    "top_title": "体育场馆预约注意事项.docx_view"
+   },
+   {
+    "id": "hn03",
+    "query": "毕业典礼的学位服在哪里租？",
+    "no_answer": true,
+    "confidence": 0.3569,
+    "invalidated_by_new_corpus": false,
+    "top_title": "档案馆〔2023〕17号-关于印发《声像类档案管理规范》的通知"
+   },
+   {
+    "id": "hn04",
+    "query": "学校游泳馆的年卡多少钱？",
+    "no_answer": true,
+    "confidence": 0.4871,
+    "invalidated_by_new_corpus": false,
+    "top_title": "知识库-学生公寓服务中心"
+   },
+   {
+    "id": "hn12",
+    "query": "选修课抢课有什么技巧？",
+    "no_answer": true,
+    "confidence": 0.645,
+    "invalidated_by_new_corpus": false,
+    "top_title": "2022修学指南电子版"
+   },
+   {
+    "id": "na02",
+    "query": "宿舍楼下的自动售货机坏了吞钱找谁退？",
+    "no_answer": true,
+    "confidence": 0.5042,
+    "invalidated_by_new_corpus": false,
+    "top_title": "设备共享中心相关事项.docx_view"
+   },
+   {
+    "id": "na06",
+    "query": "眼镜坏了学校附近有配眼镜的地方吗？",
+    "no_answer": true,
+    "confidence": 0.3146,
+    "invalidated_by_new_corpus": false,
+    "top_title": "普通高等学校本科专业类教学质量国家标准（下册）"
+   },
+   {
+    "id": "na08",
+    "query": "在食堂丢了耳机去哪里认领？",
+    "no_answer": true,
+    "confidence": 0.4331,
+    "invalidated_by_new_corpus": false,
+    "top_title": "信通字〔2022〕16号-关于疫情防控期间信息化处服务中心工作调整的通知"
+   },
+   {
+    "id": "na14",
+    "query": "校园里有流浪猫救助社团吗？",
+    "no_answer": true,
+    "confidence": 0.4849,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中传学字〔2017〕254号_中国传媒大学学生管理规定"
+   },
+   {
+    "id": "na18",
+    "query": "计算机二级考试学校是考点吗？",
+    "no_answer": true,
+    "confidence": 0.579,
+    "invalidated_by_new_corpus": false,
+    "top_title": "教育部办公厅关于做好2007年普通高等学校艺术类专业招生工作的通知"
+   },
+   {
+    "id": "na19",
+    "query": "研究生宿舍可以申请换成单人间吗？",
+    "no_answer": true,
+    "confidence": 0.5977,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中国传媒大学周转房屋管理办法"
+   },
+   {
+    "id": "na24",
+    "query": "教职工子女上北京市重点高中学校有指标吗？",
+    "no_answer": true,
+    "confidence": 0.4837,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中传人字〔2017〕367号_中国传媒大学教职工遗属生活困难补助管理办法_2017-12-28"
+   },
+   {
+    "id": "na29",
+    "query": "学校的心理咨询可以线上视频咨询吗？",
+    "no_answer": true,
+    "confidence": 0.6338,
+    "invalidated_by_new_corpus": false,
+    "top_title": "2022修学指南电子版"
+   },
+   {
+    "id": "na30",
+    "query": "转专业考试的历年真题在哪里能找到？",
+    "no_answer": true,
+    "confidence": 0.5889,
+    "invalidated_by_new_corpus": false,
+    "top_title": "附件2：本科生院〔2024〕77号 关于印发《中国传媒大学本科生转专业管理办法》的通知.docx_view"
+   },
+   {
+    "id": "na33",
+    "query": "北京市应届毕业生落户的积分标准是什么？",
+    "no_answer": true,
+    "confidence": 0.5861,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中国传媒大学教学科研岗接收毕业生及调入人员实施办法"
+   },
+   {
+    "id": "na36",
+    "query": "个税专项附加扣除里子女教育每月扣多少？",
+    "no_answer": true,
+    "confidence": 0.327,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中传校医字〔2008〕87号_中国传媒大学计划生育奖励待遇有关规定.docx_view"
+   },
+   {
+    "id": "na37",
+    "query": "北京住房公积金贷款最高能贷多少？",
+    "no_answer": true,
+    "confidence": 0.3708,
+    "invalidated_by_new_corpus": false,
+    "top_title": "国有资产管理处各项业务办理指南"
+   },
+   {
+    "id": "na48",
+    "query": "明天上午图书馆会停电吗？",
+    "no_answer": true,
+    "confidence": 0.5046,
+    "invalidated_by_new_corpus": false,
+    "top_title": "关于车辆北出入口临时交通管控的通知"
+   },
+   {
+    "id": "na49",
+    "query": "第35期中传校报头版讲的是什么？",
+    "no_answer": true,
+    "confidence": 0.5517,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中国传媒大学“十四五”发展规划（2021-2025年）.docx_view"
+   },
+   {
+    "id": "na53",
+    "query": "我的报销单现在审批到哪一步了？",
+    "no_answer": true,
+    "confidence": 0.6898,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中传财字〔2021〕156号 关于印发《中国传媒大学资金支付管理办法（修订）》的通知"
+   },
+   {
+    "id": "na56",
+    "query": "红烧肉怎么做才好吃？",
+    "no_answer": true,
+    "confidence": 0.2078,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中传政字〔2025〕43号_中国传媒大学食堂管理办法_2025-03-25"
+   },
+   {
+    "id": "na58",
+    "query": "比特币现在多少钱一个？",
+    "no_answer": true,
+    "confidence": 0.2977,
+    "invalidated_by_new_corpus": false,
+    "top_title": "招生简章 _ 破局未来影像革命，做AI内容时代领跑者！ ——中国传媒大学“AI短剧”研创培训班招生简章火热上线"
+   },
+   {
+    "id": "na60",
+    "query": "猫咪不吃饭是生病了吗？",
+    "no_answer": true,
+    "confidence": 0.2836,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中传教字〔2021〕212号_中国传媒大学高等职业教育学生学籍管理规定"
+   },
+   {
+    "id": "na62",
+    "query": "去云南旅游七天怎么安排路线？",
+    "no_answer": true,
+    "confidence": 0.4177,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中国传媒大学因差旅审批、住宿标准、特殊说明、自驾车_租车审批"
+   },
+   {
+    "id": "na63",
+    "query": "学校有没有能免费借雨伞的地方？",
+    "no_answer": true,
+    "confidence": 0.3846,
+    "invalidated_by_new_corpus": false,
+    "top_title": "服务师生 _ 中传邮箱升级，“网易VIP启航邮”邮箱待领取"
+   },
+   {
+    "id": "na64",
+    "query": "校园里哪里能买到鲜花？",
+    "no_answer": true,
+    "confidence": 0.5153,
+    "invalidated_by_new_corpus": false,
+    "top_title": "【融合门户】服务_财务处_有链接"
+   },
+   {
+    "id": "na65",
+    "query": "学校的乒乓球台需要自己带球拍吗？",
+    "no_answer": true,
+    "confidence": 0.4584,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中国传媒大学体育场馆管理办法-无收费信息.docx_view"
+   },
+   {
+    "id": "na66",
+    "query": "学校附近有没有便宜的打印复印店推荐？",
+    "no_answer": true,
+    "confidence": 0.5652,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中国传媒大学办公用房装修和办公设备家具配备管理办法"
+   },
+   {
+    "id": "na69",
+    "query": "教职工的年度体检能带家属一起去吗？",
+    "no_answer": true,
+    "confidence": 0.6962,
+    "invalidated_by_new_corpus": false,
+    "top_title": "《关于启动教职工及家属停车年度申报审核的通知及线上申报系统使用说明》"
+   },
+   {
+    "id": "na71",
+    "query": "校医院可以开具新冠疫苗接种证明吗？",
+    "no_answer": true,
+    "confidence": 0.5952,
+    "invalidated_by_new_corpus": false,
+    "top_title": "学生公费医疗常见问题解答"
+   },
+   {
+    "id": "na73",
+    "query": "北京大学的博士生每月补助是多少？",
+    "no_answer": true,
+    "confidence": 0.6492,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中国传媒大学研究生奖助办法"
+   },
+   {
+    "id": "na74",
+    "query": "教育部今年的“强基计划”招哪些专业？",
+    "no_answer": true,
+    "confidence": 0.4145,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中国传媒大学2025年高校专项计划招生简章_e8b545"
+   },
+   {
+    "id": "na79",
+    "query": "怎么提高手机电池续航？",
+    "no_answer": true,
+    "confidence": 0.3285,
+    "invalidated_by_new_corpus": false,
+    "top_title": "设备共享中心相关事项.docx_view"
+   },
+   {
+    "id": "nb06",
+    "query": "宿舍楼电梯晚上几点停运？",
+    "no_answer": true,
+    "confidence": 0.4301,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中传保工字〔2014〕26号_关于印发《中国传媒大学校园治安管理规定》（修订）等8个安全稳定工作制度的通知_2014-04-23"
+   },
+   {
+    "id": "nb07",
+    "query": "学校快递柜超时取件收费吗？",
+    "no_answer": true,
+    "confidence": 0.5473,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中国传媒大学公共实践场馆管理办法 250522.docx_view"
+   },
+   {
+    "id": "nb09",
+    "query": "学校浴室插卡出水怎么计费？",
+    "no_answer": true,
+    "confidence": 0.6098,
+    "invalidated_by_new_corpus": false,
+    "top_title": "信息化服务常见问题_20260909"
+   },
+   {
+    "id": "nb10",
+    "query": "转专业面试一般考什么内容？",
+    "no_answer": true,
+    "confidence": 0.4883,
+    "invalidated_by_new_corpus": false,
+    "top_title": "2022修学指南电子版"
+   },
+   {
+    "id": "nb11",
+    "query": "重修一门课要交多少重修费？",
+    "no_answer": true,
+    "confidence": 0.7164,
+    "invalidated_by_new_corpus": false,
+    "top_title": "本科生院服务常见问题【汇总】.docx_view"
+   },
+   {
+    "id": "nb12",
+    "query": "学校承认雅思成绩免修大学英语吗？",
+    "no_answer": true,
+    "confidence": 0.5933,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中国传媒大学职业教育国际化 国际学士学位课程项目 招生简章"
+   },
+   {
+    "id": "nb13",
+    "query": "本科生毕业论文开题报告要写多少字？",
+    "no_answer": false,
+    "confidence": 0.7954,
+    "invalidated_by_new_corpus": false,
+    "top_title": "普通高等学校本科专业类教学质量国家标准（下册）"
+   },
+   {
+    "id": "nb17",
+    "query": "考研政治科目怎么复习比较好？",
+    "no_answer": true,
+    "confidence": 0.456,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中国传媒大学2026年硕士研究生招生各学院（研究院、实验室）复试方案_b97ae1"
+   },
+   {
+    "id": "nb18",
+    "query": "天津的高校承认我校辅修学位吗？",
+    "no_answer": true,
+    "confidence": 0.7108,
+    "invalidated_by_new_corpus": false,
+    "top_title": "2018年研究生手册"
+   },
+   {
+    "id": "nb19",
+    "query": "下周五教务处开什么会？",
+    "no_answer": true,
+    "confidence": 0.5612,
+    "invalidated_by_new_corpus": false,
+    "top_title": "【考试】中传教务字〔2017〕10号中国传媒大学本科教学考试工作管理办法"
+   },
+   {
+    "id": "nb20",
+    "query": "今天食堂推出了什么新菜？",
+    "no_answer": true,
+    "confidence": 0.3721,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中传政字〔2025〕43号_中国传媒大学食堂管理办法_2025-03-25"
+   },
+   {
+    "id": "nb21",
+    "query": "昨晚学校停电是因为什么？",
+    "no_answer": true,
+    "confidence": 0.4744,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中传资产后勤字〔2008〕89号_中国传媒大学节约能源管理规定"
+   },
+   {
+    "id": "nb22",
+    "query": "我的体测成绩是多少分？",
+    "no_answer": true,
+    "confidence": 0.7475,
+    "invalidated_by_new_corpus": false,
+    "top_title": "本科生院〔2024〕115号关于印发《中国传媒大学《国家学生体质健康标准》实施办法（2024年修订）》的通知"
+   },
+   {
+    "id": "nb24",
+    "query": "周杰伦演唱会什么时候开票？",
+    "no_answer": true,
+    "confidence": 0.3324,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中国传媒大学2026年面向香港、澳门、台湾地区招收（硕士、博士）研究生招生简章"
+   },
+   {
+    "id": "nb25",
+    "query": "怎么做PPT的平滑切换动画？",
+    "no_answer": true,
+    "confidence": 0.3364,
+    "invalidated_by_new_corpus": false,
+    "top_title": "中传保工字〔2008〕9号_关于印发《中国传媒大学校园治安管理规定》等二十个安全稳定工作制度的通知_2008-01-24"
+   }
+  ],
+  "partial": [
+   {
+    "id": "na11",
+    "no_answer": true,
+    "confidence": 0.6434
+   },
+   {
+    "id": "na16",
+    "no_answer": true,
+    "confidence": 0.6127
+   },
+   {
+    "id": "na43",
+    "no_answer": true,
+    "confidence": 0.7285
+   },
+   {
+    "id": "na50",
+    "no_answer": false,
+    "confidence": 0.808
+   },
+   {
+    "id": "na52",
+    "no_answer": true,
+    "confidence": 0.7316
+   },
+   {
+    "id": "na54",
+    "no_answer": true,
+    "confidence": 0.7154
+   },
+   {
+    "id": "na77",
+    "no_answer": true,
+    "confidence": 0.7323
+   }
+  ]
+ }
+}

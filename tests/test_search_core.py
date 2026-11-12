@@ -86,9 +86,9 @@ class FakeReranker:
         return [self.by_text.get(document, 0.1) for document in documents]
 
 
-def build_kb(dense, rerank=None):
+def build_kb(dense, rerank=None, chunks=None):
     kb = KB()
-    for chunk in CHUNKS:
+    for chunk in chunks if chunks is not None else CHUNKS:
         kb._add_chunk({**chunk, "embed_text": chunk["doc_title"] + "\n" + chunk["text"]})
     kb._load_doc_meta()
     kb.bm25 = BM25Okapi([search_core.jieba.lcut_for_search(c["embed_text"]) for c in kb.chunks])
@@ -120,8 +120,32 @@ class PureHelpersTest(unittest.TestCase):
     def test_generic_detection(self):
         self.assertTrue(search_core.is_generic_chunk({"doc_title": "修学指南2025版（本科）"}))
         self.assertTrue(search_core.is_generic_chunk({"doc_title": "x", "is_generic": True}))
+        self.assertTrue(
+            search_core.is_generic_chunk(
+                {"doc_title": "2022年中国传媒大学学生工作规章制度汇编"}
+            )
+        )
+        self.assertTrue(
+            search_core.is_generic_chunk(
+                {"doc_title": "中国传媒大学学生工作规章制度汇编2026-转换之后"}
+            )
+        )
         self.assertFalse(search_core.is_generic_chunk({"doc_title": "学生公寓管理办法"}))
         self.assertFalse(search_core.is_generic_chunk(None))
+
+    def test_version_family_and_edition_year(self):
+        family = "中国传媒大学学生工作规章制度汇编"
+        self.assertEqual(
+            search_core.version_family("2022年中国传媒大学学生工作规章制度汇编"), family
+        )
+        self.assertEqual(
+            search_core.version_family("中国传媒大学学生工作规章制度汇编2026-转换之后"), family
+        )
+        self.assertIsNone(search_core.version_family("学生公寓管理办法"))
+        self.assertEqual(search_core.edition_year("2022年中国传媒大学学生工作规章制度汇编"), 2022)
+        self.assertEqual(
+            search_core.edition_year("中国传媒大学学生工作规章制度汇编2026-转换之后"), 2026
+        )
 
     def test_attribute_and_answer_span(self):
         self.assertIsNone(search_core.detect_attribute("你好"))
@@ -196,6 +220,34 @@ class SearchPipelineTest(unittest.TestCase):
         self.assertEqual(result["results"][0]["chunk_id"], "dorm-1")
         self.assertTrue(result["results"][1]["is_generic"])
 
+    def test_newer_compilation_edition_outranks_older(self):
+        chunks = [
+            {
+                "chunk_id": "comp22-1", "doc_id": "comp22",
+                "doc_title": "2022年中国传媒大学学生工作规章制度汇编",
+                "doc_type": "制度", "assistants": ["中传教务君"], "status": "active",
+                "page_start": 284, "page_end": 284,
+                "text": "国家助学贷款：本专科生每年不超过12000元。",
+            },
+            {
+                "chunk_id": "comp26-1", "doc_id": "comp26",
+                "doc_title": "中国传媒大学学生工作规章制度汇编2026-转换之后",
+                "doc_type": "制度", "assistants": ["中传教务君"], "status": "active",
+                "page_start": 337, "page_end": 337,
+                "text": "国家助学贷款：本专科生每年不超过12000元。",
+            },
+        ]
+        kb = build_kb(
+            {"comp22-1": 0.9, "comp26-1": 0.88},
+            rerank={"comp22-1": 0.916, "comp26-1": 0.904},
+            chunks=chunks,
+        )
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True):
+            result = kb.search("国家助学贷款管理办法", top_k=2)
+        self.assertEqual(
+            [item["chunk_id"] for item in result["results"]], ["comp26-1", "comp22-1"]
+        )
+
     def test_failed_rerank_falls_back_to_hybrid_order(self):
         kb = build_kb({"dorm-1": 0.8, "guide-1": 0.5})
         kb.cloud_reranker = mock.Mock(rerank=mock.Mock(side_effect=TimeoutError("slow")))
@@ -211,6 +263,89 @@ class SearchPipelineTest(unittest.TestCase):
         self.assertNotIn("shared", meta["assistants"])
         self.assertEqual(meta["doc_types"], ["制度", "指南"])
         self.assertEqual({doc["doc_id"] for doc in kb.documents()}, {"dorm", "fee", "guide", "old"})
+
+
+class SparseBM25Test(unittest.TestCase):
+    """The postings-based scorer must be bit-identical to rank_bm25."""
+
+    QUERIES = [
+        "学生公寓床铺尺寸",
+        "住宿 住宿 报销",  # duplicate terms accumulate twice, like get_scores
+        "完全不存在的词xyz",
+        "差旅费管理办法教职工出差",
+        "学生",  # single common term
+    ]
+
+    def test_scores_bit_identical_to_rank_bm25(self):
+        kb = build_kb({})
+        kb._build_bm25_index()
+        for query in self.QUERIES:
+            with self.subTest(query=query):
+                tokens = search_core.jieba.lcut_for_search(query)
+                expected = kb.bm25.get_scores(tokens)
+                actual = kb._bm25_scores(tokens)
+                self.assertTrue(np.array_equal(actual, expected))
+
+    def test_search_matches_legacy_filtering(self):
+        kb = build_kb({})
+        kb._build_bm25_index()
+
+        def legacy(query, limit, assistant, doc_types):
+            scores = kb.bm25.get_scores(search_core.jieba.lcut_for_search(query))
+            candidates = []
+            for index, score in enumerate(scores):
+                if score <= 0:
+                    continue
+                chunk = kb.chunks[index]
+                if kb._matches(chunk, assistant, doc_types):
+                    candidates.append((chunk["chunk_id"], float(score)))
+            candidates.sort(key=lambda item: item[1], reverse=True)
+            return candidates[:limit]
+
+        filters = [
+            (None, None),
+            ("中传小勤", None),
+            ("财务处小助手", None),
+            ("不存在的助手", None),
+            (None, ["制度"]),
+            (None, ["制度", "指南"]),
+            (None, ["不存在的类型"]),
+            ("中传小勤", ["指南"]),
+        ]
+        for query in self.QUERIES:
+            for assistant, doc_types in filters:
+                with self.subTest(query=query, assistant=assistant, doc_types=doc_types):
+                    self.assertEqual(
+                        kb.bm25_search(query, 40, assistant, doc_types),
+                        legacy(query, 40, assistant, doc_types),
+                    )
+
+    def test_lazy_index_build_without_load(self):
+        kb = build_kb({})
+        self.assertIsNone(kb.bm25_postings)
+        hits = kb.bm25_search("学生公寓床铺", 10, None, None)
+        self.assertIsNotNone(kb.bm25_postings)
+        self.assertTrue(hits)
+
+
+class EmbedCacheTest(unittest.TestCase):
+    def test_repeated_query_reuses_vector(self):
+        kb = build_kb({})
+        original = kb.model.query_embed
+        with mock.patch.object(
+            kb.model, "query_embed", side_effect=original
+        ) as query_embed:
+            first = kb.encode_query("床铺尺寸")
+            second = kb.encode_query("床铺尺寸")
+        self.assertEqual(query_embed.call_count, 1)
+        self.assertIs(first, second)
+
+    def test_cache_evicts_oldest(self):
+        kb = build_kb({})
+        with mock.patch.object(search_core, "EMBED_QUERY_CACHE_SIZE", 1):
+            kb.encode_query("甲")
+            kb.encode_query("乙")
+            self.assertEqual(list(kb._embed_cache), ["乙"])
 
 
 class RerankHandler(BaseHTTPRequestHandler):

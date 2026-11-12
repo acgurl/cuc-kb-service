@@ -1,5 +1,48 @@
 # HANDOFF — 检索质量优化（2026-11-01）
 
+## 2026-11-10 汇编版本收敛（LIVE，内容零改动）
+
+**一句话现状**：修正「2022/2026 学工汇编」的版本判定——**2026 汇编补 中传教务君 归属与 2026 年份；2022 汇编的 `publish_date` 从错配的 2025-11-18 改回 2022，并统一按汇编降权；2019 资助办法（含 16 个附件的汇编）也按汇编降权；新增「同族新版优先」排序（`KB_VERSION_FAMILY_PENALTY` 默认 0.05）**。查「国家助学贷款管理办法」在 中传教务君 / 新生帮手 / 无过滤 三个口径的 top-1 均变为 **2026 汇编 p337（date 2026）**，此前三个口径 top-1 全是 2022 汇编 p284（date 2025-11-18）。collection 仍 `cuc_kb_v4` = 2290 docs / 52,322 chunks，向量零改动。
+
+| 项 | 值 |
+|---|---|
+| 根因 | ① 2026 汇编只挂 `新生帮手`，`assistant=中传教务君` 完全不可见；② 通用汇编降权只认「以中国传媒大学学生工作规章制度汇编开头」的标题，2026 命中、2022（年份前缀）漏判 → 2022 被当具体件，2026 被扣 0.10，0.904→0.804 掉到第 7；③ 2022 汇编 `publish_date=2025-11-18` 来自 `新版抓取-最终.csv` 第 13 行，把 jwc 政策页 2025-11-18 的《国际本科生学籍管理实施细则》条目日期安到了 2022 汇编上 |
+| 代码 | `kb/common.py`：`is_generic_title` 增加任意位置的「学生（工作）规章制度汇编」标记；新增 `version_family()` / `edition_year()`；`kb/search_core.py`：rerank 与非 rerank 两条路径都按同族新版降权（旧版 −0.05，新版不动） |
+| 数据 | `data-v8` = `data-v7` + 3 篇 payload（3327 chunks）：`d896015a41752` assistants `[中传教务君, 新生帮手]` + date 2026；`d6ac65db67ed2` date 2022 + `is_generic=true`；`d3402a19c1e0a`（2019 资助资金办法，16 个附件）`is_generic=true`。md5 docs `f7952db6…` / chunks `3777d289…` |
+| 为什么没标 superseded | 2026 汇编不是 2022 的超集（如「研究生院〔2020〕019号」2022 有 129 chunks、2026 仅 15；社团刊物 15→0），整篇标 superseded 会丢内容。改为两版都 active、同族新版优先 |
+| 评测 | `eval/heldout/results_v9_family_final_20261110.json`：curated 66/77/80、keyword@5 **83/84**、MRR 0.8516、short 8/10/10、isolation 9/10 leak 0、citation 10/10、no-answer 47/48、partial 6/7、P50/P95 876/1440ms。相对 v8：hit@3 +1、short +1/+2/+2、MRR +0.003；keyword@5 −1 仅 v31（旧措辞「需回避的专家最多为三名」→ 新版「最多可回避三名专家」，期望词失效，非检索损失）、v32/s05/s12 均因汇编降权回到具体件 |
+| 备份/回滚 | Phoenix 数据 `data.bak-20261110-family`（= v7）、`data.bak-20261110-family-v2`（中间态）；代码 `kb/{common,search_core}.py.bak-20261110-family`（= 部署前 v8）。回滚见下 |
+| 产物 | 本地 `kb-service/data-v8`、`版本收敛-20261110/{manifest.json}`；脚本 `scripts/apply_v8_family.py`（建 data-v8）、`scripts/sync_v8_family.py`（payload 同步，`--reverse`/`--verify`）；线上 manifest `batch-version-family-20261110/manifest.json` |
+
+**坑**：① 2022 汇编日期错配来自「新版抓取」把 2025 条目日期写进 2022 文件，引用里看起来像 2025-11-18 修订版；② 2019 资助办法内部附的是 2016 版助学贷款办法，按具体件排序会压过现行版，必须按汇编降权；③ 2026 汇编是「转换之后」的半角标点版本，v31 的旧期望词在新版正文中措辞不同（三名 vs 3 名），评测期望需人工刷新，别当成回归调参。
+
+**回滚**（恢复 v7 数据 + 反向 payload + v8 代码）：
+
+```bash
+ssh phoenix 'cd ~/cuc-kb && cp -p kb/common.py.bak-20261110-family kb/common.py && cp -p kb/search_core.py.bak-20261110-family kb/search_core.py && rm -rf data && mv data.bak-20261110-family data && set -a && . ./.env && set +a && .venv/bin/python -m scripts.sync_v8_family --reverse && sudo systemctl restart cuc-kb cuc-kb-mcp cuc-kb-mcp-gateway'
+```
+
+## 2026-11-10 检索提速（LIVE，零回归）
+
+**一句话现状**：检索链路无损提速——**BM25 稀疏倒排重写（分数逐位一致）+ BM25 与 embed→dense 并行 + 查询向量 LRU 缓存（`KB_EMBED_QUERY_CACHE` 可配，默认 2048，0 关闭）+ Qdrant 只取 chunk_id payload**。线上 BM25 阶段 100–200ms → 1–3ms，评测 **P50/P95 1607/2483 → 1144/1786ms（-29%/-28%）**，质量指标与 v7 基线逐项全同。数据/向量/排序参数零改动，collection 仍 `cuc_kb_v4` = 2290 docs / 52,322 chunks。
+
+| 项 | 值 |
+|---|---|
+| 改动 | 仅 `kb/search_core.py`：`_build_bm25_index`（启动时建 postings+status/assistants/doc_type 布尔掩码，+2~4s 加载）、`_bm25_scores`（只算含词文档，零频贡献恒 0、按查询词序累加 → 与 rank_bm25.get_scores 逐位一致）、`bm25_search` 掩码过滤+stable sort（平局保持原 index 序）、`search()` 用 ThreadPoolExecutor 并行 BM25 与 embed→dense、`encode_query` LRU 缓存（云端向量确定性，重复查询省一次北京往返）、`dense_search` with_payload=["chunk_id"]（原来拉 40 条全文 payload 纯浪费） |
+| 验证 | ① 本地 CI 同命令 62 测试全过（新增 SparseBM25Test/EmbedCacheTest 5 个）、ruff 0.14.3 干净；② `scripts/verify_bm25_parity.py --data-dir data-v7`：768 条查询全量分数逐位一致 + 1428 组过滤对比全同，本机基准 84.3 → 1.3 ms/query；③ 线上 Qdrant 实测 payload 选择器兼容；④ `eval/live_check_v2.py --tag v8_speed_20261110`：curated 66/76/80、keyword@5 84/84、MRR 0.8486、short 7/8/9、isolation 9/10 leak 0、citation 10/10、no-answer 47/48、partial 6/7 —— **与 v7 基线逐项一致** |
+| 评测存档 | `eval/heldout/results_v8_speed_20261110.json`（线上同路径）；部署脚本 `../检索提速-20261110/deploy_phoenix.sh` |
+| 备份 | Phoenix `kb/search_core.py.bak-20261110-speed`（= v7 版）；缓存配置化追加部署备份 `kb/{search_core,common}.py.bak-20261110-cache` |
+
+**坑**：① rank_bm25 的 get_scores 对每个查询词全量列表推导扫 52k 个 Counter，是本地最大浪费；稀疏化必须保持查询词顺序（含重复词）累加才能逐位一致。② 测试 build_kb 手工装 BM25 不走 load()，bm25_search 保留首次使用懒建索引兜底。③ 剩余耗时大头是 embed/rerank 的 Phoenix→北京往返（各 0.3–0.9s，已 keep-alive），属网络拓扑问题，本次不动。
+
+**回滚**：
+
+```bash
+ssh phoenix 'cd ~/cuc-kb && cp -p kb/search_core.py.bak-20261110-speed kb/search_core.py && sudo systemctl restart cuc-kb'
+```
+
+**遗留**：如需进一步提速，方向是把服务迁到离百炼更近的节点或换低延迟 rerank 端点（改部署拓扑，另议）；查询缓存只命中完全相同的 query 字符串。
+
 ## 2026-11-09 出处/日期元数据回填（LIVE，零回归）
 
 **一句话现状**：2290 篇文档补上原始出处与日期——**2268 篇（99.0%）有 source_url，2187 篇（95.5%）有 publish_date**（2094 完整日期 / 93 仅年份），每条带 date_basis 依据。数据切到 **data-v7**（docs/chunks 每条新增 `source_url / publish_date / date_basis / provenance` 四字段，已有字段逐字节零改动），Qdrant payload 同步 52322 点（verify 209288 值 0 不一致）。collection 仍 `cuc_kb_v4` = 2290 docs / 52,322 chunks，**向量零改动**。

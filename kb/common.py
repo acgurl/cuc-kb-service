@@ -1,6 +1,7 @@
 """Shared configuration: every environment variable and its default lives here."""
 
 import os
+import re
 from pathlib import Path
 
 
@@ -50,6 +51,9 @@ EMBED_QUERY_INSTRUCT = _env(
     "KB_EMBED_QUERY_INSTRUCT",
     "Given a Chinese university regulation search query, retrieve relevant passages that answer the query",
 )
+# LRU size for query embeddings; identical queries reuse the same vector and
+# skip one cloud round-trip. 0 disables the cache.
+EMBED_QUERY_CACHE_SIZE = _env_int("KB_EMBED_QUERY_CACHE", 2048)
 API_TOKEN = _env("KB_API_TOKEN")
 PUBLIC_BASE_URL = _env("KB_PUBLIC_BASE_URL").rstrip("/")
 FILE_OBJECT_PREFIX = _env("KB_FILE_OBJECT_PREFIX", "cuc-kb/docs").strip("/")
@@ -90,6 +94,9 @@ RERANK_ALWAYS = _env_bool("KB_RERANK_ALWAYS", False)
 GENERIC_RERANK_PENALTY = _env_float("KB_GENERIC_RERANK_PENALTY", 0.10)
 GENERIC_RRF_FACTOR = _env_float("KB_GENERIC_RRF_FACTOR", 0.85)
 GENERIC_CLOSE_MARGIN = _env_float("KB_GENERIC_CLOSE_MARGIN", 0.10)
+# Older editions of the same compilation stay searchable but yield to the
+# newest edition when both are in the rerank shortlist.
+VERSION_FAMILY_PENALTY = _env_float("KB_VERSION_FAMILY_PENALTY", 0.05)
 CANDIDATE_POOL = _env_int("KB_CANDIDATE_POOL", 40)
 CANDIDATE_LIMIT = _env_int("KB_CANDIDATE_LIMIT", 24)
 MAX_CHUNKS_PER_DOC = _env_int("KB_MAX_CHUNKS_PER_DOC", 16)
@@ -128,10 +135,41 @@ GENERIC_TITLE_PREFIXES = (
     "2026年迎接新生开学相关工作",
     "学校部门分类",
 )
+# Compilations are also recognized when a year prefix/suffix precedes or
+# follows the title, e.g. "2022年中国传媒大学学生工作规章制度汇编".
+GENERIC_TITLE_MARKERS = (
+    "学生工作规章制度汇编",
+    "学生规章制度汇编",
+)
+
+_VERSION_LEAD_YEAR_RE = re.compile(r"^\s*(?:19|20)\d{2}\s*年?\s*")
+_VERSION_TAIL_RE = re.compile(r"(?:19|20)\d{2}\s*(?:年)?\s*(?:[-—_]\s*转换之后)?\s*$")
+_COMPILATION_MARKER = "规章制度汇编"
 
 
 def is_generic_title(title):
-    return any((title or "").startswith(prefix) for prefix in GENERIC_TITLE_PREFIXES)
+    title = title or ""
+    return any(title.startswith(prefix) for prefix in GENERIC_TITLE_PREFIXES) or any(
+        marker in title for marker in GENERIC_TITLE_MARKERS
+    )
+
+
+def version_family(title):
+    """Family key shared by editions of one compilation; None for other docs."""
+    title = (title or "").strip()
+    if _COMPILATION_MARKER not in title:
+        return None
+    family = _VERSION_TAIL_RE.sub("", _VERSION_LEAD_YEAR_RE.sub("", title)).strip(" -—_")
+    return family or None
+
+
+def edition_year(title):
+    """Four-digit edition year from the title, or None when absent."""
+    for match in re.finditer(r"(?:19|20)\d{2}", title or ""):
+        year = int(match.group(0))
+        if 2000 <= year <= 2099:
+            return year
+    return None
 
 
 def qdrant_client(timeout=60):
