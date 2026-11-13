@@ -288,6 +288,137 @@ class SearchPipelineTest(unittest.TestCase):
         self.assertEqual({doc["doc_id"] for doc in kb.documents()}, {"dorm", "fee", "guide", "old"})
 
 
+class TraceTest(unittest.TestCase):
+    """Opt-in stage snapshot used by eval/evidence_check.py for loss diagnosis."""
+
+    def test_trace_off_by_default(self):
+        result = build_kb({"dorm-1": 0.8}).search("床铺尺寸")
+        self.assertNotIn("trace", result)
+
+    def test_trace_records_every_stage(self):
+        kb = build_kb({"guide-1": 0.9, "dorm-1": 0.6}, rerank={"dorm-1": 0.92, "guide-1": 0.5})
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True):
+            result = kb.search("学生公寓床铺尺寸", top_k=1, trace=True)
+        trace = result["trace"]
+        self.assertEqual([h["chunk_id"] for h in trace["dense"]], ["guide-1", "dorm-1"])
+        self.assertIn("dorm-1", [h["chunk_id"] for h in trace["bm25"]])
+        self.assertEqual({h["chunk_id"] for h in trace["fused"]}, {"dorm-1", "guide-1"})
+        self.assertEqual(set(trace["selected"]), {"dorm-1", "guide-1"})
+        self.assertTrue(trace["rerank_triggered"])
+        self.assertFalse(trace["rerank_failed"])
+        self.assertEqual(trace["rerank_scores"]["dorm-1"], 0.92)
+        self.assertEqual(trace["order"][0], "dorm-1")
+        self.assertEqual(trace["final"], ["dorm-1"])
+
+    def test_trace_marks_rerank_failure(self):
+        kb = build_kb({"dorm-1": 0.8})
+        kb.cloud_reranker = mock.Mock(rerank=mock.Mock(side_effect=TimeoutError("slow")))
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True):
+            result = kb.search("学生公寓床铺尺寸", trace=True)
+        self.assertTrue(result["trace"]["rerank_triggered"])
+        self.assertTrue(result["trace"]["rerank_failed"])
+        self.assertEqual(result["trace"]["rerank_scores"], {})
+
+    def test_trace_without_reranker(self):
+        result = build_kb({"dorm-1": 0.8}).search("床铺尺寸", top_k=1, trace=True)
+        self.assertFalse(result["trace"]["rerank_triggered"])
+        self.assertEqual(result["trace"]["final"], ["dorm-1"])
+
+
+class ExpansionTest(unittest.TestCase):
+    """Opt-in adjacent-chunk expansion: read aid, ranking unchanged."""
+
+    def setUp(self):
+        self.chunks = [
+            {
+                "chunk_id": f"reg-000{i}", "doc_id": "reg", "doc_title": "某办法",
+                "doc_type": "制度", "assistants": ["shared"], "status": "active",
+                "page_start": i + 1, "page_end": i + 1, "text": text,
+            }
+            for i, text in enumerate(["第一条 总则内容。", "第二条 核心条款。", "第三条 例外规定。"])
+        ]
+
+    def test_off_by_default(self):
+        kb = build_kb({"reg-0001": 0.9}, chunks=self.chunks)
+        item = kb.search("核心条款", top_k=1)["results"][0]
+        self.assertNotIn("expanded", item)
+        self.assertEqual(item["text"], "第二条 核心条款。")
+
+    def test_merges_active_neighbors(self):
+        kb = build_kb({"reg-0001": 0.9}, chunks=self.chunks)
+        with mock.patch.object(search_core, "EXPAND_ADJACENT", 1):
+            item = kb.search("核心条款", top_k=1)["results"][0]
+        self.assertTrue(item["expanded"])
+        self.assertEqual(item["expanded_chunks"], ["reg-0000", "reg-0002"])
+        self.assertIn("第一条", item["text"])
+        self.assertIn("第三条", item["text"])
+        self.assertEqual((item["citation"]["page_start"], item["citation"]["page_end"]), (1, 3))
+        self.assertEqual(item["chunk_id"], "reg-0001")  # anchor id unchanged
+
+    def test_skips_superseded_neighbor(self):
+        chunks = [dict(c) for c in self.chunks]
+        chunks[2]["status"] = "superseded"
+        kb = build_kb({"reg-0001": 0.9}, chunks=chunks)
+        with mock.patch.object(search_core, "EXPAND_ADJACENT", 1):
+            item = kb.search("核心条款", top_k=1)["results"][0]
+        self.assertEqual(item["expanded_chunks"], ["reg-0000"])
+        self.assertNotIn("第三条", item["text"])
+
+    def test_edge_anchor_has_one_side(self):
+        kb = build_kb({"reg-0000": 0.9}, chunks=self.chunks)
+        with mock.patch.object(search_core, "EXPAND_ADJACENT", 2):
+            item = kb.search("总则", top_k=1)["results"][0]
+        self.assertEqual(item["expanded_chunks"], ["reg-0001", "reg-0002"])
+
+    def test_non_numeric_suffix_not_expanded(self):
+        chunks = [{
+            "chunk_id": "qa-uuid", "doc_id": "qa", "doc_title": "问答", "doc_type": "问答",
+            "assistants": ["shared"], "status": "active", "page_start": 1, "page_end": 1,
+            "text": "问答内容。",
+        }]
+        kb = build_kb({"qa-uuid": 0.9}, chunks=chunks)
+        with mock.patch.object(search_core, "EXPAND_ADJACENT", 2):
+            item = kb.search("问答", top_k=1)["results"][0]
+        self.assertNotIn("expanded", item)
+
+
+class SupersededTest(unittest.TestCase):
+    """Relation-driven version preference: old yields only when new is present."""
+
+    def setUp(self):
+        self.chunks = [
+            {
+                "chunk_id": "old-0000", "doc_id": "old", "doc_title": "某办法（2024）",
+                "doc_type": "制度", "assistants": ["shared"], "status": "active",
+                "page_start": 1, "page_end": 1, "text": "转专业春季学期组织。",
+                "superseded_by": "new",
+            },
+            {
+                "chunk_id": "new-0000", "doc_id": "new", "doc_title": "某办法（2025修订）",
+                "doc_type": "制度", "assistants": ["shared"], "status": "active",
+                "page_start": 1, "page_end": 1, "text": "转专业秋季学期组织。",
+            },
+        ]
+
+    def test_old_yields_when_new_present(self):
+        kb = build_kb({"old-0000": 0.9, "new-0000": 0.88},
+                      rerank={"old-0000": 0.90, "new-0000": 0.89}, chunks=self.chunks)
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True):
+            result = kb.search("转专业哪个学期", top_k=2)
+        self.assertEqual([r["chunk_id"] for r in result["results"]], ["new-0000", "old-0000"])
+
+    def test_old_kept_when_new_absent(self):
+        kb = build_kb({"old-0000": 0.9}, rerank={"old-0000": 0.90}, chunks=self.chunks)
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True):
+            result = kb.search("转专业哪个学期", top_k=2)
+        self.assertEqual([r["chunk_id"] for r in result["results"]], ["old-0000"])
+
+    def test_no_rerank_path_demotes(self):
+        kb = build_kb({"old-0000": 0.9, "new-0000": 0.88}, chunks=self.chunks)
+        result = kb.search("转专业哪个学期", top_k=2)
+        self.assertEqual(result["results"][0]["chunk_id"], "new-0000")
+
+
 class SparseBM25Test(unittest.TestCase):
     """The postings-based scorer must be bit-identical to rank_bm25."""
 

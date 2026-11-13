@@ -21,8 +21,8 @@ TOKEN = support.TEST_ENV["KB_API_TOKEN"]
 AUTH = {"Authorization": f"Bearer {TOKEN}"}
 
 
-def fake_search(query, assistant=None, doc_types=None, top_k=5):
-    return {
+def fake_search(query, assistant=None, doc_types=None, top_k=5, trace=False):
+    payload = {
         "query": query,
         "results": [
             {
@@ -36,6 +36,24 @@ def fake_search(query, assistant=None, doc_types=None, top_k=5):
         "confidence": 0.9,
         "took_ms": 1,
     }
+    if trace:
+        payload["trace"] = {"final": ["c1"]}
+    return payload
+
+
+def fake_chunks(count=10):
+    return [
+        {
+            "chunk_id": f"c{i}",
+            "text": f"t{i}",
+            "page_start": i // 2 + 1,
+            "page_end": i // 2 + 1,
+            "clause_no": "",
+            "section_path": [],
+            "source_file": "f.pdf",
+        }
+        for i in range(count)
+    ]
 
 
 class SessionTokenTest(unittest.TestCase):
@@ -99,8 +117,15 @@ class ApiTest(unittest.TestCase):
         response = self.client.post("/v1/search", headers=AUTH, json={"query": "床尺寸", "top_k": 1, "doc_type": ["制度"]})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["cache-control"], "no-store")
-        self.search.assert_called_once_with("床尺寸", assistant=None, doc_types=["制度"], top_k=1)
+        self.search.assert_called_once_with("床尺寸", assistant=None, doc_types=["制度"], top_k=1, trace=False)
         self.assertEqual(response.json()["results"][0]["doc_id"], "d1")
+        self.assertNotIn("trace", response.json())
+
+    def test_search_trace_forwarded(self):
+        response = self.client.post("/v1/search", headers=AUTH, json={"query": "床尺寸", "trace": True})
+        self.assertEqual(response.status_code, 200)
+        self.search.assert_called_once_with("床尺寸", assistant=None, doc_types=None, top_k=5, trace=True)
+        self.assertEqual(response.json()["trace"], {"final": ["c1"]})
 
     def test_search_rewrites_file_url_to_request_host(self):
         response = self.client.post(
@@ -142,6 +167,96 @@ class ApiTest(unittest.TestCase):
             for method in methods:
                 with self.subTest(path=path, method=method):
                     self.assertIn((path, method), routes)
+
+
+class DocumentChunksTest(unittest.TestCase):
+    """Windowed document reading: offset cursor, chunk anchor, page range."""
+
+    def setUp(self):
+        self.client = TestClient(app_module.app)
+        patcher = mock.patch.object(app_module.kb, "document_chunks", return_value=fake_chunks())
+        self.chunks = patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def get(self, **params):
+        return self.client.get("/v1/documents/d1/chunks", headers=AUTH, params=params)
+
+    def test_default_returns_all_chunks_with_index(self):
+        response = self.get()
+        self.assertEqual(response.status_code, 200)
+        body = response.json()
+        self.assertEqual((body["total_chunks"], body["returned"], body["offset"]), (10, 10, 0))
+        self.assertIsNone(body["next_offset"])
+        self.assertIsNone(body["anchor_index"])
+        self.assertEqual([c["index"] for c in body["chunks"]], list(range(10)))
+
+    def test_offset_limit_window_and_next_offset(self):
+        body = self.get(offset=3, limit=4).json()
+        self.assertEqual([c["chunk_id"] for c in body["chunks"]], ["c3", "c4", "c5", "c6"])
+        self.assertEqual((body["offset"], body["returned"], body["next_offset"]), (3, 4, 7))
+
+    def test_last_window_has_no_next_offset(self):
+        body = self.get(offset=8, limit=4).json()
+        self.assertEqual([c["chunk_id"] for c in body["chunks"]], ["c8", "c9"])
+        self.assertIsNone(body["next_offset"])
+
+    def test_offset_past_end(self):
+        body = self.get(offset=99).json()
+        self.assertEqual((body["chunks"], body["returned"], body["next_offset"]), ([], 0, None))
+
+    def test_chunk_id_anchor_with_context(self):
+        body = self.get(chunk_id="c5", before=2, after=1).json()
+        self.assertEqual([c["chunk_id"] for c in body["chunks"]], ["c3", "c4", "c5", "c6"])
+        self.assertEqual((body["anchor_index"], body["anchor_chunk_id"]), (5, "c5"))
+        self.assertEqual(body["next_offset"], 7)
+
+    def test_chunk_id_anchor_clamped_at_edges(self):
+        body = self.get(chunk_id="c0").json()
+        self.assertEqual([c["chunk_id"] for c in body["chunks"]], ["c0", "c1", "c2"])
+        self.assertEqual(body["offset"], 0)
+        tail = self.get(chunk_id="c9", before=1, after=5).json()
+        self.assertEqual([c["chunk_id"] for c in tail["chunks"]], ["c8", "c9"])
+        self.assertIsNone(tail["next_offset"])
+
+    def test_chunk_id_anchor_limit_caps_window(self):
+        body = self.get(chunk_id="c5", before=5, after=5, limit=3).json()
+        self.assertEqual([c["chunk_id"] for c in body["chunks"]], ["c0", "c1", "c2"])
+        self.assertEqual(body["next_offset"], 3)
+
+    def test_unknown_chunk_404(self):
+        self.assertEqual(self.get(chunk_id="nope").status_code, 404)
+
+    def test_page_range_overlap(self):
+        body = self.get(page=2, page_end=3).json()
+        self.assertEqual([c["chunk_id"] for c in body["chunks"]], ["c2", "c3", "c4", "c5"])
+        self.assertEqual(body["page_range"], [2, 3])
+
+    def test_single_page(self):
+        body = self.get(page=1).json()
+        self.assertEqual([c["chunk_id"] for c in body["chunks"]], ["c0", "c1"])
+        self.assertEqual(body["page_range"], [1, 1])
+
+    def test_page_without_match(self):
+        body = self.get(page=99).json()
+        self.assertEqual((body["chunks"], body["returned"]), ([], 0))
+
+    def test_conflicting_locators_422(self):
+        for params in (
+            {"chunk_id": "c1", "page": 2},
+            {"chunk_id": "c1", "offset": 1},
+            {"page": 2, "offset": 1},
+            {"page_end": 3},
+            {"page": 3, "page_end": 2},
+            {"offset": -1},
+            {"limit": 0},
+            {"before": 21},
+        ):
+            with self.subTest(params=params):
+                self.assertEqual(self.get(**params).status_code, 422)
+
+    def test_unknown_doc_404(self):
+        with mock.patch.object(app_module.kb, "document_chunks", return_value=[]):
+            self.assertEqual(self.get().status_code, 404)
 
 
 class SafeNextTest(unittest.TestCase):

@@ -104,9 +104,18 @@ GENERIC_CLOSE_MARGIN = _env_float("KB_GENERIC_CLOSE_MARGIN", 0.10)
 # Older editions of the same compilation stay searchable but yield to the
 # newest edition when both are in the rerank shortlist.
 VERSION_FAMILY_PENALTY = _env_float("KB_VERSION_FAMILY_PENALTY", 0.05)
+# A doc explicitly superseded (废止) by a newer doc yields to it when both are
+# candidates; the old doc stays fully searchable when the newer one is absent
+# (e.g. "2022 年当时的规定" queries). Relation-driven, not a blanket date penalty.
+SUPERSEDED_PENALTY = _env_float("KB_SUPERSEDED_PENALTY", 0.05)
 CANDIDATE_POOL = _env_int("KB_CANDIDATE_POOL", 40)
 CANDIDATE_LIMIT = _env_int("KB_CANDIDATE_LIMIT", 24)
 MAX_CHUNKS_PER_DOC = _env_int("KB_MAX_CHUNKS_PER_DOC", 16)
+# Post-retrieval context expansion: merge up to N adjacent chunks (same doc,
+# active) into each top result's text, so premises/exceptions/consecutive
+# clauses split across chunks are read together. 0 disables (default). Ranking
+# and the answerability judgement are unchanged; only the returned text grows.
+EXPAND_ADJACENT = _env_int("KB_EXPAND_ADJACENT", 0)
 COVERAGE_BONUS = _env_float("KB_COVERAGE_BONUS", 0.004)
 COVERAGE_MAX_BONUS = _env_float("KB_COVERAGE_MAX_BONUS", 0.03)
 ANSWERABILITY_MAX_CONF = _env_float("KB_ANSWERABILITY_MAX_CONF", 0.95)

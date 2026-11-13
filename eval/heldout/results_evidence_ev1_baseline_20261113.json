@@ -1,0 +1,2037 @@
+{
+ "summary": {
+  "tag": "ev1_baseline_20261113",
+  "dataset": "dataset_evidence_v1.json",
+  "total": 39,
+  "answerable_total": 33,
+  "unanswerable_total": 6,
+  "trace_available": true,
+  "degraded": 0,
+  "latency_p50": 1356,
+  "latency_p95": 2558,
+  "evidence_hit@1": 12,
+  "verified_chunk_hit@1": 12,
+  "item_coverage@1": 0.4848,
+  "evidence_hit@3": 18,
+  "verified_chunk_hit@3": 18,
+  "item_coverage@3": 0.6818,
+  "evidence_hit@5": 19,
+  "verified_chunk_hit@5": 19,
+  "item_coverage@5": 0.7071,
+  "evidence_hit@10": 23,
+  "verified_chunk_hit@10": 22,
+  "item_coverage@10": 0.803,
+  "false_refuse": [
+   "ev09",
+   "ev10"
+  ],
+  "false_accept": [
+   "ev37",
+   "ev38",
+   "ev39"
+  ],
+  "supported_answer@5": 18,
+  "evidence_loss_stages": {
+   "ok": 40,
+   "ranking": 4,
+   "fusion_pool": 6,
+   "recall": 2
+  },
+  "evidence_recall_sources": {
+   "both": 42,
+   "dense": 8,
+   "none": 2
+  },
+  "by_category": {
+   "cross_clause": {
+    "total": 13,
+    "evidence_hit@5": 5,
+    "answerable": 13
+   },
+   "multi_point": {
+    "total": 9,
+    "evidence_hit@5": 6,
+    "answerable": 9
+   },
+   "table": {
+    "total": 7,
+    "evidence_hit@5": 6,
+    "answerable": 7
+   },
+   "version_conflict": {
+    "total": 4,
+    "evidence_hit@5": 2,
+    "answerable": 4
+   },
+   "attribute_trap": {
+    "total": 3,
+    "evidence_hit@5": 0,
+    "answerable": 0
+   },
+   "no_answer": {
+    "total": 3,
+    "evidence_hit@5": 0,
+    "answerable": 0
+   }
+  }
+ },
+ "details": [
+  {
+   "id": "ev01",
+   "category": "cross_clause",
+   "query": "本科生对学校退学处理决定不服，申诉的时限和复查流程是怎样的？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8203,
+   "degraded": false,
+   "took_ms": 2653,
+   "top_title": "科字〔2023〕100号-关于印发《中国传媒大学学术道德委员会章程》的通知",
+   "evidence": [
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0057",
+     "first_rank": 4,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0058",
+     "first_rank": 7,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0059",
+     "first_rank": 8,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.3333,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev02",
+   "category": "cross_clause",
+   "query": "本科生应征入伍，入学资格和学籍分别可以保留到什么时候？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.945,
+   "degraded": false,
+   "took_ms": 1818,
+   "top_title": "【融合门户】服务_本科生院_无链接.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0005",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0043",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ranking",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.5,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.5
+  },
+  {
+   "id": "ev03",
+   "category": "cross_clause",
+   "query": "本科生休学期间还能享受奖学金助学金吗，因病休学复学需要什么证明？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8842,
+   "degraded": false,
+   "took_ms": 1355,
+   "top_title": "中传教字〔2025〕195号_中国传媒大学本科生学籍管理规定_2025-11-18",
+   "evidence": [
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0036",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0045",
+     "first_rank": 6,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.5,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev04",
+   "category": "cross_clause",
+   "query": "本科生什么情况下会被学业留级，最多可以留级几次？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9581,
+   "degraded": false,
+   "took_ms": 1343,
+   "top_title": "本科生院服务常见问题【汇总】.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0026",
+     "first_rank": 5,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0027",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev05",
+   "category": "cross_clause",
+   "query": "本科生结业后还能换发毕业证和补授学士学位吗？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9511,
+   "degraded": false,
+   "took_ms": 1323,
+   "top_title": "中传教字〔2021〕211号_中国传媒大学本专科学历、学位证书管理办法_2021-09-02",
+   "evidence": [
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0054",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "dense"
+    },
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0055",
+     "first_rank": 3,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.5,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.5
+  },
+  {
+   "id": "ev06",
+   "category": "cross_clause",
+   "query": "推免综合成绩怎么计算，学业表现和全面发展赋分的权重各是多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9832,
+   "degraded": false,
+   "took_ms": 1322,
+   "top_title": "中传教字〔2026〕122号_中国传媒大学推荐优秀应届本科毕业生免试攻读硕士学位研究生工作管理办法_2026-07-02",
+   "evidence": [
+    {
+     "doc_id": "d7960d043a488",
+     "chunk_id": "d7960d043a488-0012",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d7960d043a488",
+     "chunk_id": "d7960d043a488-0027",
+     "first_rank": 3,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev07",
+   "category": "cross_clause",
+   "query": "哪些学生不能申请推免，获得推免资格后什么情况会被取消？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9568,
+   "degraded": false,
+   "took_ms": 1318,
+   "top_title": "中传教字〔2026〕122号_中国传媒大学推荐优秀应届本科毕业生免试攻读硕士学位研究生工作管理办法_2026-07-02",
+   "evidence": [
+    {
+     "doc_id": "d7960d043a488",
+     "chunk_id": "d7960d043a488-0010",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "dense"
+    },
+    {
+     "doc_id": "d7960d043a488",
+     "chunk_id": "d7960d043a488-0022",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.5,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.5
+  },
+  {
+   "id": "ev08",
+   "category": "cross_clause",
+   "query": "代替他人考试和由他人代写论文，分别会受到什么处分？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8099,
+   "degraded": false,
+   "took_ms": 2083,
+   "top_title": "【考试】中传教字〔2020〕63号《中国传媒大学学生考试与学术违纪处理办法》",
+   "evidence": [
+    {
+     "doc_id": "de66c06235a90",
+     "chunk_id": "de66c06235a90-0016",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ranking",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "de66c06235a90",
+     "chunk_id": "de66c06235a90-0020",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.5,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.5
+  },
+  {
+   "id": "ev09",
+   "category": "cross_clause",
+   "query": "国家助学贷款毕业后多久开始还本金，最长几年还清，违约会有什么后果？",
+   "answerable": true,
+   "no_answer": true,
+   "confidence": 0.7284,
+   "degraded": false,
+   "took_ms": 1630,
+   "top_title": "中国传媒大学关于校园地国家助学贷款情况的说明",
+   "evidence": [
+    {
+     "doc_id": "d3402a19c1e0a",
+     "chunk_id": "d3402a19c1e0a-0284",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d3402a19c1e0a",
+     "chunk_id": "d3402a19c1e0a-0286",
+     "first_rank": 3,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev11",
+   "category": "cross_clause",
+   "query": "游泳课通过技能测试可以免考勤吗，需要满足什么条件，通过后还要做什么？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9832,
+   "degraded": false,
+   "took_ms": 1157,
+   "top_title": "本科生院〔2025〕68号 关于《中国传媒大学本科生体育课程管理规定》的补充规定",
+   "evidence": [
+    {
+     "doc_id": "d3e615bb2ae1f",
+     "chunk_id": "d3e615bb2ae1f-0001",
+     "first_rank": 3,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "dense"
+    },
+    {
+     "doc_id": "d3e615bb2ae1f",
+     "chunk_id": "d3e615bb2ae1f-0004",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "dense"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev12",
+   "category": "cross_clause",
+   "query": "因病办理缓考需要提交哪些材料，校医院什么时间审核？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.93,
+   "degraded": false,
+   "took_ms": 1373,
+   "top_title": "研究生院培养办公室日常工作流程（更新版）",
+   "evidence": [
+    {
+     "doc_id": "d17513411e414",
+     "chunk_id": "d17513411e414-0000",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d17513411e414",
+     "chunk_id": "d17513411e414-0001",
+     "first_rank": 6,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.5
+  },
+  {
+   "id": "ev15",
+   "category": "cross_clause",
+   "query": "学生住院报销自负多少比例，住院借款支票有什么金额限制？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9747,
+   "degraded": false,
+   "took_ms": 2558,
+   "top_title": "中传政字〔2019〕124号_中国传媒大学学生公费医疗管理规定_2019-06-12",
+   "evidence": [
+    {
+     "doc_id": "d059b1a817a1b",
+     "chunk_id": "d059b1a817a1b-0005",
+     "first_rank": 6,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d059b1a817a1b",
+     "chunk_id": "d059b1a817a1b-0004",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.5,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev16",
+   "category": "cross_clause",
+   "query": "学生退学后学费和住宿费怎么退？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8668,
+   "degraded": false,
+   "took_ms": 1223,
+   "top_title": "中传财字〔2024〕229号_中国传媒大学收费管理办法（试行）_2024-10-12",
+   "evidence": [
+    {
+     "doc_id": "ddd3c5a966f42",
+     "chunk_id": "ddd3c5a966f42-0022",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "ddd3c5a966f42",
+     "chunk_id": "ddd3c5a966f42-0023",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev14",
+   "category": "multi_point",
+   "query": "学生公费医疗在校内门诊、合同医院门诊和住院分别自负多少比例？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.972,
+   "degraded": false,
+   "took_ms": 1178,
+   "top_title": "中传政字〔2019〕124号_中国传媒大学学生公费医疗管理规定_2019-06-12",
+   "evidence": [
+    {
+     "doc_id": "d059b1a817a1b",
+     "chunk_id": "d059b1a817a1b-0005",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev17",
+   "category": "multi_point",
+   "query": "普通本科最长有效学习年限是几年，因创业休学可以延长吗？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9859,
+   "degraded": false,
+   "took_ms": 1321,
+   "top_title": "中传教字〔2025〕195号_中国传媒大学本科生学籍管理规定_2025-11-18",
+   "evidence": [
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0010",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev18",
+   "category": "multi_point",
+   "query": "本科生请假三天以内和三天以上分别由谁审批？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9728,
+   "degraded": false,
+   "took_ms": 1361,
+   "top_title": "中传教字〔2025〕195号_中国传媒大学本科生学籍管理规定_2025-11-18",
+   "evidence": [
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0013",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev19",
+   "category": "multi_point",
+   "query": "本科生退学后能拿到什么证书，多久内要办离校手续？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9309,
+   "degraded": false,
+   "took_ms": 1447,
+   "top_title": "中传教字〔2025〕195号_中国传媒大学本科生学籍管理规定_2025-11-18",
+   "evidence": [
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0050",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev20",
+   "category": "multi_point",
+   "query": "本科生课程重考和重修各有什么限制，通过后GPA怎么算？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9514,
+   "degraded": false,
+   "took_ms": 1573,
+   "top_title": "中传教字〔2025〕195号_中国传媒大学本科生学籍管理规定_2025-11-18",
+   "evidence": [
+    {
+     "doc_id": "d59b4e41275ca",
+     "chunk_id": "d59b4e41275ca-0018",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev21",
+   "category": "multi_point",
+   "query": "本科生国家奖学金一年多少钱，哪些年级可以申请？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8763,
+   "degraded": false,
+   "took_ms": 1421,
+   "top_title": "关于做好2025-2026学年本科学生国家奖学金评审工作的通知",
+   "evidence": [
+    {
+     "doc_id": "d929975df0454",
+     "chunk_id": "d929975df0454-0002",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "dense"
+    },
+    {
+     "doc_id": "d929975df0454",
+     "chunk_id": "d929975df0454-0004",
+     "first_rank": 3,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.5,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.5
+  },
+  {
+   "id": "ev22",
+   "category": "multi_point",
+   "query": "国家奖学金评审公示要几天，和国家励志奖学金能同时拿吗？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.905,
+   "degraded": false,
+   "took_ms": 1308,
+   "top_title": "中国传媒大学2025-2026学年本科学生评奖工作意见",
+   "evidence": [
+    {
+     "doc_id": "d929975df0454",
+     "chunk_id": "d929975df0454-0006",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "dense"
+    },
+    {
+     "doc_id": "d929975df0454",
+     "chunk_id": "d929975df0454-0004",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "recall",
+     "recall_source": "none"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.0
+  },
+  {
+   "id": "ev23",
+   "category": "multi_point",
+   "query": "学费可以跨学年预收吗，休学期间还收学费吗？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9481,
+   "degraded": false,
+   "took_ms": 1636,
+   "top_title": "中传财字〔2024〕229号_中国传媒大学收费管理办法（试行）_2024-10-12",
+   "evidence": [
+    {
+     "doc_id": "ddd3c5a966f42",
+     "chunk_id": "ddd3c5a966f42-0022",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev24",
+   "category": "multi_point",
+   "query": "学生考试与学术违纪处理办法适用于哪些学生，什么时候开始执行？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9601,
+   "degraded": false,
+   "took_ms": 1356,
+   "top_title": "【考试】中传教字〔2020〕63号《中国传媒大学学生考试与学术违纪处理办法》",
+   "evidence": [
+    {
+     "doc_id": "de66c06235a90",
+     "chunk_id": "de66c06235a90-0010",
+     "first_rank": 8,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "de66c06235a90",
+     "chunk_id": "de66c06235a90-0024",
+     "first_rank": 9,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev13",
+   "category": "table",
+   "query": "课程GPA怎么计算，60分以下绩点是多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9456,
+   "degraded": false,
+   "took_ms": 1253,
+   "top_title": "【学籍管理】中国传媒大学百分制分数转换绩点（GPA）算法对应说明",
+   "evidence": [
+    {
+     "doc_id": "d846ade34a5ab",
+     "chunk_id": "d846ade34a5ab-0002",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ranking",
+     "recall_source": "dense"
+    },
+    {
+     "doc_id": "d846ade34a5ab",
+     "chunk_id": "d846ade34a5ab-0003",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.5,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.5
+  },
+  {
+   "id": "ev25",
+   "category": "table",
+   "query": "图书馆古籍文库什么时候开放，需要预约吗？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.959,
+   "degraded": false,
+   "took_ms": 1494,
+   "top_title": "中国传媒大学图书馆手册（20241128）",
+   "evidence": [
+    {
+     "doc_id": "d6d838a8ca22d",
+     "chunk_id": "d6d838a8ca22d-0015",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev26",
+   "category": "table",
+   "query": "图书馆研讨间预约违约多少次会被加入黑名单？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9689,
+   "degraded": false,
+   "took_ms": 1613,
+   "top_title": "中国传媒大学图书馆手册（20241128）",
+   "evidence": [
+    {
+     "doc_id": "d6d838a8ca22d",
+     "chunk_id": "d6d838a8ca22d-0021",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev27",
+   "category": "table",
+   "query": "图书馆珍贵库本图书收藏哪些书，什么时间开放？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9483,
+   "degraded": false,
+   "took_ms": 2588,
+   "top_title": "中国传媒大学图书馆手册（20241128）",
+   "evidence": [
+    {
+     "doc_id": "d6d838a8ca22d",
+     "chunk_id": "d6d838a8ca22d-0015",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev28",
+   "category": "table",
+   "query": "2026-2027学年本科新生和研究生在校生分别什么时候报到？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9679,
+   "degraded": false,
+   "took_ms": 1169,
+   "top_title": "中国传媒大学2026—2027学年校历",
+   "evidence": [
+    {
+     "doc_id": "d195aafb4d82a",
+     "chunk_id": "d195aafb4d82a-0001",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev29",
+   "category": "table",
+   "query": "2026-2027学年第二学期考试周和暑假分别是什么时候？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9339,
+   "degraded": false,
+   "took_ms": 1198,
+   "top_title": "中国传媒大学2026—2027学年校历",
+   "evidence": [
+    {
+     "doc_id": "d195aafb4d82a",
+     "chunk_id": "d195aafb4d82a-0007",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev30",
+   "category": "table",
+   "query": "2026-2027学年第一学期什么时候放寒假？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8386,
+   "degraded": false,
+   "took_ms": 1270,
+   "top_title": "中国传媒大学2026—2027学年校历",
+   "evidence": [
+    {
+     "doc_id": "d195aafb4d82a",
+     "chunk_id": "d195aafb4d82a-0003",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev10",
+   "category": "version_conflict",
+   "query": "国家助学贷款本专科生和研究生每年最多能贷多少，毕业离校前要办什么手续？",
+   "answerable": true,
+   "no_answer": true,
+   "confidence": 0.7005,
+   "degraded": false,
+   "took_ms": 1426,
+   "top_title": "中国传媒大学关于校园地国家助学贷款情况的说明_36c870",
+   "evidence": [
+    {
+     "doc_id": "d896015a41752",
+     "chunk_id": "d896015a41752-1764",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ranking",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d896015a41752",
+     "chunk_id": "d896015a41752-1768",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "dense"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.0
+  },
+  {
+   "id": "ev31",
+   "category": "version_conflict",
+   "query": "现在本科生转专业工作一般安排在哪个学期？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.967,
+   "degraded": false,
+   "took_ms": 1351,
+   "top_title": "本科生院服务常见问题【汇总】.docx_view",
+   "evidence": [
+    {
+     "doc_id": "de23f30ba9de9",
+     "chunk_id": "de23f30ba9de9-0008",
+     "first_rank": 3,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev32",
+   "category": "version_conflict",
+   "query": "本科生转专业可以填报几个志愿？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9356,
+   "degraded": false,
+   "took_ms": 1286,
+   "top_title": "【通知】关于启动2025年本科生转专业报名工作的通知",
+   "evidence": [
+    {
+     "doc_id": "de23f30ba9de9",
+     "chunk_id": "de23f30ba9de9-0009",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "ev33",
+   "category": "version_conflict",
+   "query": "本科生转专业有年级限制吗，大几可以申请？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8329,
+   "degraded": false,
+   "took_ms": 1826,
+   "top_title": "【融合门户】服务_本科生院_无链接.docx_view",
+   "evidence": [
+    {
+     "doc_id": "de23f30ba9de9",
+     "chunk_id": "de23f30ba9de9-0005",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "recall",
+     "recall_source": "none"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.0
+  },
+  {
+   "id": "ev35",
+   "category": "attribute_trap",
+   "query": "本科生转专业需要交报名费吗，多少钱？",
+   "answerable": false,
+   "no_answer": true,
+   "confidence": 0.6467,
+   "degraded": false,
+   "took_ms": 1305,
+   "top_title": "【通知】关于启动2025年本科生转专业报名工作的通知",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "ev36",
+   "category": "attribute_trap",
+   "query": "图书馆借书逾期一天要罚多少钱？",
+   "answerable": false,
+   "no_answer": true,
+   "confidence": 0.5132,
+   "degraded": false,
+   "took_ms": 2088,
+   "top_title": "中国传媒大学图书馆文献借阅规定",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "ev37",
+   "category": "attribute_trap",
+   "query": "研究生国家奖学金每月几号发放？",
+   "answerable": false,
+   "no_answer": false,
+   "confidence": 0.7739,
+   "degraded": false,
+   "took_ms": 1313,
+   "top_title": "2022年中国传媒大学学生工作规章制度汇编",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "ev38",
+   "category": "no_answer",
+   "query": "校园巴士每天几点发车？",
+   "answerable": false,
+   "no_answer": false,
+   "confidence": 0.8339,
+   "degraded": false,
+   "took_ms": 1581,
+   "top_title": "关于中国传媒大学班车路线通告",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "ev39",
+   "category": "no_answer",
+   "query": "学生心理咨询中心的预约电话是多少？",
+   "answerable": false,
+   "no_answer": false,
+   "confidence": 0.8853,
+   "degraded": false,
+   "took_ms": 2065,
+   "top_title": "2022修学指南电子版",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "ev40",
+   "category": "no_answer",
+   "query": "游泳馆深水证怎么考？",
+   "answerable": false,
+   "no_answer": true,
+   "confidence": 0.5094,
+   "degraded": false,
+   "took_ms": 1287,
+   "top_title": "体育场馆预约注意事项.docx_view",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  }
+ ]
+}

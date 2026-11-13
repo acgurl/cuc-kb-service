@@ -102,7 +102,7 @@
       "get": {
         "operationId": "kb_document_chunks",
         "summary": "读取文档知识块",
-        "description": "按 doc_id 返回文档原文知识块，用于核对引用或补充上下文。",
+        "description": "按 doc_id 返回文档原文知识块，用于核对引用、定位条款或补充上下文。三种定位方式互斥：chunk_id（命中块前后 before/after 个相邻块）、page/page_end（页码范围）、offset（顺序游标，配合 next_offset 翻页）；都不传时返回全文。",
         "parameters": [
           {
             "name": "doc_id",
@@ -110,6 +110,80 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "chunk_id",
+            "in": "query",
+            "required": false,
+            "description": "定位锚点：命中块的 chunk_id，返回其前后相邻块。与 page/offset 互斥。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "before",
+            "in": "query",
+            "required": false,
+            "description": "chunk_id 定位时向前多读的块数。",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 20,
+              "default": 2
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "required": false,
+            "description": "chunk_id 定位时向后多读的块数。",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 20,
+              "default": 2
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "按页码定位。与 chunk_id/offset 互斥。",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "name": "page_end",
+            "in": "query",
+            "required": false,
+            "description": "页码范围终点，须与 page 同用且不小于 page。",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "顺序读取的起始块序号（0 起）。",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "返回块数上限；缺省返回定位范围内的全部块。",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
             }
           }
         ],
@@ -128,7 +202,10 @@
             "description": "Token 无效"
           },
           "404": {
-            "description": "文档不存在"
+            "description": "文档或锚点 chunk 不存在"
+          },
+          "422": {
+            "description": "定位参数冲突或越界"
           }
         }
       }
@@ -169,6 +246,11 @@
             "maximum": 20,
             "default": 5,
             "description": "返回条数。"
+          },
+          "trace": {
+            "type": "boolean",
+            "default": false,
+            "description": "评测诊断用：返回 dense/BM25/融合/精排各阶段快照；默认关闭。"
           }
         },
         "required": [
@@ -400,12 +482,47 @@
             "type": "string",
             "description": "日期依据。"
           },
+          "total_chunks": {
+            "type": "integer",
+            "description": "文档知识块总数。"
+          },
+          "offset": {
+            "type": "integer",
+            "description": "本次返回窗口的起始块序号（0 起）。"
+          },
+          "returned": {
+            "type": "integer",
+            "description": "本次返回的块数。"
+          },
+          "next_offset": {
+            "type": ["integer", "null"],
+            "description": "继续顺序读取的下一块序号；null 表示已到文末。"
+          },
+          "anchor_index": {
+            "type": ["integer", "null"],
+            "description": "chunk_id 定位时锚点块的序号；其余定位方式为 null。"
+          },
+          "anchor_chunk_id": {
+            "type": ["string", "null"],
+            "description": "chunk_id 定位时传入的锚点 chunk_id。"
+          },
+          "page_range": {
+            "type": ["array", "null"],
+            "items": {
+              "type": "integer"
+            },
+            "description": "page 定位时的页码范围 [page, page_end]。"
+          },
           "chunks": {
             "type": "array",
             "items": {
               "type": "object",
               "additionalProperties": true,
               "properties": {
+                "index": {
+                  "type": "integer",
+                  "description": "块在文档内的序号（0 起）。"
+                },
                 "chunk_id": {
                   "type": "string"
                 },

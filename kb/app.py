@@ -6,7 +6,7 @@ import urllib.request
 from contextlib import asynccontextmanager
 from urllib.parse import quote, urlencode
 
-from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi import Depends, FastAPI, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import BaseModel, Field
 
@@ -59,6 +59,8 @@ class SearchRequest(BaseModel):
     assistant: str | None = None
     doc_type: list[str] | None = None
     top_k: int = Field(default=5, ge=1, le=20)
+    # Opt-in retrieval-stage snapshot for eval diagnostics; off by default.
+    trace: bool = False
 
 
 def _sso_configured():
@@ -184,6 +186,7 @@ def search(request: SearchRequest, http_request: Request, user: dict = Depends(r
         assistant=request.assistant,
         doc_types=request.doc_type,
         top_k=request.top_k,
+        trace=request.trace,
     )
     for item in payload.get("results") or []:
         _localize_file_url(item.get("citation"), http_request)
@@ -198,11 +201,96 @@ def documents(http_request: Request, user: dict = Depends(require_user)):
     return {"documents": docs}
 
 
+def _chunk_window(chunks, offset=0, limit=None, chunk_id=None, before=2, after=2, page=None, page_end=None):
+    """Select a window of a document's chunks plus navigation metadata.
+
+    Three mutually exclusive locators: chunk_id (the anchor chunk ± before/after
+    neighbours), page/page_end (chunks overlapping a page range), or offset (a
+    sequential cursor). Without any locator the whole document is returned, as
+    before. Raises LookupError for an unknown anchor and ValueError for invalid
+    combinations; each chunk in the window carries its 0-based document index.
+    """
+    if chunk_id is not None and page is not None:
+        raise ValueError("chunk_id and page are mutually exclusive")
+    if (chunk_id is not None or page is not None) and offset:
+        raise ValueError("offset cannot be combined with chunk_id or page")
+    if page_end is not None and page is None:
+        raise ValueError("page_end requires page")
+    if page is not None and page_end is not None and page_end < page:
+        raise ValueError("page_end must be >= page")
+
+    total = len(chunks)
+    anchor_index = None
+    page_range = None
+    if chunk_id is not None:
+        anchor_index = next(
+            (i for i, chunk in enumerate(chunks) if chunk.get("chunk_id") == chunk_id), None
+        )
+        if anchor_index is None:
+            raise LookupError(f"chunk {chunk_id} not found in document")
+        start, end = max(0, anchor_index - before), min(total, anchor_index + after + 1)
+        indexes = list(range(start, end))
+    elif page is not None:
+        last = page_end if page_end is not None else page
+        page_range = [page, last]
+        indexes = [
+            i
+            for i, chunk in enumerate(chunks)
+            if int(chunk.get("page_start") or 0) <= last
+            and max(int(chunk.get("page_end") or 0), int(chunk.get("page_start") or 0)) >= page
+        ]
+        start = indexes[0] if indexes else 0
+    else:
+        start = offset
+        indexes = list(range(start, total))
+
+    if limit is not None:
+        indexes = indexes[:limit]
+    window = [{**chunks[i], "index": i} for i in indexes]
+    next_offset = indexes[-1] + 1 if indexes and indexes[-1] + 1 < total else None
+    meta = {
+        "total_chunks": total,
+        "offset": start,
+        "returned": len(window),
+        "next_offset": next_offset,
+        "anchor_index": anchor_index,
+        "anchor_chunk_id": chunk_id,
+        "page_range": page_range,
+    }
+    return window, meta
+
+
 @app.get("/v1/documents/{doc_id}/chunks")
-def document_chunks(doc_id: str, http_request: Request, user: dict = Depends(require_user)):
+def document_chunks(
+    doc_id: str,
+    http_request: Request,
+    offset: int = Query(default=0, ge=0),
+    limit: int | None = Query(default=None, ge=1),
+    chunk_id: str | None = Query(default=None),
+    before: int = Query(default=2, ge=0, le=20),
+    after: int = Query(default=2, ge=0, le=20),
+    page: int | None = Query(default=None, ge=1),
+    page_end: int | None = Query(default=None, ge=1),
+    user: dict = Depends(require_user),
+):
     chunks = kb.document_chunks(doc_id)
     if not chunks:
         raise HTTPException(status_code=404, detail="document not found")
+    try:
+        window, meta = _chunk_window(
+            chunks,
+            offset=offset,
+            limit=limit,
+            chunk_id=chunk_id,
+            before=before,
+            after=after,
+            page=page,
+            page_end=page_end,
+        )
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     payload = {
         "doc_id": doc_id,
         "page_count": kb.page_count(doc_id),
@@ -210,7 +298,8 @@ def document_chunks(doc_id: str, http_request: Request, user: dict = Depends(req
         "source_url": chunks[0].get("source_url", ""),
         "publish_date": chunks[0].get("publish_date", ""),
         "date_basis": chunks[0].get("date_basis", ""),
-        "chunks": chunks,
+        **meta,
+        "chunks": window,
     }
     _localize_file_url(payload, http_request)
     return payload

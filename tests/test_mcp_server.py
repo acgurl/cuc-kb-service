@@ -141,7 +141,7 @@ class SearchAnswerModeTest(unittest.TestCase):
         response = {"doc_id": "a/../b", "chunks": [{"chunk_id": str(i)} for i in range(30)]}
         with mock.patch.object(mcp_server, "api_request", return_value=response) as api:
             result = mcp_server.tool_document_chunks({"doc_id": "a/../b", "limit": 5})
-        self.assertEqual(api.call_args.args[1], "/v1/documents/a%2F..%2Fb/chunks")
+        self.assertEqual(api.call_args.args[1], "/v1/documents/a%2F..%2Fb/chunks?limit=5&offset=0")
         self.assertEqual((result["total_chunks"], result["returned"]), (30, 5))
         self.assertEqual(len(result["chunks"]), 5)
 
@@ -155,6 +155,88 @@ class SearchAnswerModeTest(unittest.TestCase):
         with mock.patch.object(mcp_server, "api_request", return_value={"documents": docs}):
             result = mcp_server.tool_documents({"assistant": "中传小勤", "doc_type": ["制度"]})
         self.assertEqual([doc["doc_id"] for doc in result["documents"]], ["1", "2"])
+
+
+class DocumentChunksLocatorTest(unittest.TestCase):
+    """chunk_id / page / offset locators, server metadata and old-API fallback."""
+
+    def full_chunks(self, count=10):
+        return [
+            {"chunk_id": f"c{i}", "text": f"t{i}", "page_start": i // 2 + 1, "page_end": i // 2 + 1}
+            for i in range(count)
+        ]
+
+    def call(self, response, **arguments):
+        arguments.setdefault("doc_id", "d1")
+        with mock.patch.object(mcp_server, "api_request", return_value=response) as api:
+            result = mcp_server.tool_document_chunks(arguments)
+        return result, api.call_args.args[1]
+
+    def test_server_window_metadata_passed_through(self):
+        response = {
+            "doc_id": "d1", "total_chunks": 100, "offset": 40, "returned": 2,
+            "next_offset": 42, "anchor_index": None, "anchor_chunk_id": None,
+            "page_range": None, "chunks": [{"chunk_id": "c40", "index": 40}, {"chunk_id": "c41", "index": 41}],
+        }
+        result, path = self.call(response, offset=40, limit=2)
+        self.assertEqual(path, "/v1/documents/d1/chunks?limit=2&offset=40")
+        self.assertEqual((result["total_chunks"], result["offset"], result["next_offset"]), (100, 40, 42))
+        self.assertEqual([c["index"] for c in result["chunks"]], [40, 41])
+
+    def test_chunk_id_locator_params(self):
+        response = {
+            "doc_id": "d1", "total_chunks": 10, "offset": 4, "returned": 3,
+            "next_offset": 7, "anchor_index": 5, "anchor_chunk_id": "c5",
+            "page_range": None, "chunks": [{"chunk_id": f"c{i}", "index": i} for i in (4, 5, 6)],
+        }
+        result, path = self.call(response, chunk_id="c5", before=1, after=1)
+        self.assertEqual(path, "/v1/documents/d1/chunks?limit=20&chunk_id=c5&before=1&after=1")
+        self.assertEqual((result["anchor_index"], result["anchor_chunk_id"]), (5, "c5"))
+
+    def test_page_locator_params(self):
+        response = {
+            "doc_id": "d1", "total_chunks": 10, "offset": 2, "returned": 2,
+            "next_offset": 4, "anchor_index": None, "anchor_chunk_id": None,
+            "page_range": [2, 3], "chunks": [{"chunk_id": "c2", "index": 2}, {"chunk_id": "c3", "index": 3}],
+        }
+        _, path = self.call(response, page=2, page_end=3)
+        self.assertEqual(path, "/v1/documents/d1/chunks?limit=20&page=2&page_end=3")
+
+    def test_fallback_anchor_windows_old_api_response(self):
+        result, _ = self.call({"doc_id": "d1", "chunks": self.full_chunks()}, chunk_id="c5")
+        self.assertEqual([c["chunk_id"] for c in result["chunks"]], ["c3", "c4", "c5", "c6", "c7"])
+        self.assertEqual((result["total_chunks"], result["anchor_index"], result["offset"]), (10, 5, 3))
+        self.assertEqual(result["next_offset"], 8)
+        self.assertEqual([c["index"] for c in result["chunks"]], [3, 4, 5, 6, 7])
+
+    def test_fallback_page_filters_old_api_response(self):
+        result, _ = self.call({"doc_id": "d1", "chunks": self.full_chunks()}, page=2, page_end=3)
+        self.assertEqual([c["chunk_id"] for c in result["chunks"]], ["c2", "c3", "c4", "c5"])
+        self.assertEqual(result["page_range"], [2, 3])
+
+    def test_fallback_offset_and_limit(self):
+        result, _ = self.call({"doc_id": "d1", "chunks": self.full_chunks()}, offset=8, limit=5)
+        self.assertEqual([c["chunk_id"] for c in result["chunks"]], ["c8", "c9"])
+        self.assertIsNone(result["next_offset"])
+
+    def test_fallback_unknown_chunk_raises(self):
+        with self.assertRaises(mcp_server.ToolError):
+            self.call({"doc_id": "d1", "chunks": self.full_chunks()}, chunk_id="nope")
+
+    def test_locator_conflicts_rejected_before_api_call(self):
+        for arguments in (
+            {"chunk_id": "c1", "page": 2},
+            {"chunk_id": "c1", "offset": 1},
+            {"page": 2, "offset": 1},
+            {"page_end": 3},
+            {"page": 3, "page_end": 2},
+            {"before": 21},
+            {"offset": -1},
+        ):
+            with self.subTest(arguments=arguments), mock.patch.object(mcp_server, "api_request") as api:
+                with self.assertRaises(mcp_server.ToolError):
+                    mcp_server.tool_document_chunks({"doc_id": "d1", **arguments})
+                api.assert_not_called()
 
 
 class TokenLoadingTest(unittest.TestCase):

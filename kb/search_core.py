@@ -37,6 +37,7 @@ from kb.common import (
     EMBED_PROVIDER,
     EMBED_QUERY_CACHE_SIZE,
     EMBED_QUERY_INSTRUCT,
+    EXPAND_ADJACENT,
     FASTEMBED_CACHE,
     GENERIC_CLOSE_MARGIN,
     GENERIC_RERANK_PENALTY,
@@ -61,6 +62,7 @@ from kb.common import (
     RERANK_PROVIDER,
     RERANK_SHORTLIST,
     RERANK_TRIGGER,
+    SUPERSEDED_PENALTY,
     VERSION_FAMILY_PENALTY,
     edition_year,
     is_generic_title,
@@ -819,6 +821,25 @@ class KB:
         year = edition_year(chunk.get("doc_title", ""))
         return family in newest and year is not None and year < newest[family]
 
+    def _superseded_docs(self, items):
+        """Docs explicitly superseded by another doc that is also a candidate.
+
+        Relation-driven (chunk.superseded_by): the old version yields only when
+        its replacement is present, so temporal queries still retrieve it.
+        """
+        present = set()
+        for chunk_id, _ in items:
+            chunk = self.chunk_map.get(chunk_id)
+            if chunk:
+                present.add(chunk.get("doc_id"))
+        superseded = set()
+        for chunk_id, _ in items:
+            chunk = self.chunk_map.get(chunk_id) or {}
+            target = chunk.get("superseded_by")
+            if target and target in present and target != chunk.get("doc_id"):
+                superseded.add(chunk.get("doc_id"))
+        return superseded
+
     def _rerank(self, query, candidates):
         """Return (reordered candidates, rerank scores by chunk_id)."""
         shortlist = candidates[: max(RERANK_SHORTLIST, CANDIDATE_LIMIT)]
@@ -844,12 +865,15 @@ class KB:
             and specific_best >= generic_best - GENERIC_CLOSE_MARGIN
         )
         newest = self._newest_editions(reranked)
+        superseded = self._superseded_docs(reranked)
 
         def adjusted(item):
             chunk = self.chunk_map.get(item[0]) or {}
             score = self._adjusted_rerank_score(chunk, rerank_scores[item[0]], generic_penalty)
             if self._is_older_edition(chunk, newest):
                 score -= VERSION_FAMILY_PENALTY
+            if chunk.get("doc_id") in superseded:
+                score -= SUPERSEDED_PENALTY
             return score
 
         reranked.sort(key=adjusted, reverse=True)
@@ -867,7 +891,8 @@ class KB:
             and specific_best >= generic_best * GENERIC_RRF_FACTOR
         )
         newest = self._newest_editions(candidates)
-        if not generic_penalty and not newest:
+        superseded = self._superseded_docs(candidates)
+        if not generic_penalty and not newest and not superseded:
             return
 
         def adjusted(item):
@@ -877,6 +902,8 @@ class KB:
                 score *= GENERIC_RRF_FACTOR
             if self._is_older_edition(chunk, newest):
                 score -= VERSION_FAMILY_PENALTY
+            if chunk.get("doc_id") in superseded:
+                score -= SUPERSEDED_PENALTY
             return score
 
         candidates.sort(key=adjusted, reverse=True)
@@ -897,6 +924,42 @@ class KB:
             "page_count": self.page_count(chunk["doc_id"]),
             "file_url": self.file_url(chunk["doc_id"], chunk.get("page_start") or None),
         }
+
+    def _expand_adjacent(self, result, n):
+        """Merge up to n active neighbour chunks into a result's text (read aid).
+
+        Neighbours are the document-order chunks at sequence ±1..n of the anchor
+        (the chunk_id suffix). Ranking and scores are untouched; the citation
+        page range widens to the merged span and expanded_chunks lists added ids.
+        """
+        chunk_id = result["chunk_id"]
+        doc_id = result["doc_id"]
+        prefix, sep, seq = chunk_id.rpartition("-")
+        if not sep or prefix != doc_id or not seq.isdigit():
+            return
+        anchor = self.chunk_map.get(chunk_id)
+        if not anchor:
+            return
+        center = int(seq)
+        parts = [(center, anchor)]
+        for offset in range(1, n + 1):
+            for signed in (-offset, offset):
+                neighbor = self.chunk_map.get(f"{doc_id}-{center + signed:04d}")
+                if neighbor and neighbor.get("status") == "active":
+                    parts.append((center + signed, neighbor))
+        if len(parts) == 1:
+            return
+        parts.sort(key=lambda item: item[0])
+        result["text"] = "\n".join(chunk.get("text", "") for _, chunk in parts)
+        result["expanded_chunks"] = [c["chunk_id"] for _, c in parts if c["chunk_id"] != chunk_id]
+        result["expanded"] = True
+        starts = [int(c.get("page_start") or 0) for _, c in parts]
+        ends = [int(c.get("page_end") or 0) for _, c in parts]
+        citation = result["citation"]
+        positive_starts = [s for s in starts if s > 0]
+        if positive_starts:
+            citation["page_start"] = min(positive_starts)
+        citation["page_end"] = max(ends)
 
     def _judge_answer(self, query, results):
         """Return (no_answer, confidence, answerability) for the final results."""
@@ -935,7 +998,7 @@ class KB:
 
     # ---- public API --------------------------------------------------------
 
-    def search(self, query, assistant=None, doc_types=None, top_k=5):
+    def search(self, query, assistant=None, doc_types=None, top_k=5, trace=False):
         started = time.time()
         query = (query or "").strip()
         if not query:
@@ -958,14 +1021,17 @@ class KB:
         self._apply_fusion_bonuses(query, fused)
 
         candidates = self._select_candidates(fused)
+        selected_ids = [chunk_id for chunk_id, _ in candidates] if trace else []
         rerank_scores = {}
         rerank_failed = False
+        rerank_triggered = False
         best_dense_all = max(dense_scores.values(), default=0.0)
         if (
             (self.cloud_reranker or self.reranker)
             and candidates
             and self._should_rerank(query, best_dense_all)
         ):
+            rerank_triggered = True
             candidates, rerank_scores = self._rerank(query, candidates)
             # The rerank was needed but nothing scored: the hybrid floor below
             # is not calibrated for this, so flag the response as degraded.
@@ -997,7 +1063,10 @@ class KB:
         no_answer, confidence, answerability = self._judge_answer(query, results)
         if rerank_failed and RERANK_FAILURE_POLICY == "refuse":
             no_answer = True
-        return {
+        if EXPAND_ADJACENT > 0:
+            for item in results:
+                self._expand_adjacent(item, EXPAND_ADJACENT)
+        payload = {
             "query": query,
             "results": results,
             "no_answer": no_answer,
@@ -1007,6 +1076,24 @@ class KB:
             "degraded_reason": "rerank_unavailable" if rerank_failed else None,
             "took_ms": int((time.time() - started) * 1000),
         }
+        if trace:
+            # Opt-in stage snapshot for eval diagnostics (eval/evidence_check.py);
+            # never requested by the agent-facing tools, zero cost when off.
+            payload["trace"] = {
+                "dense": [{"chunk_id": c, "score": round(s, 4)} for c, s in dense_hits],
+                "bm25": [{"chunk_id": c, "score": round(s, 4)} for c, s in bm25_hits],
+                "fused": [
+                    {"chunk_id": c, "score": round(s, 6)}
+                    for c, s in sorted(fused.items(), key=lambda kv: kv[1], reverse=True)[:CANDIDATE_POOL]
+                ],
+                "selected": selected_ids,
+                "rerank_triggered": rerank_triggered,
+                "rerank_failed": rerank_failed,
+                "rerank_scores": {c: round(s, 4) for c, s in rerank_scores.items()},
+                "order": [chunk_id for chunk_id, _ in candidates],
+                "final": [item["chunk_id"] for item in results],
+            }
+        return payload
 
     def meta(self):
         assistants = sorted(

@@ -116,8 +116,27 @@ def kb_documents(
     name="kb_document_chunks",
     description=core.TOOL_DESCRIPTIONS["kb_document_chunks"],
 )
-def kb_document_chunks(doc_id: str, limit: int = 20) -> str:
-    return dump(core.tool_document_chunks({"doc_id": doc_id, "limit": limit}))
+def kb_document_chunks(
+    doc_id: str,
+    chunk_id: str | None = None,
+    before: int = 2,
+    after: int = 2,
+    page: int | None = None,
+    page_end: int | None = None,
+    offset: int = 0,
+    limit: int = 20,
+) -> str:
+    arguments = {
+        "doc_id": doc_id, "limit": limit, "offset": offset,
+        "before": before, "after": after,
+    }
+    if chunk_id:
+        arguments["chunk_id"] = chunk_id
+    if page is not None:
+        arguments["page"] = page
+    if page_end is not None:
+        arguments["page_end"] = page_end
+    return dump(core.tool_document_chunks(arguments))
 
 
 class AuthMiddleware:

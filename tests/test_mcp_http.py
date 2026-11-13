@@ -82,6 +82,15 @@ class McpHttpTest(unittest.TestCase):
                 self.assertEqual(tools[name]["description"], description)
         self.assertEqual(tools["kb_search"]["inputSchema"]["required"], ["query"])
         self.assertEqual(tools["kb_document_chunks"]["inputSchema"]["required"], ["doc_id"])
+        # The HTTP wrappers derive their schema from the function signature; it
+        # must expose the same parameters as the stdio TOOL_DEFINITIONS.
+        definitions = {tool["name"]: tool for tool in core.TOOL_DEFINITIONS}
+        for name, tool in tools.items():
+            with self.subTest(tool=name):
+                self.assertEqual(
+                    set(tool["inputSchema"]["properties"]),
+                    set(definitions[name]["inputSchema"]["properties"]),
+                )
 
 
 if __name__ == "__main__":

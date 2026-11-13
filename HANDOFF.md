@@ -1,5 +1,62 @@
 # HANDOFF — 检索质量优化（2026-11-01）
 
+## 2026-11-13 相邻块展开 + 版本替代关系（LIVE，A/B 实测后上线）
+
+**一句话现状**：在证据级评测基础上做两项检索改进并 A/B 实测后上线——① **item2 小块检索+相邻块展开**（`KB_EXPAND_ADJACENT=1`）：top 命中合并同文档前后各 1 个 active 相邻块文本，补全被切开的前提/例外/连续条款，排序与可回答性判定不变；② **item3 版本替代关系**（`KB_SUPERSEDED_PENALTY=0.05` + `scripts/apply_superseded.py`）：12 对同名制度「废止」关系写入 `chunk.superseded_by`，旧版仅在新版同在候选时降权让位（时间性查询仍可检索旧版）。**证据级 hit@5 58%→70%，LLM 端到端答对 61%→70%、编造 21%→18%；v2 刷新口径后严格 hit@1/3/5 各 +1、零回归。**
+
+| 配置（evidence_v1，33 可答题） | evidence_hit@5 | cross_clause@5 | item_cov@5 | LLM correct | LLM fabricated |
+|---|---:|---:|---:|---:|---:|
+| 基线 | 19（58%） | 5/13 | .707 | 20（61%） | 7（21%） |
+| 仅展开 N=1 | 23（70%） | 7/13 | .793 | — | — |
+| 仅版本 | 19 | 5/13 | .707 | — | — |
+| **展开+版本（上线）** | **23** | **7/13** | **.793** | **23（70%）** | **6（18%）** |
+| 展开 N=2（敏感性） | 24 | 8/13 | .803 | — | — |
+
+| 项 | 值 |
+|---|---|
+| 展开收益/代价 | evidence_hit@1/5/10 = 15/23/27（基线 12/19/23）；延迟 P50 +133ms。N=2 仅再 +1 但尾部更高 → **N=1 默认**。LLM 逐题：修好 ev29/ev30（校历日期编造→答全）、ev15/ev24 转好；但带入冲突上下文使 ev01/04/06/13 完整性微降、ev21/33 出现编造 → complete 16→15（含判定噪声）。净 correct +3 / fabricated −1 |
+| 版本 live 演示 | 「研究生导师岗位聘任办法」基线 top1-3 全 2023 旧版 → 上线后全 2026 新版；财务/会议费旧版降权让位。**evidence_v1 版本题未动**（ev31/32 已命中、ev33 召回缺失、ev10 属汇编已由版本族处理）——替代关系修的是「旧版压新版」排序，该盲测集未覆盖 |
+| v2 回归（刷新口径后） | `results_v14_prod_final_20261113.json`：curated **hit@1/3/5 = 67/78/81（基线 66/77/80，各 +1）**、keyword@5 **84（+1）**、any@1/3/5 79/83/84、MRR .9627、short any 12/15、no-answer 47/48、partial 6/7、iso 9/10、cite 10/10 —— **零回归，净提升** |
+| 口径刷新 | 版本降权把现行新版升 top1，v2 三道期望旧版的题需刷新 ground truth（非检索退化，any 口径本就接受新版）：**v35**（会议费 2023 修订）、**v36**（往来款项 2025）补 expected_docs；**v31**（博士匿名评阅 56 号废止 8 号）补 expected_docs + 新措辞 keyword「最多可回避三名专家」+ altgold 纳入 d13a165c3144b。备份 `dataset_heldout_v2{,_altgold}.json.bak-20261113` |
+| 数据补丁 | `scripts/apply_superseded.py`：12 对逐对核验（新版含「废止」+旧版文号），341 块/12 文档写 `superseded_by`。**无需 Qdrant 同步**（排序读 chunks.jsonl 的 chunk_map，非向量 payload）。Phoenix `data/{chunks.jsonl,docs.json}.bak-superseded`，`--reverse` 回滚 |
+| 代码 | `kb/common.py`（EXPAND_ADJACENT/SUPERSEDED_PENALTY）、`kb/search_core.py`（`_expand_adjacent` 在判定后增文本、`_superseded_docs` 在 rerank/RRF 两路降权）；+8 单测（ExpansionTest/SupersededTest），unit 115 / mcp-http 30 / ruff 全过 |
+| 配置/备份 | Phoenix `.env` 追加 `KB_EXPAND_ADJACENT=1`、`KB_SUPERSEDED_PENALTY=0.05`（`.env.bak-20261113-v2exp`）；代码 `kb/{common,search_core}.py.bak-20261113-v2exp`。生产 8000 已重启生效（healthz 52322，展开/版本冒烟通过） |
+
+**坑**：① 展开是双刃剑——补全split条款的同时可能带入冲突上下文（ev01 第六十二条「省级教育行政部门」与「北京市教委」并存使模型困惑），故只增文本、不改排序/判定，N 宜小。② 版本降权的「回归」全是口径问题：v31/v35/v36 现行新版升 top1 而 v2 期望旧版，刷新后严格指标反升；别把这类当真实退化去调参。③ 临时 A/B 进程用独立端口（8002-8007），`pkill -f` 会匹配到执行命令的 shell 自身——按端口/PID 清理。④ `ssh '... && nohup ... &'` 的 `&` 会把 `cd` 一起后台化，主 shell 仍在 home 目录 → 用换行结构 + 绝对路径。
+
+**回滚**（关旋钮即可，无需回代码/数据）：
+
+```bash
+ssh phoenix 'cd ~/cuc-kb && sed -i "s/^KB_EXPAND_ADJACENT=1/KB_EXPAND_ADJACENT=0/;s/^KB_SUPERSEDED_PENALTY=0.05/KB_SUPERSEDED_PENALTY=0/" .env && sudo systemctl restart cuc-kb'
+# 完全回滚数据+代码：
+ssh phoenix 'cd ~/cuc-kb && set -a && . ./.env && set +a && .venv/bin/python -m scripts.apply_superseded --data data --reverse && cp -p kb/common.py.bak-20261113-v2exp kb/common.py && cp -p kb/search_core.py.bak-20261113-v2exp kb/search_core.py && sudo systemctl restart cuc-kb'
+```
+
+**遗留**：item3 仅覆盖 12 对显式替代关系；生效/失效时间、适用人群/校区/年级等元数据未回填（schema 已留 superseded_by，可扩展）。时间性查询（「2022 年当时的规定」）仍需 agent 层意图识别。展开 N 可按查询复杂度自适应（未做）。
+
+## 2026-11-13 证据级评测 + 长文档定位读取（LIVE）
+
+**一句话现状**：① 新增**证据级盲测集 + 评测 harness**（`eval/evidence_check.py`、`eval/heldout/dataset_evidence_v1.json`，39 题六类，逐条对 data-v9 核验证据词），检查返回片段是否真含答案证据，并用 opt-in `trace` 定位证据在哪一阶段丢失（dense/BM25 召回→融合池→候选限流→精排排序→top_k）；② **长文档读取工具支持深层定位**：`chunk_id` 锚点±相邻块 / `page` 页码范围 / `offset` 游标翻页，API + stdio MCP + HTTP MCP 三端同步，不再只读文档开头。**排序逻辑零改动**，v2 回归逐项一致。
+
+| 项 | 值 |
+|---|---|
+| 证据级基线 | `eval/heldout/results_evidence_ev1_baseline_20261113.json`：33 可答题 **evidence_hit@1/@3/@5/@10 = 12/18/19/23**，item_coverage@5 .7071，supported_answer@5 18/33。分类@5：**cross_clause 5/13、multi_point 6/9、table 6/7、version_conflict 2/4**。误拒 ev09/ev10（深层贷款条款，证据在 top5 但 top1 精排分低于阈值）；误接受 ev37/ev38/ev39。证据丢失阶段（52 项）：ok 40 / ranking 4 / fusion_pool 6 / recall 2。**对比文档级 any@5≈满分 → 量化了「找对文件≠找对条款」** |
+| LLM 端到端 | `results_evidence_ev1_llm_20261113.json`（`--llm`，qwen-plus 作答+判定，仅取 top5 原文，LLM 判定单独报告）：33 可答题 **correct 20（61%）/ complete 16（48%）/ fabricated 7（21%）/ refused 2**。编造主因：① cross_clause 证据不全（ev03 医院等级、ev09 还款年限、ev18 审批人）；② 版本冲突选错或臆造效力（ev10 用 2024 新政策 20000/25000 否汇编2026 12000/16000、ev31/ev33）；③ 冲突来源无权威标注（ev29/ev30 弃校历改用修学指南日期）。ev21 国奖 8000 vs 10000 属语料自身新旧标准矛盾 |
+| 长文档读取 | API `GET /v1/documents/{id}/chunks` 新增 `offset/limit/chunk_id/before/after/page/page_end`（互斥校验，未知锚点 404）；每块带 `index`，响应带 `total_chunks/offset/returned/next_offset/anchor_index/anchor_chunk_id/page_range`；不传定位参数仍返回全文（向后兼容）。MCP `kb_document_chunks` 同步八参数 + 旧 API 客户端回退；**HTTP MCP 包装签名同步**（见坑①） |
+| trace | `KB.search(trace=False)` opt-in，API `SearchRequest.trace`；返回 `dense/bm25/fused/selected/order/rerank_scores/rerank_triggered/rerank_failed/final`。默认关闭零开销，agent 工具不暴露，仅评测用 |
+| 盲测集 | `build_evidence_v1.py` 构建并强制核验：每个证据词逐字命中 active chunk、无答案探测词零命中、查询与既有 755 条不重复。六类：cross_clause 13 / multi_point 9 / table 7 / version_conflict 4 / attribute_trap 3 / no_answer 3。语料 md5 `881e61e6…`（= 线上 data-v9） |
+| 验证 | CI 三 job 全过：lint（ruff 0.14.3 + compileall + bash -n）、unit 107、mcp-http 30（新增 22 测试，含 HTTP/stdio schema 同步测试）。线上冒烟：anchor index 35 返回前后块、page 17 命中 6 块、offset 翻页、未知 chunk 404、trace 九字段、MCP HTTP 八参数。v2 回归 `results_v11_evidence_20261113.json` 与 v10 逐项一致（curated 66/77/80、any 79/83/84、short any 12/15/15、no-answer 47/48、partial 6/7、iso 9/10、cite 10/10） |
+| 备份 | Phoenix `kb/{app,search_core,mcp_server,mcp_http_server}.py.bak-20261113-evidence` |
+| 产物 | `eval/evidence_check.py`、`eval/heldout/{build_evidence_v1.py,dataset_evidence_v1.json}`、`tests/test_evidence_check.py`；`agent/{tools.openai,openapi}.json` 同步（平台侧配置，Phoenix 无 agent/ 目录） |
+
+**坑**：① **HTTP MCP（`kb/mcp_http_server.py`）的工具 schema 从包装函数签名生成，不是直接用 `TOOL_DEFINITIONS`**——改 stdio 工具参数必须同步改 HTTP 包装签名，否则 agent 走 HTTP（Docker 容器）时新参数不暴露。本次冒烟抓到（HTTP 仍只 doc_id/limit），已修复并补 schema 同步测试。② 转专业 2024 版与 2025 修订版**都 active 且内容冲突**（春季 vs 秋季、限一二年级 vs 不限）；汇编 2022/2026 同理——版本冲突题暴露现行版本族降权只覆盖汇编、不覆盖普通制度修订（item 3 待办）。③ ev38 校园巴士 / ev39 心理咨询：语料有相关主题（班车路线 / 修学指南）但无所问属性（发车时刻 / 预约电话），属属性级误接受，非纯无答案。④ cross_clause 最弱：答案所需 2-3 条款散落 rank 1-9，top-5 难集齐——正是相邻块展开（item 2 已铺路）与候选多样性（item 4）的目标。
+
+**回滚**：
+
+```bash
+ssh phoenix 'cd ~/cuc-kb && for f in kb/app.py kb/search_core.py kb/mcp_server.py kb/mcp_http_server.py; do cp -p $f.bak-20261113-evidence $f; done && sudo systemctl restart cuc-kb cuc-kb-mcp cuc-kb-mcp-gateway'
+```
+
 ## 2026-11-12 评测多答案标注 + 精排失败降级（LIVE）
 
 **一句话现状**：① held-out v2 新增**多答案标注**（`dataset_heldout_v2_altgold.json`，原数据集不动）：同一事实在汇编/FAQ/新版/副本里也能答时计为命中，和严格指标并列报告；② 精排需要但失败（云端超时/报错、无本地兜底）时，响应带 `degraded=true, degraded_reason="rerank_unavailable"`，默认 `KB_RERANK_FAILURE_POLICY=refuse` 判 `no_answer`；MCP 对 degraded 且有结果的返回 `answer_mode=related` + 「先用同一问法重试」提示。排序逻辑零改动。

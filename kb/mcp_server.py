@@ -47,8 +47,9 @@ RETRY_RULE = (
     "任一调用找到直接回答就据此作答，不再检索；"
     "都没找到时，再并行发一轮之前没用过的新问法，可去掉 assistant、doc_type 过滤并把 top_k 提到 10；"
     "换了几种说法仍找不到就停止，不要反复检索。"
-    "若已定位到相关制度但缺具体条款，可用 kb_documents 确认制度在库，"
-    "再用 kb_document_chunks 按 doc_id 读取原文。"
+    "若已定位到相关制度但缺具体条款，可用 kb_documents 确认制度在库，再用 kb_document_chunks 读取原文："
+    "已有命中 chunk_id 时按 chunk_id 读前后相邻块，知道页码时按 page 读，"
+    "长文档用 offset 配合 next_offset 翻页，不要只读文档开头。"
     "不支持并行调用时，按同样的问法依次调用。"
     "以下 answer_mode 的结论，以所有调用中最好的结果为准。"
 )
@@ -285,16 +286,96 @@ def tool_documents(arguments):
     }
 
 
+def _window_fallback(chunks, offset, limit, chunk_id, before, after, page, page_end):
+    """Client-side windowing for an API that predates server-side locators."""
+    total = len(chunks)
+    anchor_index = None
+    page_range = None
+    if chunk_id:
+        anchor_index = next(
+            (i for i, chunk in enumerate(chunks) if chunk.get("chunk_id") == chunk_id), None
+        )
+        if anchor_index is None:
+            raise ToolError(f"chunk_id {chunk_id} 不在该文档中。")
+        indexes = list(range(max(0, anchor_index - before), min(total, anchor_index + after + 1)))
+    elif page is not None:
+        last = page_end if page_end is not None else page
+        page_range = [page, last]
+        indexes = [
+            i
+            for i, chunk in enumerate(chunks)
+            if int(chunk.get("page_start") or 0) <= last
+            and max(int(chunk.get("page_end") or 0), int(chunk.get("page_start") or 0)) >= page
+        ]
+    else:
+        indexes = list(range(offset, total))
+    start = indexes[0] if indexes else 0
+    indexes = indexes[:limit]
+    window = [{**chunks[i], "index": i} for i in indexes]
+    next_offset = indexes[-1] + 1 if indexes and indexes[-1] + 1 < total else None
+    return window, {
+        "total_chunks": total,
+        "offset": start,
+        "returned": len(window),
+        "next_offset": next_offset,
+        "anchor_index": anchor_index,
+        "anchor_chunk_id": chunk_id,
+        "page_range": page_range,
+    }
+
+
 def tool_document_chunks(arguments):
     doc_id = str(arguments.get("doc_id") or "").strip()
     if not doc_id:
         raise ToolError("doc_id 不能为空。")
     limit = as_int(arguments.get("limit"), "limit", 1, 50, 20)
-    path = "/v1/documents/" + urllib.parse.quote(doc_id, safe="") + "/chunks"
+    chunk_id = str(arguments.get("chunk_id") or "").strip()
+    offset = as_int(arguments.get("offset"), "offset", 0, 1000000, 0)
+    before = as_int(arguments.get("before"), "before", 0, 20, 2)
+    after = as_int(arguments.get("after"), "after", 0, 20, 2)
+    page = as_int(arguments.get("page"), "page", 1, 100000, None)
+    page_end = as_int(arguments.get("page_end"), "page_end", 1, 100000, None)
+    if chunk_id and page is not None:
+        raise ToolError("chunk_id 与 page 不能同时使用。")
+    if (chunk_id or page is not None) and offset:
+        raise ToolError("offset 不能与 chunk_id 或 page 同时使用。")
+    if page_end is not None and page is None:
+        raise ToolError("page_end 必须与 page 一起使用。")
+    if page is not None and page_end is not None and page_end < page:
+        raise ToolError("page_end 必须不小于 page。")
+
+    params = {"limit": limit}
+    if chunk_id:
+        params.update({"chunk_id": chunk_id, "before": before, "after": after})
+    elif page is not None:
+        params["page"] = page
+        if page_end is not None:
+            params["page_end"] = page_end
+    else:
+        params["offset"] = offset
+    path = (
+        "/v1/documents/"
+        + urllib.parse.quote(doc_id, safe="")
+        + "/chunks?"
+        + urllib.parse.urlencode(params)
+    )
     data = api_request("GET", path)
     chunks = data.get("chunks") or []
+    if "total_chunks" in data:
+        window = chunks
+        meta = {
+            key: data.get(key)
+            for key in (
+                "total_chunks", "offset", "returned", "next_offset",
+                "anchor_index", "anchor_chunk_id", "page_range",
+            )
+        }
+    else:
+        window, meta = _window_fallback(
+            chunks, offset, limit, chunk_id or None, before, after, page, page_end
+        )
     keys = (
-        "chunk_id", "text", "clause_no", "page_start", "page_end",
+        "index", "chunk_id", "text", "clause_no", "page_start", "page_end",
         "section_path", "source_file",
     )
     return {
@@ -304,9 +385,8 @@ def tool_document_chunks(arguments):
         "source_url": data.get("source_url", ""),
         "publish_date": data.get("publish_date", ""),
         "date_basis": data.get("date_basis", ""),
-        "total_chunks": len(chunks),
-        "returned": min(limit, len(chunks)),
-        "chunks": [{key: chunk.get(key) for key in keys} for chunk in chunks[:limit]],
+        **meta,
+        "chunks": [{key: chunk.get(key) for key in keys} for chunk in window],
     }
 
 
@@ -381,17 +461,29 @@ TOOL_DEFINITIONS = [
     {
         "name": "kb_document_chunks",
         "description": (
-            "按 doc_id 读取文档的原文知识块，用于核对引用或补充上下文。"
-            "返回每块的页码和 source_file，以及文档总页数 page_count、原文链接 file_url、"
-            "原始出处 source_url 和文档日期 publish_date。"
-            "大文档请限制 limit。若据这些内容作答，末尾「参考文件」清单同样要列出该文档的 "
+            "按 doc_id 读取文档的原文知识块，用于核对引用、定位条款或补充上下文。"
+            "三种定位方式互斥，优先用前两种，不要总从文档开头读："
+            "① chunk_id——传 kb_search 命中块的 chunk_id，返回它前后 before/after 个相邻块（默认各 2），"
+            "适合核对命中条款及其前提、例外；"
+            "② page（可配 page_end 读一个页码范围）——按 citation.page_start 的页码定位；"
+            "③ offset——从第 offset 块（0 起）顺序读，配合返回的 next_offset 继续翻页，next_offset 为 null 表示已到文末。"
+            "返回每块的 index（文档内序号）、chunk_id、页码、clause_no、section_path 和 source_file，"
+            "以及总块数 total_chunks、文档总页数 page_count、原文链接 file_url、"
+            "原始出处 source_url 和文档日期 publish_date。大文档请限制 limit。"
+            "若据这些内容作答，末尾「参考文件」清单同样要列出该文档的 "
             "doc_title、source_file 和 file_url。"
         ),
         "inputSchema": {
             "type": "object",
             "properties": {
                 "doc_id": {"type": "string", "description": "kb_search 或 kb_documents 返回的 doc_id。"},
-                "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 20, "description": "返回的知识块数量。"},
+                "chunk_id": {"type": "string", "description": "定位锚点：kb_search 命中块的 chunk_id，返回其前后相邻块。与 page/offset 互斥。"},
+                "before": {"type": "integer", "minimum": 0, "maximum": 20, "default": 2, "description": "chunk_id 定位时向前多读的块数。"},
+                "after": {"type": "integer", "minimum": 0, "maximum": 20, "default": 2, "description": "chunk_id 定位时向后多读的块数。"},
+                "page": {"type": "integer", "minimum": 1, "description": "按页码定位（取 citation.page_start）。与 chunk_id/offset 互斥。"},
+                "page_end": {"type": "integer", "minimum": 1, "description": "页码范围终点，须与 page 同用且不小于 page；缺省只读 page 一页。"},
+                "offset": {"type": "integer", "minimum": 0, "default": 0, "description": "顺序读取的起始块序号（0 起），用返回的 next_offset 翻页。"},
+                "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 20, "description": "返回的知识块数量上限。"},
             },
             "required": ["doc_id"],
             "additionalProperties": False,
