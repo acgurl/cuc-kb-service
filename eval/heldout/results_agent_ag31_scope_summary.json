@@ -1,0 +1,146 @@
+{
+ "tag": "ag31_scope",
+ "dataset": "dataset_evidence_v3_1.json",
+ "model": "qwen-plus",
+ "total": 268,
+ "answerable": {
+  "total": 214,
+  "correct": 190,
+  "complete": 164,
+  "fabricated": 24,
+  "refused": 2,
+  "evidence_seen": 176,
+  "avg_searches": 3.16,
+  "avg_rounds": 1.0
+ },
+ "unanswerable": {
+  "total": 54,
+  "refused": 36,
+  "fabricated": 12,
+  "avg_searches": 2.46,
+  "avg_rounds": 0.85
+ },
+ "by_category": {
+  "split_adjacent": {
+   "total": 22,
+   "correct": 20,
+   "complete": 16,
+   "fabricated": 2,
+   "refused": 0,
+   "evidence_seen": 21,
+   "avg_searches": 2.82,
+   "avg_rounds": 1.0
+  },
+  "cross_clause": {
+   "total": 59,
+   "correct": 57,
+   "complete": 52,
+   "fabricated": 4,
+   "refused": 0,
+   "evidence_seen": 51,
+   "avg_searches": 3.22,
+   "avg_rounds": 0.98
+  },
+  "multi_point": {
+   "total": 49,
+   "correct": 43,
+   "complete": 38,
+   "fabricated": 7,
+   "refused": 0,
+   "evidence_seen": 43,
+   "avg_searches": 3.37,
+   "avg_rounds": 1.02
+  },
+  "table": {
+   "total": 11,
+   "correct": 11,
+   "complete": 11,
+   "fabricated": 0,
+   "refused": 0,
+   "evidence_seen": 9,
+   "avg_searches": 3.09,
+   "avg_rounds": 1.0
+  },
+  "short_query": {
+   "total": 37,
+   "correct": 28,
+   "complete": 22,
+   "fabricated": 5,
+   "refused": 2,
+   "evidence_seen": 24,
+   "avg_searches": 3.03,
+   "avg_rounds": 1.0
+  },
+  "attribute_trap": {
+   "total": 22,
+   "refused": 14,
+   "fabricated": 3,
+   "avg_searches": 2.95,
+   "avg_rounds": 0.95
+  },
+  "version_superseded": {
+   "total": 22,
+   "correct": 17,
+   "complete": 16,
+   "fabricated": 5,
+   "refused": 0,
+   "evidence_seen": 19,
+   "avg_searches": 3.0,
+   "avg_rounds": 1.0
+  },
+  "partial": {
+   "total": 7,
+   "refused": 4,
+   "fabricated": 3,
+   "avg_searches": 2.57,
+   "avg_rounds": 1.0
+  },
+  "no_answer": {
+   "total": 17,
+   "refused": 10,
+   "fabricated": 6,
+   "avg_searches": 2.94,
+   "avg_rounds": 1.06
+  },
+  "personal_status": {
+   "total": 8,
+   "refused": 8,
+   "fabricated": 0,
+   "avg_searches": 0.0,
+   "avg_rounds": 0.0
+  },
+  "cross_doc": {
+   "total": 7,
+   "correct": 7,
+   "complete": 2,
+   "fabricated": 0,
+   "refused": 0,
+   "evidence_seen": 3,
+   "avg_searches": 3.57,
+   "avg_rounds": 1.0
+  },
+  "version_conflict": {
+   "total": 7,
+   "correct": 7,
+   "complete": 7,
+   "fabricated": 1,
+   "refused": 0,
+   "evidence_seen": 6,
+   "avg_searches": 3.14,
+   "avg_rounds": 1.0
+  }
+ },
+ "no_search": [
+  "b14b_03",
+  "b17at06",
+  "b18na17",
+  "b18b01",
+  "b18b03",
+  "b18b05",
+  "b18b06",
+  "b18b07",
+  "b18b08",
+  "b18b02",
+  "b18b04"
+ ]
+}

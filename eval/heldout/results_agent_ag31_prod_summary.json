@@ -1,0 +1,161 @@
+{
+ "tag": "ag31_prod",
+ "dataset": "dataset_evidence_v3_1.json",
+ "model": "qwen-plus",
+ "total": 268,
+ "answerable": {
+  "total": 214,
+  "correct": 184,
+  "complete": 168,
+  "fabricated": 40,
+  "refused": 11,
+  "evidence_seen": 179,
+  "avg_searches": 3.55,
+  "avg_rounds": 0.96
+ },
+ "unanswerable": {
+  "total": 54,
+  "refused": 39,
+  "fabricated": 15,
+  "avg_searches": 2.41,
+  "avg_rounds": 0.76
+ },
+ "by_category": {
+  "cross_clause": {
+   "total": 59,
+   "correct": 55,
+   "complete": 53,
+   "fabricated": 9,
+   "refused": 0,
+   "evidence_seen": 51,
+   "avg_searches": 3.66,
+   "avg_rounds": 1.0
+  },
+  "split_adjacent": {
+   "total": 22,
+   "correct": 21,
+   "complete": 20,
+   "fabricated": 6,
+   "refused": 0,
+   "evidence_seen": 20,
+   "avg_searches": 3.5,
+   "avg_rounds": 1.14
+  },
+  "multi_point": {
+   "total": 49,
+   "correct": 42,
+   "complete": 37,
+   "fabricated": 11,
+   "refused": 1,
+   "evidence_seen": 44,
+   "avg_searches": 3.86,
+   "avg_rounds": 0.98
+  },
+  "short_query": {
+   "total": 37,
+   "correct": 25,
+   "complete": 20,
+   "fabricated": 7,
+   "refused": 9,
+   "evidence_seen": 21,
+   "avg_searches": 2.78,
+   "avg_rounds": 0.76
+  },
+  "table": {
+   "total": 11,
+   "correct": 10,
+   "complete": 9,
+   "fabricated": 0,
+   "refused": 1,
+   "evidence_seen": 10,
+   "avg_searches": 3.64,
+   "avg_rounds": 0.91
+  },
+  "attribute_trap": {
+   "total": 22,
+   "refused": 16,
+   "fabricated": 6,
+   "avg_searches": 2.73,
+   "avg_rounds": 0.82
+  },
+  "version_superseded": {
+   "total": 22,
+   "correct": 18,
+   "complete": 18,
+   "fabricated": 5,
+   "refused": 0,
+   "evidence_seen": 22,
+   "avg_searches": 3.82,
+   "avg_rounds": 1.0
+  },
+  "partial": {
+   "total": 7,
+   "refused": 2,
+   "fabricated": 5,
+   "avg_searches": 2.86,
+   "avg_rounds": 1.29
+  },
+  "no_answer": {
+   "total": 17,
+   "refused": 13,
+   "fabricated": 4,
+   "avg_searches": 2.94,
+   "avg_rounds": 0.82
+  },
+  "personal_status": {
+   "total": 8,
+   "refused": 8,
+   "fabricated": 0,
+   "avg_searches": 0.0,
+   "avg_rounds": 0.0
+  },
+  "cross_doc": {
+   "total": 7,
+   "correct": 7,
+   "complete": 5,
+   "fabricated": 1,
+   "refused": 0,
+   "evidence_seen": 4,
+   "avg_searches": 3.86,
+   "avg_rounds": 1.0
+  },
+  "version_conflict": {
+   "total": 7,
+   "correct": 6,
+   "complete": 6,
+   "fabricated": 1,
+   "refused": 0,
+   "evidence_seen": 7,
+   "avg_searches": 3.29,
+   "avg_rounds": 1.0
+  }
+ },
+ "no_search": [
+  "b14b_06",
+  "b16a03",
+  "b16a05",
+  "b16a04",
+  "b16a06",
+  "b16a07",
+  "b16a08",
+  "b16b04",
+  "b16b07",
+  "b16b08",
+  "b17at05",
+  "b17at06",
+  "b17at12",
+  "b18na02",
+  "b18na04",
+  "b18na17",
+  "b18b01",
+  "b18b02",
+  "b18b03",
+  "b18b05",
+  "b18b04",
+  "b18b06",
+  "b18b08",
+  "b18b07",
+  "b4b_05",
+  "b4b_06"
+ ]
+}

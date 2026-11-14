@@ -114,6 +114,17 @@ SUPERSEDED_PENALTY = _env_float("KB_SUPERSEDED_PENALTY", 0.05)
 # relation-driven: no demotion when the replacement is absent.
 SUPERSEDED_ADAPTIVE = _env_bool("KB_SUPERSEDED_ADAPTIVE", False)
 SUPERSEDED_MARGIN = _env_float("KB_SUPERSEDED_MARGIN", 0.01)
+# Same-title documents reissued periodically (yearly notices, agreements) carry
+# no 废止 clause, so they are linked by chunk.newer_version instead of
+# superseded_by. When on, an older edition yields to the newer one exactly like a
+# superseded doc (only when the newer edition is a candidate), unless the query
+# names the older edition's own year.
+NEWER_VERSION = _env_bool("KB_NEWER_VERSION", False)
+# Collapse near-duplicate chunks in the returned top_k: a candidate whose text
+# is (almost) contained in an already returned result is skipped and listed in
+# that result's `duplicates`, freeing the slot for different evidence.
+DEDUP_NEAR = _env_bool("KB_DEDUP_NEAR", False)
+DEDUP_THRESHOLD = _env_float("KB_DEDUP_THRESHOLD", 0.9)
 CANDIDATE_POOL = _env_int("KB_CANDIDATE_POOL", 40)
 CANDIDATE_LIMIT = _env_int("KB_CANDIDATE_LIMIT", 24)
 MAX_CHUNKS_PER_DOC = _env_int("KB_MAX_CHUNKS_PER_DOC", 16)

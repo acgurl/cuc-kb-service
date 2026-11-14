@@ -34,6 +34,14 @@ QUERY_TERMS_RULE = (
     "“保研”指“推免”，“一卡通”指“校园卡”。这类问题以正式称谓为主组织查询"
     "（如“辅修学士学位 管理办法 申请条件”），不要只保留口语词。"
 )
+SCOPE_RULE = (
+    "【先检索再下结论】知识库不只收规章制度，也收录办事指南、服务手册、招生简章、培训通知、"
+    "校园设施与信息化服务说明等。凡是可能与本校有关的问题——包括只有几个字的短问题，"
+    "以及校园生活、设施、费用、电话、网址、平台、培训项目一类问题——都必须先调用 kb_search，"
+    "不得未经检索就判断“不属于知识库范围”或回答“知识库中没有”；"
+    "本校的网址、电话、地点、金额、时间等具体信息只能来自检索到的原文，不得凭自身记忆给出。"
+    "只有问候寒暄、询问助手自身、与学校完全无关的通用知识，以及查询个人状态的问题可以不检索。"
+)
 RETRY_RULE = (
     "【并行多问法检索】同一内容换个说法常能检索到，所以校内问题第一轮就可以在同一次回复里"
     "并行发起多个 kb_search 调用，每个用不同问法，个数由你按问题判断："
@@ -67,8 +75,8 @@ NO_ANSWER_RULE = (
     "最多给出原文中的查询或办理渠道。"
 )
 INSTRUCTIONS = (
-    "校内制度/FAQ 类问题才调用 kb_search；问候、寒暄、自我介绍、"
-    "询问助手能力、闲聊和通用知识问题不要调用任何工具。"
+    "与本校有关的问题先调用 kb_search 再作答；问候、寒暄、自我介绍、"
+    "询问助手能力、闲聊和与学校无关的通用知识问题不要调用任何工具。"
     "短问题可补全为完整问句，但不得改变原意或引入示例话题。"
     "回答必须基于返回原文并标注文档名、条款和页码；"
     "citation.file_url 是可点击的原文链接（带 #page=page_start），回答中一并给出；"
@@ -77,7 +85,11 @@ INSTRUCTIONS = (
     "为空表示日期未标定，不得自行推断；"
     "citation.superseded_by 非空表示该文件已被新版替代/废止：回答现行制度须优先采用未废止的新版原文，"
     "不得把已废止文件的内容当作现行规定，仅当用户明确询问历史版本时才引用它并注明已废止；"
+    "citation.newer_version 非空表示同名文件已有更新一期（如逐年发布的说明、通知、协议）："
+    "回答现行情况须以更新一期的原文为准，仅当用户明确询问该年度时才以这一期为准，引用时注明其日期；"
+    "results[].duplicates 列出内容相同、已合并展示的其他文档，可一并作为出处；"
     "不要编造原文没有的内容。"
+    + SCOPE_RULE
     + RETRY_RULE
     + NO_ANSWER_RULE
     + QUERY_TERMS_RULE
@@ -197,6 +209,7 @@ def tool_search(arguments):
                 "text": item.get("text", ""),
                 "score": item.get("score"),
                 "rerank_score": item.get("rerank_score"),
+                "duplicates": item.get("duplicates") or [],
                 "citation": {
                     "doc_title": citation.get("doc_title", ""),
                     "doc_no": citation.get("doc_no", ""),
@@ -210,6 +223,7 @@ def tool_search(arguments):
                     "publish_date": citation.get("publish_date", ""),
                     "date_basis": citation.get("date_basis", ""),
                     "superseded_by": citation.get("superseded_by", ""),
+                    "newer_version": citation.get("newer_version", ""),
                     "page_count": citation.get("page_count", 0),
                     "file_url": citation.get("file_url", ""),
                 },
@@ -398,10 +412,11 @@ TOOL_DEFINITIONS = [
         "name": "kb_search",
         "description": (
             "检索中国传媒大学校内规章制度与常见问题知识库，返回相关条款、原文和出处。"
-            "仅当用户问题属于校内制度、办事流程或校园常见问题（FAQ）时调用；"
-            "问候、寒暄、自我介绍、询问你是谁或你能做什么、闲聊和通用知识问题不要调用任何工具，直接回答。"
+            "用户问题可能与本校的制度、办事流程、校园生活或服务有关时调用；"
+            "问候、寒暄、自我介绍、询问你是谁或你能做什么、闲聊和与学校无关的通用知识问题不要调用任何工具，直接回答。"
             "用户问题较短或指代不清时可以补全成完整问句再检索，但只能补全用户已表达的意思，"
             "不得引入示例、知识库内容或无关话题。"
+            + SCOPE_RULE
             + RETRY_RULE
             + NO_ANSWER_RULE
             + "问题本不属于校内事务却误调了本工具、结果又无关时，忽略结果并直接回答用户原问题；"

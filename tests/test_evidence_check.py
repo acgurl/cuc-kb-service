@@ -31,6 +31,16 @@ class CoverageTest(unittest.TestCase):
         self.assertFalse(evidence_check.item_covered(ITEM, [result("docB", "b-1", "本专科生12000元")]))
         self.assertFalse(evidence_check.item_covered(ITEM, []))
 
+    def test_alt_docs_accept_the_same_fact_in_another_document(self):
+        hit = [result("docB", "b-9", "本专科生每年不超过12000元")]
+        self.assertFalse(evidence_check.item_covered(ITEM, hit))
+        alt = {**ITEM, "alt_docs": ["docB"]}
+        self.assertTrue(evidence_check.item_covered(alt, hit))
+        self.assertEqual(evidence_check.item_first_rank(alt, hit), 1)
+        corpus = {**CORPUS, "b-9": ("docB", evidence_check.norm("本专科生每年不超过12000元"))}
+        self.assertTrue(evidence_check.stage_evidence_present(alt, ["b-9"], corpus))
+        self.assertFalse(evidence_check.stage_evidence_present(ITEM, ["b-9"], corpus))
+
     def test_first_rank(self):
         results = [result("docB", "b-1", "x"), result("docA", "a-1", "本专科生12000元")]
         self.assertEqual(evidence_check.item_first_rank(ITEM, results), 2)
@@ -146,6 +156,13 @@ class FragmentLabelTest(unittest.TestCase):
         label = evidence_check.fragment_label(r, 1)
         self.assertIn("废止", label)
         self.assertIn("旧内容", label)
+
+    def test_older_edition_fragment_is_flagged(self):
+        r = {"text": "额度8000元", "citation": {"doc_title": "说明", "page_start": 1,
+                                             "newer_version": "y26", "publish_date": "2021-06-01"}}
+        label = evidence_check.fragment_label(r, 1)
+        self.assertIn("同名文件已有更新一期", label)
+        self.assertIn("2021-06-01", label)
 
     def test_current_fragment_not_flagged(self):
         r = {"citation": {"doc_title": "某办法（2025）", "page_start": 1, "superseded_by": ""},

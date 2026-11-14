@@ -512,6 +512,79 @@ class SupersededExpansionTest(unittest.TestCase):
         self.assertTrue(old.get("expanded"))  # adaptive off -> legacy expansion
 
 
+class NewerVersionTest(unittest.TestCase):
+    """A reissued same-title doc (newer_version) yields like a superseded one."""
+
+    def setUp(self):
+        self.chunks = [
+            {"chunk_id": "y21-0000", "doc_id": "y21", "doc_title": "贷款情况的说明", "doc_type": "通知",
+             "assistants": ["shared"], "status": "active", "page_start": 1, "page_end": 1,
+             "publish_date": "2021-06-01", "text": "贷款额度不超过8000元。", "newer_version": "y26"},
+            {"chunk_id": "y26-0000", "doc_id": "y26", "doc_title": "贷款情况的说明", "doc_type": "通知",
+             "assistants": ["shared"], "status": "active", "page_start": 1, "page_end": 1,
+             "publish_date": "2026-06-11", "text": "贷款额度不超过20000元。"},
+        ]
+        self.dense = {"y21-0000": 0.9, "y26-0000": 0.88}
+        self.rerank = {"y21-0000": 0.97, "y26-0000": 0.80}
+
+    def _search(self, query, enabled):
+        kb = build_kb(self.dense, rerank=self.rerank, chunks=self.chunks)
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True),                 mock.patch.object(search_core, "SUPERSEDED_ADAPTIVE", True),                 mock.patch.object(search_core, "NEWER_VERSION", enabled):
+            return kb.search(query, top_k=2)["results"]
+
+    def test_newer_edition_leads_when_enabled(self):
+        results = self._search("贷款额度", True)
+        self.assertEqual([r["doc_id"] for r in results], ["y26", "y21"])
+        self.assertEqual(results[1]["citation"]["newer_version"], "y26")
+        self.assertEqual(results[0]["citation"]["newer_version"], "")
+
+    def test_off_by_default_keeps_rerank_order(self):
+        self.assertEqual([r["doc_id"] for r in self._search("贷款额度", False)], ["y21", "y26"])
+
+    def test_query_naming_the_old_year_is_not_demoted(self):
+        self.assertEqual([r["doc_id"] for r in self._search("2021年贷款额度", True)], ["y21", "y26"])
+
+
+class NearDuplicateTest(unittest.TestCase):
+    """Top-k collapses a chunk whose text is contained in a returned result."""
+
+    def setUp(self):
+        clause = "第十条 学生申请缓考须在考前提交申请并附相关证明材料，经学院审核批准后方可缓考。"
+
+        def chunk(chunk_id, doc_id, title, text):
+            return {"chunk_id": chunk_id, "doc_id": doc_id, "doc_title": title, "doc_type": "制度",
+                    "assistants": ["shared"], "status": "active", "page_start": 1, "page_end": 1,
+                    "text": text}
+
+        self.chunks = [
+            chunk("a-0000", "a", "考试管理办法", clause),
+            chunk("b-0000", "b", "学生手册", clause),
+            chunk("c-0000", "c", "缓考流程说明", "缓考获批后参加下一学期同一课程的考核，成绩按正常考核记载。"),
+            chunk("d-0000", "d", "考试管理办法（含附则）", clause + "第十一条 缓考成绩按实际成绩记载，不设上限。"),
+        ]
+        self.dense = {"a-0000": 0.9, "b-0000": 0.89, "c-0000": 0.7, "d-0000": 0.6}
+        self.rerank = {"a-0000": 0.95, "b-0000": 0.94, "c-0000": 0.8, "d-0000": 0.7}
+
+    def _search(self, enabled, top_k=2):
+        kb = build_kb(self.dense, rerank=self.rerank, chunks=self.chunks)
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True),                 mock.patch.object(search_core, "DEDUP_NEAR", enabled):
+            return kb.search("缓考怎么申请", top_k=top_k)["results"]
+
+    def test_duplicate_gives_its_slot_to_new_evidence(self):
+        results = self._search(True)
+        self.assertEqual([r["chunk_id"] for r in results], ["a-0000", "c-0000"])
+        self.assertEqual([d["chunk_id"] for d in results[0]["duplicates"]], ["b-0000"])
+
+    def test_off_by_default_returns_both_copies(self):
+        results = self._search(False)
+        self.assertEqual([r["chunk_id"] for r in results], ["a-0000", "b-0000"])
+        self.assertNotIn("duplicates", results[0])
+
+    def test_longer_chunk_with_extra_content_is_kept(self):
+        results = self._search(True, top_k=3)
+        self.assertEqual([r["chunk_id"] for r in results], ["a-0000", "c-0000", "d-0000"])
+
+
 class SparseBM25Test(unittest.TestCase):
     """The postings-based scorer must be bit-identical to rank_bm25."""
 

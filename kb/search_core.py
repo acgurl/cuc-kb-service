@@ -27,6 +27,8 @@ from kb.common import (
     COVERAGE_BONUS,
     COVERAGE_MAX_BONUS,
     DATA_DIR,
+    DEDUP_NEAR,
+    DEDUP_THRESHOLD,
     EMBED_API_BASE,
     EMBED_API_KEY,
     EMBED_API_MODEL,
@@ -43,6 +45,7 @@ from kb.common import (
     GENERIC_RERANK_PENALTY,
     GENERIC_RRF_FACTOR,
     MAX_CHUNKS_PER_DOC,
+    NEWER_VERSION,
     PUBLIC_BASE_URL,
     QUERY_INSTRUCTION,
     RERANK_API_BASE,
@@ -201,6 +204,18 @@ def is_generic_chunk(chunk) -> bool:
     if not chunk:
         return False
     return bool(chunk.get("is_generic")) or is_generic_title(chunk.get("doc_title", ""))
+
+
+QUERY_YEAR_RE = re.compile(r"(?<!\d)(?:19|20)\d{2}(?!\d)")
+SHINGLE_SIZE = 5
+
+
+def shingles(text):
+    """Character n-gram set of whitespace-stripped text (near-duplicate check)."""
+    compact = re.sub(r"\s+", "", text or "")
+    if len(compact) <= SHINGLE_SIZE:
+        return {compact} if compact else set()
+    return {compact[i : i + SHINGLE_SIZE] for i in range(len(compact) - SHINGLE_SIZE + 1)}
 
 
 def rrf(rank):
@@ -823,13 +838,16 @@ class KB:
         year = edition_year(chunk.get("doc_title", ""))
         return family in newest and year is not None and year < newest[family]
 
-    def _superseded_relations(self, items):
+    def _superseded_relations(self, items, query=""):
         """{old_doc_id: new_doc_id} for superseded docs whose replacement is a candidate.
 
         Relation-driven (chunk.superseded_by): an old version only counts as
         superseded here when its replacement is also among the candidates, so
         temporal queries ("2022 年当时的规定") still retrieve and expand it.
+        With NEWER_VERSION, chunk.newer_version (a reissued same-title document)
+        counts the same way, except when the query names the old edition's year.
         """
+        query_years = set(QUERY_YEAR_RE.findall(query)) if NEWER_VERSION else set()
         present = set()
         for chunk_id, _ in items:
             chunk = self.chunk_map.get(chunk_id)
@@ -839,12 +857,16 @@ class KB:
         for chunk_id, _ in items:
             chunk = self.chunk_map.get(chunk_id) or {}
             target = chunk.get("superseded_by")
+            if not target and NEWER_VERSION and chunk.get("newer_version"):
+                year = str(chunk.get("publish_date") or "")[:4]
+                if not (year and year in query_years):
+                    target = chunk.get("newer_version")
             old = chunk.get("doc_id")
             if target and target in present and target != old:
                 relations[old] = target
         return relations
 
-    def _superseded_penalties(self, items, score_of):
+    def _superseded_penalties(self, items, score_of, query=""):
         """Per-old-doc demotion when its replacement is also a candidate.
 
         Returns {old_doc_id: penalty}. The base is SUPERSEDED_PENALTY; with
@@ -855,7 +877,7 @@ class KB:
         applied), or None when the chunk was not scored. Relation-driven: an old
         doc with no replacement among the candidates is not demoted at all.
         """
-        relations = self._superseded_relations(items)
+        relations = self._superseded_relations(items, query)
         if not relations:
             return {}
         present = {}
@@ -909,7 +931,7 @@ class KB:
             if self._is_older_edition(chunk, newest):
                 score -= VERSION_FAMILY_PENALTY
             pre[item[0]] = score
-        penalties = self._superseded_penalties(reranked, pre.get)
+        penalties = self._superseded_penalties(reranked, pre.get, query)
 
         def adjusted(item):
             chunk = self.chunk_map.get(item[0]) or {}
@@ -919,7 +941,7 @@ class KB:
         others = [item for item in candidates if item[0] not in rerank_scores]
         return reranked + others, rerank_scores
 
-    def _demote_generic_rrf(self, candidates):
+    def _demote_generic_rrf(self, candidates, query=""):
         """Without rerank, down-weight generic compilations and older editions."""
         generic_best, specific_best = best_split(
             candidates, lambda item: self._is_generic_id(item[0]), lambda item: item[1]
@@ -939,7 +961,7 @@ class KB:
             if self._is_older_edition(chunk, newest):
                 score -= VERSION_FAMILY_PENALTY
             pre[item[0]] = score
-        penalties = self._superseded_penalties(candidates, pre.get)
+        penalties = self._superseded_penalties(candidates, pre.get, query)
         if not generic_penalty and not newest and not penalties:
             return
 
@@ -963,6 +985,7 @@ class KB:
             "publish_date": chunk.get("publish_date", ""),
             "date_basis": chunk.get("date_basis", ""),
             "superseded_by": chunk.get("superseded_by", ""),
+            "newer_version": chunk.get("newer_version", ""),
             "page_count": self.page_count(chunk["doc_id"]),
             "file_url": self.file_url(chunk["doc_id"], chunk.get("page_start") or None),
         }
@@ -1002,6 +1025,21 @@ class KB:
         if positive_starts:
             citation["page_start"] = min(positive_starts)
         citation["page_end"] = max(ends)
+
+    @staticmethod
+    def _near_duplicate_of(current, kept_shingles):
+        """Index of the kept result that already contains this text, else None.
+
+        Containment is measured on the candidate: it is dropped only when
+        (almost) all of its own text is in a kept result, so a longer chunk that
+        adds content beyond a kept shorter one is still returned.
+        """
+        if not current:
+            return None
+        for index, kept in enumerate(kept_shingles):
+            if len(current & kept) / len(current) >= DEDUP_THRESHOLD:
+                return index
+        return None
 
     def _judge_answer(self, query, results):
         """Return (no_answer, confidence, answerability) for the final results."""
@@ -1079,13 +1117,29 @@ class KB:
             # is not calibrated for this, so flag the response as degraded.
             rerank_failed = not rerank_scores
         if not rerank_scores and candidates:
-            self._demote_generic_rrf(candidates)
+            self._demote_generic_rrf(candidates, query)
 
         results = []
-        for chunk_id, score in candidates[:top_k]:
+        kept_shingles = []
+        for chunk_id, score in candidates:
+            if len(results) >= top_k:
+                break
             chunk = self.chunk_map.get(chunk_id)
             if not chunk:
                 continue
+            if DEDUP_NEAR:
+                current = shingles(chunk.get("text", ""))
+                twin = self._near_duplicate_of(current, kept_shingles)
+                if twin is not None:
+                    results[twin].setdefault("duplicates", []).append(
+                        {
+                            "chunk_id": chunk_id,
+                            "doc_id": chunk["doc_id"],
+                            "doc_title": chunk.get("doc_title", ""),
+                        }
+                    )
+                    continue
+                kept_shingles.append(current)
             rerank_score = rerank_scores.get(chunk_id)
             results.append(
                 {
@@ -1111,7 +1165,9 @@ class KB:
             # demotion pushed down (e.g. a 废止d "每年4-5月" clause). Temporal
             # queries keep expansion because the replacement is then absent.
             skip_expand = (
-                set(self._superseded_relations(candidates)) if SUPERSEDED_ADAPTIVE else set()
+                set(self._superseded_relations(candidates, query))
+                if SUPERSEDED_ADAPTIVE
+                else set()
             )
             for item in results:
                 if item["doc_id"] in skip_expand:

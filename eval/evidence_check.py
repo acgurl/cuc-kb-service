@@ -71,11 +71,20 @@ def load_corpus_map():
     return corpus
 
 
+def item_docs(item):
+    """Docs that may carry this evidence: the verified doc plus optional alt_docs.
+
+    alt_docs lists other active documents holding the same verbatim terms (the
+    same fact republished), so a hit there is not scored as a miss.
+    """
+    return {item["doc_id"], *(item.get("alt_docs") or [])}
+
+
 def item_covered(item, results):
     """True when one returned chunk from the expected doc contains all terms."""
     terms = [norm(t) for t in item["terms"]]
     for result in results:
-        if result.get("doc_id") != item["doc_id"]:
+        if result.get("doc_id") not in item_docs(item):
             continue
         text = norm(result.get("text", ""))
         if all(term in text for term in terms):
@@ -86,7 +95,7 @@ def item_covered(item, results):
 def item_first_rank(item, results):
     terms = [norm(t) for t in item["terms"]]
     for rank, result in enumerate(results, 1):
-        if result.get("doc_id") != item["doc_id"]:
+        if result.get("doc_id") not in item_docs(item):
             continue
         text = norm(result.get("text", ""))
         if all(term in text for term in terms):
@@ -98,7 +107,7 @@ def item_cover_result(item, results):
     """First result whose text covers all terms of the item (or None)."""
     terms = [norm(t) for t in item["terms"]]
     for result in results:
-        if result.get("doc_id") != item["doc_id"]:
+        if result.get("doc_id") not in item_docs(item):
             continue
         if all(term in norm(result.get("text", "")) for term in terms):
             return result
@@ -122,7 +131,7 @@ def stage_evidence_present(item, chunk_ids, corpus):
     terms = [norm(t) for t in item["terms"]]
     for chunk_id in chunk_ids:
         entry = corpus.get(chunk_id)
-        if entry and entry[0] == item["doc_id"] and all(term in entry[1] for term in terms):
+        if entry and entry[0] in item_docs(item) and all(term in entry[1] for term in terms):
             return True
     return False
 
@@ -240,6 +249,9 @@ def fragment_label(r, i):
     label = f"【片段{i}】《{cit.get('doc_title', '')}》第{cit.get('page_start', '?')}页"
     if cit.get("superseded_by"):
         label += "（该文件已被新版替代/废止，仅作历史参考，现行规定以未废止的新版为准）"
+    elif cit.get("newer_version"):
+        date = cit.get("publish_date") or "日期未标定"
+        label += f"（本期日期 {date}；同名文件已有更新一期，现行情况以更新一期为准）"
     return label + "：\n" + r.get("text", "")
 
 
