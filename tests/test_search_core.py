@@ -418,6 +418,99 @@ class SupersededTest(unittest.TestCase):
         result = kb.search("转专业哪个学期", top_k=2)
         self.assertEqual(result["results"][0]["chunk_id"], "new-0000")
 
+    def test_large_gap_fixed_penalty_cannot_flip(self):
+        # Reproduces w33: rerank gap 0.16 >> 0.05, so the fixed penalty keeps old on top.
+        kb = build_kb({"old-0000": 0.9, "new-0000": 0.88},
+                      rerank={"old-0000": 0.98, "new-0000": 0.82}, chunks=self.chunks)
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True):
+            result = kb.search("转专业哪个学期", top_k=2)
+        self.assertEqual([r["chunk_id"] for r in result["results"]], ["old-0000", "new-0000"])
+
+    def test_adaptive_flips_large_gap(self):
+        kb = build_kb({"old-0000": 0.9, "new-0000": 0.88},
+                      rerank={"old-0000": 0.98, "new-0000": 0.82}, chunks=self.chunks)
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True), \
+                mock.patch.object(search_core, "SUPERSEDED_ADAPTIVE", True):
+            result = kb.search("转专业哪个学期", top_k=2)
+        self.assertEqual([r["chunk_id"] for r in result["results"]], ["new-0000", "old-0000"])
+
+    def test_adaptive_keeps_old_when_new_absent(self):
+        kb = build_kb({"old-0000": 0.9}, rerank={"old-0000": 0.98}, chunks=self.chunks)
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True), \
+                mock.patch.object(search_core, "SUPERSEDED_ADAPTIVE", True):
+            result = kb.search("转专业哪个学期", top_k=2)
+        self.assertEqual([r["chunk_id"] for r in result["results"]], ["old-0000"])
+
+    def test_adaptive_no_rerank_path(self):
+        kb = build_kb({"old-0000": 0.9, "new-0000": 0.88}, chunks=self.chunks)
+        with mock.patch.object(search_core, "SUPERSEDED_ADAPTIVE", True):
+            result = kb.search("转专业哪个学期", top_k=2)
+        self.assertEqual(result["results"][0]["chunk_id"], "new-0000")
+
+    def test_adaptive_penalty_only_demotes_superseded_doc(self):
+        # An unrelated doc scoring between old and new must not be demoted.
+        chunks = self.chunks + [{
+            "chunk_id": "oth-0000", "doc_id": "oth", "doc_title": " unrelated ",
+            "doc_type": "制度", "assistants": ["shared"], "status": "active",
+            "page_start": 1, "page_end": 1, "text": "别的办法。",
+        }]
+        kb = build_kb({"old-0000": 0.9, "new-0000": 0.88, "oth-0000": 0.86},
+                      rerank={"old-0000": 0.98, "new-0000": 0.82, "oth-0000": 0.86},
+                      chunks=chunks)
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True), \
+                mock.patch.object(search_core, "SUPERSEDED_ADAPTIVE", True):
+            result = kb.search("转专业哪个学期", top_k=3)
+        # oth (0.86) is untouched and outranks new (0.82); old is demoted below new.
+        self.assertEqual([r["chunk_id"] for r in result["results"]],
+                         ["oth-0000", "new-0000", "old-0000"])
+
+
+class SupersededExpansionTest(unittest.TestCase):
+    """Adaptive mode must not expand a superseded old version back into top-k text."""
+
+    def setUp(self):
+        self.chunks = [
+            {"chunk_id": f"old-000{i}", "doc_id": "old", "doc_title": "某办法（2024）",
+             "doc_type": "制度", "assistants": ["shared"], "status": "active",
+             "page_start": i + 1, "page_end": i + 1, "text": text, "superseded_by": "new"}
+            for i, text in enumerate(["第一条 旧前提。", "第二条 旧核心。", "第三条 旧例外。"])
+        ] + [{
+            "chunk_id": "new-0000", "doc_id": "new", "doc_title": "某办法（2025修订）",
+            "doc_type": "制度", "assistants": ["shared"], "status": "active",
+            "page_start": 1, "page_end": 1, "text": "第二条 新核心。",
+        }]
+
+    def test_old_not_expanded_when_new_present(self):
+        kb = build_kb({"old-0001": 0.9, "new-0000": 0.88},
+                      rerank={"old-0001": 0.98, "new-0000": 0.82}, chunks=self.chunks)
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True), \
+                mock.patch.object(search_core, "SUPERSEDED_ADAPTIVE", True), \
+                mock.patch.object(search_core, "EXPAND_ADJACENT", 1):
+            result = kb.search("核心", top_k=2)
+        old = next(r for r in result["results"] if r["chunk_id"] == "old-0001")
+        self.assertNotIn("expanded", old)
+        self.assertNotIn("旧例外", old["text"])  # obsolete neighbour not re-merged
+
+    def test_old_still_expanded_when_new_absent(self):
+        kb = build_kb({"old-0001": 0.9}, rerank={"old-0001": 0.98}, chunks=self.chunks)
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True), \
+                mock.patch.object(search_core, "SUPERSEDED_ADAPTIVE", True), \
+                mock.patch.object(search_core, "EXPAND_ADJACENT", 1):
+            result = kb.search("核心", top_k=1)
+        old = result["results"][0]
+        self.assertTrue(old.get("expanded"))
+        self.assertIn("旧前提", old["text"])
+        self.assertIn("旧例外", old["text"])
+
+    def test_off_by_default_expands_old(self):
+        kb = build_kb({"old-0001": 0.9, "new-0000": 0.88},
+                      rerank={"old-0001": 0.98, "new-0000": 0.82}, chunks=self.chunks)
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True), \
+                mock.patch.object(search_core, "EXPAND_ADJACENT", 1):
+            result = kb.search("核心", top_k=2)
+        old = next(r for r in result["results"] if r["chunk_id"] == "old-0001")
+        self.assertTrue(old.get("expanded"))  # adaptive off -> legacy expansion
+
 
 class SparseBM25Test(unittest.TestCase):
     """The postings-based scorer must be bit-identical to rank_bm25."""

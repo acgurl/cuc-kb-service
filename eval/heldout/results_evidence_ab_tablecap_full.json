@@ -1,0 +1,2377 @@
+{
+ "summary": {
+  "tag": "ab_tablecap_full",
+  "dataset": "dataset_evidence_v2.json",
+  "total": 40,
+  "answerable_total": 34,
+  "unanswerable_total": 6,
+  "trace_available": true,
+  "degraded": 0,
+  "latency_p50": 798,
+  "latency_p95": 1266,
+  "evidence_hit@1": 19,
+  "verified_chunk_hit@1": 14,
+  "item_coverage@1": 0.6176,
+  "evidence_hit@3": 25,
+  "verified_chunk_hit@3": 19,
+  "item_coverage@3": 0.7794,
+  "evidence_hit@5": 27,
+  "verified_chunk_hit@5": 23,
+  "item_coverage@5": 0.8235,
+  "evidence_hit@10": 30,
+  "verified_chunk_hit@10": 23,
+  "item_coverage@10": 0.9118,
+  "false_refuse": [],
+  "false_accept": [
+   "w35"
+  ],
+  "supported_answer@5": 27,
+  "evidence_loss_stages": {
+   "ok": 40,
+   "fusion_pool": 4,
+   "ranking": 7
+  },
+  "evidence_recall_sources": {
+   "both": 43,
+   "dense": 6,
+   "bm25": 2
+  },
+  "by_category": {
+   "cross_clause": {
+    "total": 10,
+    "evidence_hit@5": 6,
+    "answerable": 10
+   },
+   "multi_point": {
+    "total": 7,
+    "evidence_hit@5": 7,
+    "answerable": 7
+   },
+   "table": {
+    "total": 5,
+    "evidence_hit@5": 3,
+    "answerable": 5
+   },
+   "split_adjacent": {
+    "total": 6,
+    "evidence_hit@5": 5,
+    "answerable": 6
+   },
+   "version_superseded": {
+    "total": 6,
+    "evidence_hit@5": 6,
+    "answerable": 6
+   },
+   "attribute_trap": {
+    "total": 3,
+    "evidence_hit@5": 0,
+    "answerable": 0
+   },
+   "no_answer": {
+    "total": 3,
+    "evidence_hit@5": 0,
+    "answerable": 0
+   }
+  },
+  "split": {
+   "cases": 6,
+   "hit@5": 5,
+   "items_total": 12,
+   "items_covered_via_expansion@5": 5
+  },
+  "version": {
+   "cases": 6,
+   "hit@5": 6,
+   "old_above_new": []
+  }
+ },
+ "details": [
+  {
+   "id": "w01",
+   "category": "cross_clause",
+   "query": "研究生博士候选人资格考试几次不通过会被退学，退学后学习满一年能拿什么证明？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.879,
+   "degraded": false,
+   "took_ms": 707,
+   "top_title": "中传研字〔2017〕238号_中国传媒大学国际研究生学籍管理规定_2017-09-07",
+   "evidence": [
+    {
+     "doc_id": "d1545d0642df9",
+     "chunk_id": "d1545d0642df9-0036",
+     "first_rank": 4,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d1545d0642df9",
+     "chunk_id": "d1545d0642df9-0041",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "dense"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.5,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.5
+  },
+  {
+   "id": "w02",
+   "category": "cross_clause",
+   "query": "研究生休学累计最多几个学期，因病休学复学要什么诊断证明？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9319,
+   "degraded": false,
+   "took_ms": 751,
+   "top_title": "2023修学指南电子版",
+   "evidence": [
+    {
+     "doc_id": "d1545d0642df9",
+     "chunk_id": "d1545d0642df9-0028",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ranking",
+     "recall_source": "dense"
+    },
+    {
+     "doc_id": "d1545d0642df9",
+     "chunk_id": "d1545d0642df9-0030",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ranking",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.0
+  },
+  {
+   "id": "w03",
+   "category": "cross_clause",
+   "query": "校园卡丢了可以通过哪些渠道挂失，补办交多少钱、原卡余额怎么处理？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9732,
+   "degraded": false,
+   "took_ms": 740,
+   "top_title": "中国传媒大学校园卡管理办法",
+   "evidence": [
+    {
+     "doc_id": "d0781caf290d4",
+     "chunk_id": "d0781caf290d4-0012",
+     "first_rank": 6,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "loss_stage": "ranking",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d0781caf290d4",
+     "chunk_id": "d0781caf290d4-0013",
+     "first_rank": 6,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w04",
+   "category": "cross_clause",
+   "query": "图书馆数据库采购归哪个部门管，货物服务采购预算多少以上要向采招办提交材料？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9018,
+   "degraded": false,
+   "took_ms": 892,
+   "top_title": "中传资产字〔2024〕231号 关于印发《中国传媒大学采购管理办法（2024年修订）》的通知.pdf",
+   "evidence": [
+    {
+     "doc_id": "d4cb774a09a85",
+     "chunk_id": "d4cb774a09a85-0010",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d4cb774a09a85",
+     "chunk_id": "d4cb774a09a85-0037",
+     "first_rank": 3,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "bm25"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w05",
+   "category": "cross_clause",
+   "query": "科研报销单张发票超过多少钱要验真，通讯费每人每月报销上限是多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8866,
+   "degraded": false,
+   "took_ms": 1231,
+   "top_title": "中传财字 [2019] 175号《中国传媒大学科研经费报销实施细则》.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d68788bbbd78b",
+     "chunk_id": "d68788bbbd78b-0005",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d68788bbbd78b",
+     "chunk_id": "d68788bbbd78b-0049",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w06",
+   "category": "cross_clause",
+   "query": "教职工出差伙食补助和市内交通费每天各是多少，哪些地区伙食补助不一样？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.935,
+   "degraded": false,
+   "took_ms": 675,
+   "top_title": "中传财字 [2019] 175号《中国传媒大学科研经费报销实施细则》.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d26280db90637",
+     "chunk_id": "d26280db90637-0020",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d26280db90637",
+     "chunk_id": "d26280db90637-0024",
+     "first_rank": 5,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w07",
+   "category": "cross_clause",
+   "query": "师资博士后在站要完成多少学分的课程教学，在站超过多少个月会被退站？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9239,
+   "degraded": false,
+   "took_ms": 749,
+   "top_title": "中传人字〔2021〕295号_中国传媒大学博士后管理工作规定_2021-12-01",
+   "evidence": [
+    {
+     "doc_id": "d7df7440edf14",
+     "chunk_id": "d7df7440edf14-0019",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d7df7440edf14",
+     "chunk_id": "d7df7440edf14-0029",
+     "first_rank": 4,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w08",
+   "category": "cross_clause",
+   "query": "学博中期考核要求完成论文多少比例，预答辩最早什么时候可以进行？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9747,
+   "degraded": false,
+   "took_ms": 806,
+   "top_title": "中传研字〔2026〕227号_中国传媒大学攻读学术学位博士研究生培养工作规定_2026-08-26",
+   "evidence": [
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0030",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0031",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w09",
+   "category": "cross_clause",
+   "query": "学生因特殊情况要到校外住宿需要谁同意，退学后住宿费怎么结算？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8602,
+   "degraded": false,
+   "took_ms": 744,
+   "top_title": "中传政字〔2024〕312号_中国传媒大学学生公寓管理办法",
+   "evidence": [
+    {
+     "doc_id": "dbdcbb4792881",
+     "chunk_id": "dbdcbb4792881-0017",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "dbdcbb4792881",
+     "chunk_id": "dbdcbb4792881-0037",
+     "first_rank": 3,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w10",
+   "category": "cross_clause",
+   "query": "文学艺术学学博的学位课程合计至少多少学分，博士候选人资格考试计几学分？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.948,
+   "degraded": false,
+   "took_ms": 555,
+   "top_title": "中传研字〔2026〕227号_中国传媒大学攻读学术学位博士研究生培养工作规定_2026-08-26",
+   "evidence": [
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0018",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "dense"
+    },
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0025",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.5,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.5
+  },
+  {
+   "id": "w11",
+   "category": "multi_point",
+   "query": "校园卡单餐消费限额默认多少、可调范围多大，临时卡在非基本伙食堂消费收多少管理费？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9859,
+   "degraded": false,
+   "took_ms": 820,
+   "top_title": "中传政字〔2019〕169号_中国传媒大学校园卡管理办法_2019-07-10",
+   "evidence": [
+    {
+     "doc_id": "d0781caf290d4",
+     "chunk_id": "d0781caf290d4-0010",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w12",
+   "category": "multi_point",
+   "query": "会议确需在校外召开时，对地点和审批有什么限制？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9668,
+   "degraded": false,
+   "took_ms": 745,
+   "top_title": "中传财字〔2023〕220号_中国传媒大学会议费管理办法（2023年修订）_2023-11-23",
+   "evidence": [
+    {
+     "doc_id": "d31d3cf629924",
+     "chunk_id": "d31d3cf629924-0007",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w13",
+   "category": "multi_point",
+   "query": "家庭经济困难认定是几级工作机制，年级认定评议小组里学生代表至少占多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9716,
+   "degraded": false,
+   "took_ms": 752,
+   "top_title": "中国传媒大学家庭经济困难学生认定实施办法",
+   "evidence": [
+    {
+     "doc_id": "d937e8e98636e",
+     "chunk_id": "d937e8e98636e-0001",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w14",
+   "category": "multi_point",
+   "query": "借款冲账期限一般多久、当年借款要不要当年结清，进口设备等特殊业务能延到多久？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9859,
+   "degraded": false,
+   "took_ms": 718,
+   "top_title": "中传财字〔2025〕44号_中国传媒大学往来款项管理办法_2025-03-25",
+   "evidence": [
+    {
+     "doc_id": "d8a4aa008a226",
+     "chunk_id": "d8a4aa008a226-0010",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w15",
+   "category": "multi_point",
+   "query": "预借收费票据在时间和次数上有什么限制？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9564,
+   "degraded": false,
+   "took_ms": 858,
+   "top_title": "中传财字〔2026〕132号_中国传媒大学收费票据管理办法_2026-07-02",
+   "evidence": [
+    {
+     "doc_id": "d406ceb4ca337",
+     "chunk_id": "d406ceb4ca337-0020",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w16",
+   "category": "multi_point",
+   "query": "博士后在站工作期限多久，提前出站和延期各最多几个月？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9742,
+   "degraded": false,
+   "took_ms": 695,
+   "top_title": "中传人字〔2021〕295号_中国传媒大学博士后管理工作规定_2021-12-01",
+   "evidence": [
+    {
+     "doc_id": "d7df7440edf14",
+     "chunk_id": "d7df7440edf14-0017",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w17",
+   "category": "multi_point",
+   "query": "博士后出站留校评为优秀和青拔分别享受多少绩效奖励，什么时候发放？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 1.0,
+   "degraded": false,
+   "took_ms": 692,
+   "top_title": "中传人字〔2021〕295号_中国传媒大学博士后管理工作规定_2021-12-01",
+   "evidence": [
+    {
+     "doc_id": "d7df7440edf14",
+     "chunk_id": "d7df7440edf14-0036",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w18",
+   "category": "table",
+   "query": "国内业务会议、国内管理会议和在华举办国际会议的综合定额合计分别是每人每天多少元？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9234,
+   "degraded": false,
+   "took_ms": 545,
+   "top_title": "中传财字〔2023〕220号_中国传媒大学会议费管理办法（2023年修订）_2023-11-23",
+   "evidence": [
+    {
+     "doc_id": "d31d3cf629924",
+     "chunk_id": "d31d3cf629924-0010",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w19",
+   "category": "table",
+   "query": "到北京出差一类二类三类人员的住宿费限额分别是每人每天多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.7969,
+   "degraded": false,
+   "took_ms": 414,
+   "top_title": "中传财字 [2019] 35号《中国传媒大学差旅费管理办法》.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d26280db90637",
+     "chunk_id": "d26280db90637-0041",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "dense"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w20",
+   "category": "table",
+   "query": "到深圳出差一二三类人员住宿费限额各是多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.806,
+   "degraded": false,
+   "took_ms": 354,
+   "top_title": "中传财字 [2019] 35号《中国传媒大学差旅费管理办法》.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d26280db90637",
+     "chunk_id": "d26280db90637-0045",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "dense"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.0
+  },
+  {
+   "id": "w21",
+   "category": "table",
+   "query": "工学学博的学位课程合计最低学分比文学艺术学少多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8047,
+   "degraded": false,
+   "took_ms": 442,
+   "top_title": "中国传媒大学攻读博士学位研究生培养工作规定",
+   "evidence": [
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0021",
+     "first_rank": 6,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0018",
+     "first_rank": 6,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "dense"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w22",
+   "category": "table",
+   "query": "差旅三类人员出差火车能坐什么席别、轮船飞机能坐什么舱？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9443,
+   "degraded": false,
+   "took_ms": 397,
+   "top_title": "中传财字 [2019] 35号《中国传媒大学差旅费管理办法》.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d26280db90637",
+     "chunk_id": "d26280db90637-0010",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w23",
+   "category": "split_adjacent",
+   "query": "学生卡校园卡发给哪些学生，有效期跟什么一致，延期毕业要办什么手续？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.979,
+   "degraded": false,
+   "took_ms": 911,
+   "top_title": "中国传媒大学校园卡管理办法",
+   "evidence": [
+    {
+     "doc_id": "d0781caf290d4",
+     "chunk_id": "d0781caf290d4-0006",
+     "first_rank": 3,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ranking",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d0781caf290d4",
+     "chunk_id": "d0781caf290d4-0007",
+     "first_rank": 3,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w24",
+   "category": "split_adjacent",
+   "query": "研究生新生复查发现身心状况不适宜在校学习怎么处理，康复后怎么重新入学？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9662,
+   "degraded": false,
+   "took_ms": 1285,
+   "top_title": "中传研字〔2024〕159号 关于印发《中国传媒大学研究生学籍管理规定》的通知",
+   "evidence": [
+    {
+     "doc_id": "d1545d0642df9",
+     "chunk_id": "d1545d0642df9-0008",
+     "first_rank": 8,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d1545d0642df9",
+     "chunk_id": "d1545d0642df9-0009",
+     "first_rank": 8,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "loss_stage": "ranking",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w25",
+   "category": "split_adjacent",
+   "query": "博士学位答辩没通过多久能重新申请答辩，什么条件下可以建议授予硕士学位？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9675,
+   "degraded": false,
+   "took_ms": 722,
+   "top_title": "中华人民共和国学位法 （2024年4月26日第十四届全国人民代表大会常务委员会第九次会议通过）",
+   "evidence": [
+    {
+     "doc_id": "d5d0532be07ce",
+     "chunk_id": "d5d0532be07ce-0011",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ranking",
+     "recall_source": "bm25"
+    },
+    {
+     "doc_id": "d5d0532be07ce",
+     "chunk_id": "d5d0532be07ce-0012",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w26",
+   "category": "split_adjacent",
+   "query": "博士后代表作匿名送审几位专家、几份否定意见不能参加后续评审，拟录用名单谁审批？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9859,
+   "degraded": false,
+   "took_ms": 884,
+   "top_title": "中传人字〔2021〕295号_中国传媒大学博士后管理工作规定_2021-12-01",
+   "evidence": [
+    {
+     "doc_id": "d7df7440edf14",
+     "chunk_id": "d7df7440edf14-0013",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d7df7440edf14",
+     "chunk_id": "d7df7440edf14-0014",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ranking",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w27",
+   "category": "split_adjacent",
+   "query": "纵向科研项目单笔消费多少必须用公务卡，在校学生执行项目任务能不能不用公务卡？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9672,
+   "degraded": false,
+   "took_ms": 883,
+   "top_title": "中传财字 [2019] 175号《中国传媒大学科研经费报销实施细则》.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d68788bbbd78b",
+     "chunk_id": "d68788bbbd78b-0007",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d68788bbbd78b",
+     "chunk_id": "d68788bbbd78b-0008",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w28",
+   "category": "split_adjacent",
+   "query": "家庭经济困难认定访谈谈话多久，分几个资助档次，哪些消费行为不能认定？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9859,
+   "degraded": false,
+   "took_ms": 874,
+   "top_title": "中国传媒大学家庭经济困难学生认定实施办法",
+   "evidence": [
+    {
+     "doc_id": "d937e8e98636e",
+     "chunk_id": "d937e8e98636e-0025",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d937e8e98636e",
+     "chunk_id": "d937e8e98636e-0026",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w29",
+   "category": "version_superseded",
+   "query": "硕士生导师最多可以在几个专业方向招收研究生？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9084,
+   "degraded": false,
+   "took_ms": 930,
+   "top_title": "中传研字〔2026〕147号_中国传媒大学研究生导师岗位聘任办法_2026-07-21",
+   "evidence": [
+    {
+     "doc_id": "ddbc013a4ebbf",
+     "chunk_id": "ddbc013a4ebbf-0012",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "debff00767961": 2
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w30",
+   "category": "version_superseded",
+   "query": "管理会议会期最长不得超过几天？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.972,
+   "degraded": false,
+   "took_ms": 1505,
+   "top_title": "中传财字〔2023〕220号_中国传媒大学会议费管理办法（2023年修订）_2023-11-23",
+   "evidence": [
+    {
+     "doc_id": "d31d3cf629924",
+     "chunk_id": "d31d3cf629924-0005",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "d1ab68d2e1848": 2
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w31",
+   "category": "version_superseded",
+   "query": "博士匿名评阅没通过，最早几个月以后能重新申请学位？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9664,
+   "degraded": false,
+   "took_ms": 935,
+   "top_title": "研究生院〔2026〕56号 关于印发《中国传媒大学博士研究生学位论文与实践成果匿名评阅办法》的通知",
+   "evidence": [
+    {
+     "doc_id": "d13a165c3144b",
+     "chunk_id": "d13a165c3144b-0012",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "d23d27d58ca82": null
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w32",
+   "category": "version_superseded",
+   "query": "学位分委会作出不建议授予学位决议时，要履行什么告知程序？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9814,
+   "degraded": false,
+   "took_ms": 1266,
+   "top_title": "中传研字〔2026〕219号_中国传媒大学硕士学位、博士学位授予工作实施办法_2026-08-25",
+   "evidence": [
+    {
+     "doc_id": "d5d0532be07ce",
+     "chunk_id": "d5d0532be07ce-0014",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "dcae25d54d858": 4
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w33",
+   "category": "version_superseded",
+   "query": "家庭经济困难学生资格复核是每年固定四五月份进行吗？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9801,
+   "degraded": false,
+   "took_ms": 793,
+   "top_title": "中国传媒大学家庭经济困难学生认定实施办法",
+   "evidence": [
+    {
+     "doc_id": "d937e8e98636e",
+     "chunk_id": "d937e8e98636e-0004",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "d2e3bc13731a0": 2
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w34",
+   "category": "version_superseded",
+   "query": "住院费借款出院后多久要把报销单据交到校医院？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 1.0,
+   "degraded": false,
+   "took_ms": 1053,
+   "top_title": "中传财字〔2025〕44号_中国传媒大学往来款项管理办法_2025-03-25",
+   "evidence": [
+    {
+     "doc_id": "d8a4aa008a226",
+     "chunk_id": "d8a4aa008a226-0010",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "d6ad94c398349": 4
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w35",
+   "category": "attribute_trap",
+   "query": "校园卡挂失后补办新卡需要几个工作日才能拿到？",
+   "answerable": false,
+   "no_answer": false,
+   "confidence": 0.949,
+   "degraded": false,
+   "took_ms": 947,
+   "top_title": "校园卡使用指南",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "w36",
+   "category": "attribute_trap",
+   "query": "博士后退站要交多少违约金？",
+   "answerable": false,
+   "no_answer": true,
+   "confidence": 0.7101,
+   "degraded": false,
+   "took_ms": 1020,
+   "top_title": "中国传媒大学博士后教学科研任务书",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "w37",
+   "category": "attribute_trap",
+   "query": "学生公寓暖气费按什么标准收，一平米多少钱？",
+   "answerable": false,
+   "no_answer": true,
+   "confidence": 0.611,
+   "degraded": false,
+   "took_ms": 798,
+   "top_title": "中国传媒大学新生缴费指南",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "w38",
+   "category": "no_answer",
+   "query": "教工活动中心的预约电话是多少？",
+   "answerable": false,
+   "no_answer": true,
+   "confidence": 0.6913,
+   "degraded": false,
+   "took_ms": 774,
+   "top_title": "场馆.docx_view",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "w39",
+   "category": "no_answer",
+   "query": "教职工停车包月一个月多少钱？",
+   "answerable": false,
+   "no_answer": true,
+   "confidence": 0.6127,
+   "degraded": false,
+   "took_ms": 864,
+   "top_title": "《关于启动教职工及家属停车年度申报审核的通知及线上申报系统使用说明》",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "w40",
+   "category": "no_answer",
+   "query": "留学生公寓的探访时间是几点到几点？",
+   "answerable": false,
+   "no_answer": true,
+   "confidence": 0.6615,
+   "degraded": false,
+   "took_ms": 881,
+   "top_title": "知识库-学生公寓服务中心",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  }
+ ]
+}

@@ -1,0 +1,2660 @@
+{
+ "summary": {
+  "tag": "ev2_prod_20261113",
+  "dataset": "dataset_evidence_v2.json",
+  "total": 40,
+  "answerable_total": 34,
+  "unanswerable_total": 6,
+  "trace_available": true,
+  "degraded": 0,
+  "latency_p50": 2138,
+  "latency_p95": 3603,
+  "evidence_hit@1": 17,
+  "verified_chunk_hit@1": 13,
+  "item_coverage@1": 0.5588,
+  "evidence_hit@3": 25,
+  "verified_chunk_hit@3": 19,
+  "item_coverage@3": 0.7794,
+  "evidence_hit@5": 27,
+  "verified_chunk_hit@5": 22,
+  "item_coverage@5": 0.8235,
+  "evidence_hit@10": 30,
+  "verified_chunk_hit@10": 23,
+  "item_coverage@10": 0.9118,
+  "false_refuse": [],
+  "false_accept": [
+   "w35"
+  ],
+  "supported_answer@5": 27,
+  "evidence_loss_stages": {
+   "ok": 40,
+   "fusion_pool": 2,
+   "ranking": 7,
+   "recall": 2
+  },
+  "evidence_recall_sources": {
+   "both": 43,
+   "dense": 4,
+   "bm25": 2,
+   "none": 2
+  },
+  "by_category": {
+   "cross_clause": {
+    "total": 10,
+    "evidence_hit@5": 6,
+    "answerable": 10
+   },
+   "multi_point": {
+    "total": 7,
+    "evidence_hit@5": 7,
+    "answerable": 7
+   },
+   "table": {
+    "total": 5,
+    "evidence_hit@5": 3,
+    "answerable": 5
+   },
+   "split_adjacent": {
+    "total": 6,
+    "evidence_hit@5": 5,
+    "answerable": 6
+   },
+   "version_superseded": {
+    "total": 6,
+    "evidence_hit@5": 6,
+    "answerable": 6
+   },
+   "attribute_trap": {
+    "total": 3,
+    "evidence_hit@5": 0,
+    "answerable": 0
+   },
+   "no_answer": {
+    "total": 3,
+    "evidence_hit@5": 0,
+    "answerable": 0
+   }
+  },
+  "split": {
+   "cases": 6,
+   "hit@5": 5,
+   "items_total": 12,
+   "items_covered_via_expansion@5": 5
+  },
+  "version": {
+   "cases": 6,
+   "hit@5": 6,
+   "old_above_new": [
+    "w33"
+   ]
+  },
+  "llm": {
+   "total": 34,
+   "correct": 30,
+   "complete": 29,
+   "fabricated": 2,
+   "refused": 1
+  }
+ },
+ "details": [
+  {
+   "id": "w01",
+   "category": "cross_clause",
+   "query": "研究生博士候选人资格考试几次不通过会被退学，退学后学习满一年能拿什么证明？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.879,
+   "degraded": false,
+   "took_ms": 2452,
+   "top_title": "中传研字〔2017〕238号_中国传媒大学国际研究生学籍管理规定_2017-09-07",
+   "evidence": [
+    {
+     "doc_id": "d1545d0642df9",
+     "chunk_id": "d1545d0642df9-0036",
+     "first_rank": 4,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d1545d0642df9",
+     "chunk_id": "d1545d0642df9-0041",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "dense"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.5,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.5,
+   "llm": {
+    "answer": "根据知识库原文：\n\n1. **博士候选人资格考试不通过次数要求退学**：  \n   《中传研字〔2024〕159号》第8页第三十四条第（一）项规定：“博士候选人资格考试三次考试均未通过”，应予退学。  \n   同样，《中传研字〔2022〕35号》第12页第三十四条第（一）项、《中传研字〔2024〕159号》第12页第三十四条第（一）项内容一致，均为“三次考试均未通过”即应予退学。  \n   → 答案：**三次不通过会被退学**。  \n   依据：《中传研字〔2024〕159号》第8页，第三十四条（一）；或《中传研字〔2022〕35号》第12页，第三十四条（一）。\n\n2. **退学后学习满一年能获得的证明**：  \n   《中传研字〔2017〕238号》第8页第十六条明确：“学习满一年以上且完成培养计划规定的课程，成绩合格者，发给肄业证书”。  \n   《2018年研究生手册》第17页第十六条内容完全相同，亦确认该标准适用。  \n   → 答案：**可获得肄业证书**（前提是完成培养计划规定课程且成绩合格）。  \n   依据：《中传研字〔2017〕238号》第8页，第十六条；或《2018年研究生手册》第17页，第十六条。\n\n注：上述条款均针对“国际研究生”（片段1、2）或“研究生”（片段3–5），但关于博士候选人资格考试和肄业证书的适用对象，在原文中未作区分限定，且《2024》《2022》规定属全校研究生通用学籍管理规定，故适用于博士研究生。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "准确指出三次未通过应予退学，且明确满一年及以上、完成课程且成绩合格者可发肄业证书或学习证明，覆盖全部两个必答要点；所有结论均有原文依据，未编造数字、日期或结论。"
+   }
+  },
+  {
+   "id": "w02",
+   "category": "cross_clause",
+   "query": "研究生休学累计最多几个学期，因病休学复学要什么诊断证明？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9319,
+   "degraded": false,
+   "took_ms": 1565,
+   "top_title": "2023修学指南电子版",
+   "evidence": [
+    {
+     "doc_id": "d1545d0642df9",
+     "chunk_id": "d1545d0642df9-0028",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ranking",
+     "recall_source": "dense"
+    },
+    {
+     "doc_id": "d1545d0642df9",
+     "chunk_id": "d1545d0642df9-0030",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ranking",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.0,
+   "llm": {
+    "answer": "根据知识库内容：\n\n1. **研究生休学累计最多几个学期**：  \n   依据《中传研字〔2024〕159号 关于印发〈中国传媒大学研究生学籍管理规定〉的通知》第26条：“研究生休学一般以学期为单位……休学满一个学期后仍不能复学者，可申请继续休学，**休学时间累计不得超过两个学期**。对于硕士生休学创业者，休学时间累计不得超过四个学期。”  \n   → 因病休学属于“一般情形”，不适用创业特殊条款，故**因病休学累计最多2个学期**。  \n   （注：该规定未区分硕士与博士，统一适用“两个学期”上限；创业休学可至四个学期，但用户问的是“休学累计”，未限定事由，而问题后半部分明确问“因病休学”，故应取对应条款。）  \n   **依据文档：《中传研字〔2024〕159号》第2页，第二十六条**\n\n2. **因病休学复学需什么诊断证明**：  \n   同一文件第28条第（一）款明确规定：“因病休学申请复学者，须**二级甲等（含）以上医院开具‘可以正常学习’诊断证明**，如有特殊情况需经校医院或其他相关部门复查合格……”  \n   此要求与《2018年研究生手册》第12条、《中传研字〔2017〕238号》第12条一致，均强调“二级甲等（含）以上医院”及“可以正常学习”的诊断证明。  \n   **依据文档：《中传研字〔2024〕159号》第2页，第二十八条**\n\n✅ 综上回答：  \n- 研究生因病休学累计最多**2个学期**；  \n- 因病休学复学须提供**二级甲等（含）以上医院开具的“可以正常学习”诊断证明**。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确对应标准答案三个必答要点：'累计不超过两个学期'（明确区分一般休学与创业休学）、'创业休学不超过四个学期'（完整提及）、'可以正常学习诊断证明'（完整复述）；所有内容均源自片段3等原文，无编造数字或结论。"
+   }
+  },
+  {
+   "id": "w03",
+   "category": "cross_clause",
+   "query": "校园卡丢了可以通过哪些渠道挂失，补办交多少钱、原卡余额怎么处理？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9732,
+   "degraded": false,
+   "took_ms": 1980,
+   "top_title": "中国传媒大学校园卡管理办法",
+   "evidence": [
+    {
+     "doc_id": "d0781caf290d4",
+     "chunk_id": "d0781caf290d4-0012",
+     "first_rank": 6,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "loss_stage": "ranking",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d0781caf290d4",
+     "chunk_id": "d0781caf290d4-0013",
+     "first_rank": 6,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文，回答如下：\n\n一、校园卡挂失渠道：  \n本人可通过以下四种方式挂失：  \n- 微信（包括“中传APP”中的“i中传”模块 → “校园卡” → “卡片挂失”，或中国传媒大学微信企业号 → “校园一卡通” → “卡片挂失”）；  \n- 校内自助圈存机；  \n- 校园卡门户网站；  \n- 持有效身份证件到校园卡服务中心现场办理。  \n（依据：《中国传媒大学校园卡管理办法》第1页第十条（一）、第4页第十条（一）；《信息化服务常见问题_20260909》第7页（七）；《新生必看_中传信息化处服务指南》第3页第3条（1））\n\n二、补办费用：  \n补办校园卡需交纳**补卡工本费20元**。  \n（依据：《中国传媒大学校园卡管理办法》第1页第十一条、第4页第十一条；《信息化服务常见问题_20260909》第7页（九）；《新生必看_中传信息化处服务指南》第3页第4条）\n\n三、原卡余额处理：  \n补办新卡后，**原卡注销，原卡中的余额将转入新卡中**。  \n具体到账时效存在两种表述：  \n- 《中国传媒大学校园卡管理办法》（第1页、第4页）及《信息化服务常见问题_20260909》（第7页（十））均明确“**自动转到新卡，当天即可使用**”；  \n- 但《信通字〔2022〕16号》第2页及《新生必看_中传信息化处服务指南》第3页则注明“**72小时后可以在圈存机或者食堂POS机刷卡领取**”，并强调“并将原卡余额转入新卡中”。  \n\n综上，余额转入新卡为确定结果；关于可用时间，制度文件存在“当天可用”与“72小时后可领”两种说明，应以实际系统同步为准，但转入新卡本身无争议。  \n（依据：《中国传媒大学校园卡管理办法》第1页第十一条、第4页第十一条；《信息化服务常见问题_20260909》第7页（十）；《信通字〔2022〕16号》第2页；《新生必看_中传信息化处服务指南》第3页第4条）",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确覆盖全部三个必答要点：明确列出微信/圈存机/门户网站挂失渠道；指出补卡工本费20元；确认余额转入新卡。虽补充了时效差异的说明，但未编造新事实，且核心结论与标准答案一致。"
+   }
+  },
+  {
+   "id": "w04",
+   "category": "cross_clause",
+   "query": "图书馆数据库采购归哪个部门管，货物服务采购预算多少以上要向采招办提交材料？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9018,
+   "degraded": false,
+   "took_ms": 3291,
+   "top_title": "中传资产字〔2024〕231号 关于印发《中国传媒大学采购管理办法（2024年修订）》的通知.pdf",
+   "evidence": [
+    {
+     "doc_id": "d4cb774a09a85",
+     "chunk_id": "d4cb774a09a85-0010",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d4cb774a09a85",
+     "chunk_id": "d4cb774a09a85-0037",
+     "first_rank": 3,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "bm25"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "1. **图书馆数据库采购归哪个部门管？**  \n根据《中传资产字〔2024〕231号 关于印发〈中国传媒大学采购管理办法（2024年修订）〉的通知.pdf》第5页第九条第（八）款：“图书馆负责学校纸质图书报刊、电子图书报刊等资源采购以及**数据库服务采购**等的相关业务”。  \n✅ 因此，图书馆数据库采购由**图书馆**归口管理。  \n依据文档：《中传资产字〔2024〕231号》第5页。\n\n2. **货物、服务采购预算多少以上要向采招办提交材料？**  \n根据同一文件第14页第三十六条第（二）款第1项：“单项或批量采购预算**30万元（含）以上**的货物、服务采购项目，由采购承办单位或经费负责人向采招办提交招标控制价会的申请材料”。  \n✅ 即：**30万元（含）以上**的货物、服务采购项目，需向采招办提交材料。  \n依据文档：《中传资产字〔2024〕231号》第14页。\n\n（注：该条款明确区分了科研仪器设备采购的阈值为60万元（含）以上，但用户问的是“货物服务采购”，不包含科研仪器设备专项情形，故适用30万元标准。）",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "准确指出图书馆归口管理数据库采购，且明确30万元（含）以上货物服务采购需向采招办提交材料，完全覆盖两个必答要点，所有内容均源自给定原文，无编造。"
+   }
+  },
+  {
+   "id": "w05",
+   "category": "cross_clause",
+   "query": "科研报销单张发票超过多少钱要验真，通讯费每人每月报销上限是多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8866,
+   "degraded": false,
+   "took_ms": 1639,
+   "top_title": "中传财字 [2019] 175号《中国传媒大学科研经费报销实施细则》.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d68788bbbd78b",
+     "chunk_id": "d68788bbbd78b-0005",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d68788bbbd78b",
+     "chunk_id": "d68788bbbd78b-0049",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文：\n\n1. **科研报销单张发票超过多少钱要验真**：  \n   单张金额超过 **2 万元** 的发票需登录税务查验平台进行验真，并附验证结果截图。  \n   依据：《中传财字 [2019] 175号《中国传媒大学科研经费报销实施细则》.docx_view》第2页第五条（二）票据的基本要求第4款；第3页同样重复该规定（发票验真条款）。  \n\n2. **通讯费每人每月报销上限**：  \n   电话费、网络通讯费报销必须列明使用人，**原则上每人每月报销金额不超过 200 元**，凭缴费发票据实报销。  \n   依据：《中传财字 [2019] 175号《中国传媒大学科研经费报销实施细则》.docx_view》第26页第三十三条（五）2. 电话费、网络通讯费。  \n\n✅ 答案总结：  \n- 发票验真起始金额：**2 万元**（见文档第2页、第3页）；  \n- 通讯费每人每月报销上限：**200 元**（见文档第26页）。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确对应标准答案中三个必答要点：'超2万元验真'、'附验证结果截图'、'通讯费每月不超过200元'，且所有内容均源自给定原文（第2页/第3页发票验真条款、第26页通讯费条款），无编造数字或结论。"
+   }
+  },
+  {
+   "id": "w06",
+   "category": "cross_clause",
+   "query": "教职工出差伙食补助和市内交通费每天各是多少，哪些地区伙食补助不一样？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.935,
+   "degraded": false,
+   "took_ms": 2138,
+   "top_title": "中传财字 [2019] 175号《中国传媒大学科研经费报销实施细则》.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d26280db90637",
+     "chunk_id": "d26280db90637-0020",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d26280db90637",
+     "chunk_id": "d26280db90637-0024",
+     "first_rank": 5,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文：\n\n- **教职工出差伙食补助标准**：  \n  除西藏、青海、新疆为**每人每天120元**外，其余地区均为**每人每天100元**。  \n  依据：《中传财字〔2019〕35号〈中国传媒大学差旅费管理办法〉》第十七条（片段2、片段4）；《传媒大学教育基金会差旅费管理办法（修订）》第十七条（片段3）。\n\n- **市内交通费标准**：  \n  **每人每天80元**包干使用。  \n  依据：《中传财字〔2019〕35号〈中国传媒大学差旅费管理办法〉》第二十一条（片段5）；该条同时明确“管理、教学人员出差往返驻地和机场（火车站、码头）的市内交通费可凭票实报实销，不再领取当天的包干费用”。\n\n- **伙食补助标准不同的地区**：  \n  明确列出的地区为**西藏、青海、新疆**，其伙食补助为120元/天，其余地区统一为100元/天。  \n  依据同上（片段2、片段4、片段3）。\n\n综上：  \n✅ 伙食补助：100元/天（全国大部分地区），**西藏、青海、新疆为120元/天**；  \n✅ 市内交通费：**80元/天**（包干）；  \n✅ 差异地区仅限于**西藏、青海、新疆**（仅针对伙食补助）。  \n\n（注：所有标准均以自然日历天数计算，见片段2、片段3、片段5）",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确复现了标准答案中全部三个必答要点：西藏青海新疆120元、其余100元、市内交通80元包干；未添加原文未提及的数字/日期/结论；引用依据均来自给定片段，无编造。"
+   }
+  },
+  {
+   "id": "w07",
+   "category": "cross_clause",
+   "query": "师资博士后在站要完成多少学分的课程教学，在站超过多少个月会被退站？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9239,
+   "degraded": false,
+   "took_ms": 2141,
+   "top_title": "中传人字〔2021〕295号_中国传媒大学博士后管理工作规定_2021-12-01",
+   "evidence": [
+    {
+     "doc_id": "d7df7440edf14",
+     "chunk_id": "d7df7440edf14-0019",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d7df7440edf14",
+     "chunk_id": "d7df7440edf14-0029",
+     "first_rank": 4,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文：\n\n1. **师资博士后在站要完成的课程教学学分**：  \n   须完成不少于 **4 学分（64 学时）** 的课程教学。  \n   依据：《中传人字〔2021〕295号_中国传媒大学博士后管理工作规定_2021-12-01》第16页第十七条；  \n   同时，《中国传媒大学博士后教学科研任务书》第1页亦明确：“教学计划及学分要求……不低于4学分（64学时）”，且教学评价需为“合格及以上”或“良好以上”（规定中表述略有差异，但学分数一致）。  \n\n2. **在站超过多少个月会被退站**：  \n   博士后**在站时间超过36个月**，将被予以退站。  \n   依据：《中传人字〔2021〕295号_中国传媒大学博士后管理工作规定_2021-12-01》第11页第二十七条第（十一）项：“（十一）在站时间超过36个月”。\n\n✅ 答案总结：  \n- 师资博士后须完成 **不少于4学分（64学时）** 的课程教学；  \n- 在站时间 **超过36个月** 将被退站。  \n\n（注：所有结论均严格来自原文，未作推断。）",
+    "correct": true,
+    "complete": false,
+    "fabricated": false,
+    "refused": false,
+    "reason": "遗漏必答要点'教学评价良好以上'，原文片段1第十七条明确要求'教学评价达良好以上'，而模型回答中混用'合格及以上'（来自任务书片段2/3）并称'表述略有差异'，但标准答案和原文依据均以'良好以上'为刚性要求，'合格'低于标准，属要点缺失。"
+   }
+  },
+  {
+   "id": "w08",
+   "category": "cross_clause",
+   "query": "学博中期考核要求完成论文多少比例，预答辩最早什么时候可以进行？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9747,
+   "degraded": false,
+   "took_ms": 2728,
+   "top_title": "中传研字〔2026〕227号_中国传媒大学攻读学术学位博士研究生培养工作规定_2026-08-26",
+   "evidence": [
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0030",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0031",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文：\n\n1. **学博中期考核要求完成论文比例**：  \n   学博生申请参加中期考核，**原则上应完成至少二分之一的学位论文撰写工作**。  \n   依据：  \n   - 《中传研字〔2026〕227号_中国传媒大学攻读学术学位博士研究生培养工作规定_2026-08-26》第10页，第二十二条（一）；  \n   - 《研究生院〔2024〕71号 关于印发《中国传媒大学学术学位博士研究生学位论文中期考核工作办法》的通知》第2页，第三条；  \n   - 《中国传媒大学学生工作规章制度汇编2026-转换之后》第194页，第二十二条（二）。\n\n2. **预答辩最早可进行的时间**：  \n   预答辩**最早在中期考核通过后进行**。  \n   依据：  \n   - 《中传研字〔2026〕227号_中国传媒大学攻读学术学位博士研究生培养工作规定_2026-08-26》第10页，第二十三条（二）；  \n   - 《中国传媒大学学生工作规章制度汇编2026-转换之后》第194页未单独重复该时间要求，但与前述文件一致，以227号文为准。\n\n综上：  \n- 中期考核要求完成**至少二分之一**的学位论文撰写工作；  \n- 预答辩**最早在中期考核通过后**进行。  \n（全部答案均严格依据知识库原文，无推断）",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确覆盖全部三个必答要点：'至少二分之一论文'、'中期最早选题通过后下一学期'、'预答辩最早中期通过后'，且所有表述均源自给定原文，无编造内容。"
+   }
+  },
+  {
+   "id": "w09",
+   "category": "cross_clause",
+   "query": "学生因特殊情况要到校外住宿需要谁同意，退学后住宿费怎么结算？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8602,
+   "degraded": false,
+   "took_ms": 1487,
+   "top_title": "中传政字〔2024〕312号_中国传媒大学学生公寓管理办法",
+   "evidence": [
+    {
+     "doc_id": "dbdcbb4792881",
+     "chunk_id": "dbdcbb4792881-0017",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "dbdcbb4792881",
+     "chunk_id": "dbdcbb4792881-0037",
+     "first_rank": 3,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文，回答如下：\n\n一、学生因特殊情况需到校外住宿，需经以下四方同意：  \n- 学生家长  \n- 辅导员  \n- 所在培养单位  \n- 学生工作部（处）（武装部）  \n\n依据：《中传政字〔2024〕312号_中国传媒大学学生公寓管理办法》第14条（第8页）：“对因特殊情况需在校外住宿的学生，经学生家长、辅导员、所在培养单位、学生工作部（处）（武装部）同意并保持日常信息沟通，严格教育管理……”\n\n注：该条款强调“同意”主体为上述四类；而《后勤保障处学生公寓退宿管理规定》（后勤字〔2026〕4号）进一步细化了审批流程，明确需经培养单位初审、学生工作部（处）（武装部）复核审批、学生公寓服务中心核查、后勤保障处终审及财务处结算（见片段2、5），但“同意”这一前提性要求以《学生公寓管理办法》第十四条为准。\n\n二、学生退学后住宿费的结算方式为：  \n办理退宿手续后，根据学生实际住宿时间，依据《中国传媒大学收费管理办法（试行）》，合理结算清退。  \n\n依据：  \n- 《中传政字〔2024〕312号_中国传媒大学学生公寓管理办法》第34条（第12页）：“学生因故退学或提前结束学业，办理退宿后，根据学生实际住宿时间，依据《中国传媒大学收费管理办法（试行）》，合理结算清退。”  \n- 《中国传媒大学学生工作规章制度汇编2026-转换之后》第41页第34条内容完全一致，佐证该规定适用。\n\n（注：知识库中未提供《中国传媒大学收费管理办法（试行）》的具体条款或退费计算公式，故无法说明具体退费比例或天数折算方式。）",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确对应标准答案中两个必答要点：'家长辅导员培养单位学工部同意'和'按实际住宿时间结算清退'，且所有依据均来自给定原文，未添加原文未提及的具体数字、日期或结论。"
+   }
+  },
+  {
+   "id": "w10",
+   "category": "cross_clause",
+   "query": "文学艺术学学博的学位课程合计至少多少学分，博士候选人资格考试计几学分？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.948,
+   "degraded": false,
+   "took_ms": 1841,
+   "top_title": "中传研字〔2026〕227号_中国传媒大学攻读学术学位博士研究生培养工作规定_2026-08-26",
+   "evidence": [
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0018",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "recall",
+     "recall_source": "none"
+    },
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0025",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.5,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.5,
+   "llm": {
+    "answer": "根据知识库原文：\n\n1. **文学类和艺术学类学博（学术学位博士研究生）的学位课程合计学分**：  \n   知识库中未提供“学位课程”具体学分要求的汇总表格或明确数字。各片段仅列出了科研训练模块（如教学实践、科研活动等）的学分要求，以及博士候选人资格考试计2学分，但**未说明“学位课程”（如公共课、学科基础课、专业课等）的总学分最低要求**。例如，《中传研字〔2026〕227号》第8页仅列出科研训练各子项的学分（共8项，每项1学分），但该模块属于“科研训练”，非“学位课程”；且原文未定义“学位课程”范围及对应学分。\n\n2. **博士候选人资格考试计几学分**：  \n   所有相关文件一致明确：**博士候选人资格考试计2学分**。  \n   - 《中传研字〔2026〕227号》第十八条（第8页）：“博士候选人资格考试计2学分。”  \n   - 《（自2022级博士生开始执行）中国传媒大学攻读博士学位研究生培养工作规定》第8页：“博士候选人资格考试计2学分。”  \n   - 《中国传媒大学攻读学术学位_专业学位博士研究生培养环节流程》第7页：“博士候选人资格考试计2学分。”  \n   - 《中传研字〔2026〕225号》第7页：“博士候选人资格考试计2学分。”  \n   - 《中国传媒大学攻读博士学位研究生培养工作规定》第2页：“博士候选人资格考试计2学分。”\n\n综上：  \n- 文学类和艺术学类学术学位博士研究生的**“学位课程”合计至少多少学分”，知识库中没有直接回答这个问题的内容**；  \n- 博士候选人资格考试**计2学分**（依据全部五份文档，均见于对应页码）。\n\n答案：  \n- 学位课程合计学分：知识库中没有直接回答这个问题的内容；  \n- 博士候选人资格考试计**2学分**（依据：《中传研字〔2026〕227号》第8页；《（自2022级博士生开始执行）…》第8页；《…培养环节流程》第7页；《中传研字〔2026〕225号》第7页；《中国传媒大学攻读博士学位研究生培养工作规定》第2页）。",
+    "correct": false,
+    "complete": false,
+    "fabricated": false,
+    "refused": true,
+    "reason": "标准答案明确给出学位课程合计≥16学分，而模型回答称‘知识库中没有直接回答’，属错误拒绝；原文虽未在片段中显式写出‘≥16’，但标准答案已作为给定事实存在，评测应以标准答案为基准判断模型是否正确复现，而非仅依赖片段字面检索。"
+   }
+  },
+  {
+   "id": "w11",
+   "category": "multi_point",
+   "query": "校园卡单餐消费限额默认多少、可调范围多大，临时卡在非基本伙食堂消费收多少管理费？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9859,
+   "degraded": false,
+   "took_ms": 2912,
+   "top_title": "中传政字〔2019〕169号_中国传媒大学校园卡管理办法_2019-07-10",
+   "evidence": [
+    {
+     "doc_id": "d0781caf290d4",
+     "chunk_id": "d0781caf290d4-0010",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文：\n\n- 校园卡单餐消费限额默认为**50元**，持卡人可在校内圈存机上自行调整消费限额，**调整范围为10元至50元**；  \n- 临时卡使用人员在**非基本伙食堂消费时收取消费金额20%的管理费**。\n\n依据：《中传政字〔2019〕169号_中国传媒大学校园卡管理办法_2019-07-10》第5页第九条（一）（二）款；  \n同时，《中国传媒大学校园卡管理办法》第4页、第1页及《2022年中国传媒大学学生工作规章制度汇编》第35页、《中国传媒大学学生工作规章制度汇编2026-转换之后》第33页中相关内容均一致，均明确记载上述标准。\n\n（注：所有引用内容在各文档中表述一致，以最早发布的《中传政字〔2019〕169号》第5页为权威出处）",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确覆盖全部三个必答要点（50元限额、10-50元调整范围、20%管理费），且所有信息均源自给定原文，未添加任何编造内容。"
+   }
+  },
+  {
+   "id": "w12",
+   "category": "multi_point",
+   "query": "会议确需在校外召开时，对地点和审批有什么限制？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9668,
+   "degraded": false,
+   "took_ms": 2281,
+   "top_title": "中传财字〔2023〕220号_中国传媒大学会议费管理办法（2023年修订）_2023-11-23",
+   "evidence": [
+    {
+     "doc_id": "d31d3cf629924",
+     "chunk_id": "d31d3cf629924-0007",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文，会议确需在校外召开时，对地点和审批的限制如下：\n\n一、**地点限制**：  \n会议地点应当选择**政府采购的四星级以下（含四星）定点宾馆**。  \n此外，**不得在党中央、国务院明令禁止开会的风景名胜区召开会议**；  \n对于参会人员以在京单位为主（即京外单位不超过50%）的会议，**原则上不得到京外召开**。（依据：《中传财字〔2023〕220号》第5页第七条；《中传财字〔2019〕194号》第4页第六条；《中传财字〔2019〕175号》第13页第十五条（二）1）\n\n二、**审批限制**（按会议类型区分）：  \n1. **科研业务会议**：  \n   - **纵向科研项目**：  \n     - 校内参会人员**超过50%**的，需事前由**部门（或单位）负责人审核后，报分管业务校领导审批**；  \n     - 校内参会人员**不超过50%**的，由**部门（或单位）负责人审批**。  \n   - **横向科研项目**：依照合同相关要求执行。（依据：《中传财字〔2023〕220号》第5页第七条（一）；《中传财字〔2019〕175号》第13页第十五条（二）1；《中传财字〔2019〕194号》第4页第六条（一））\n\n2. **教学业务会议**：  \n   - 需事前由**部门负责人审核后，报分管业务校领导审批**。（依据：《中传财字〔2023〕220号》第5页第七条（二）；《中传财字〔2019〕194号》第4页第六条（二））\n\n综上，校外办会须同时满足**定点宾馆选址要求**与**分类分级审批要求**，且严禁赴禁开区域办会。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确覆盖全部三个必答要点：'四星级以下定点宾馆'（明确表述为'政府采购的四星级以下（含四星）定点宾馆'）、'超50%报分管校领导'（纵向科研项目中校内参会超50%须报分管业务校领导审批）、'在京为主不得京外'（参会人员以在京单位为主即京外单位不超过50%的会议原则上不得到京外召开），且所有内容均源自给定原文，无编造。"
+   }
+  },
+  {
+   "id": "w13",
+   "category": "multi_point",
+   "query": "家庭经济困难认定是几级工作机制，年级认定评议小组里学生代表至少占多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9716,
+   "degraded": false,
+   "took_ms": 5155,
+   "top_title": "中国传媒大学家庭经济困难学生认定实施办法",
+   "evidence": [
+    {
+     "doc_id": "d937e8e98636e",
+     "chunk_id": "d937e8e98636e-0001",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "家庭经济困难认定是**四级工作机制**，年级（或专业）认定评议小组中学生代表人数**一般不少于年级（或专业）总人数的10%**。\n\n依据：  \n- 四级工作机制：《中国传媒大学家庭经济困难学生认定实施办法》第1页第五条：“学校建立四级认定工作机制，由学校学生资助工作领导小组、学生工作部（处）学生资助中心、学院认定工作组和年级（专业）认定评议小组组成。”（【片段1】第1页；另见【片段4】、【片段5】第2页）  \n- 学生代表比例：《中国传媒大学家庭经济困难学生认定实施办法》第1页第八条：“认定评议小组成员中，学生代表人数视年级（或专业）人数合理配置，应具有广泛的代表性，**一般不少于年级（或专业）总人数的10%**。”（【片段1】第1页；另见【片段2】、【片段3】第3页）",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确指出四级机制和学生代表不少于10%，与标准答案及原文完全一致，无编造内容，覆盖全部必答要点。"
+   }
+  },
+  {
+   "id": "w14",
+   "category": "multi_point",
+   "query": "借款冲账期限一般多久、当年借款要不要当年结清，进口设备等特殊业务能延到多久？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9859,
+   "degraded": false,
+   "took_ms": 2661,
+   "top_title": "中传财字〔2025〕44号_中国传媒大学往来款项管理办法_2025-03-25",
+   "evidence": [
+    {
+     "doc_id": "d8a4aa008a226",
+     "chunk_id": "d8a4aa008a226-0010",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文：\n\n1. **借款冲账期限一般多久**：  \n   除合同另有约定外，原则上所有借款业务冲账期限**不超过三个月**。  \n   依据：《中传财字〔2025〕44号_中国传媒大学往来款项管理办法_2025-03-25》第4页第十条；《中传财字〔2022〕135号_中国传媒大学往来款项管理办法（试行）》第4页第十条。\n\n2. **当年借款要不要当年结清**：  \n   是的，**原则上当年借款当年结清**。  \n   依据：同上两份文件第十条均明确“且当年借款当年结清”。\n\n3. **进口设备等特殊业务冲账期限可延长至多久**：  \n   购置进口设备等特殊业务，冲账期限**可适当延长，但一般不得超过半年**。  \n   依据：《中传财字〔2025〕44号》第4页第十条第（四）项；《中传财字〔2022〕135号》第4页第十条第（四）项。\n\n（注：两份管理办法在上述三项内容上表述一致，故统一援引。）",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确覆盖全部三个必答要点：'不超过三个月'、'当年借款当年结清'、'特殊业务不超过半年'，且均严格依据给定原文（片段1和片段2的第十条），无编造内容，未拒绝回答。"
+   }
+  },
+  {
+   "id": "w15",
+   "category": "multi_point",
+   "query": "预借收费票据在时间和次数上有什么限制？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9564,
+   "degraded": false,
+   "took_ms": 2003,
+   "top_title": "中传财字〔2026〕132号_中国传媒大学收费票据管理办法_2026-07-02",
+   "evidence": [
+    {
+     "doc_id": "d406ceb4ca337",
+     "chunk_id": "d406ceb4ca337-0020",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文，预借收费票据在时间和次数上的限制如下：\n\n**一、时间限制：**  \n- 预借票据款项需确保**当月到账**；  \n- **原则上每月25日后停止预借增值税发票**（《中传财字〔2026〕132号》第6页，第十九条第一款；《中国传媒大学收费票据预借审批单》第1页；《中传财字〔2022〕134号》第7页，第二十二条第一款）。\n\n**二、次数限制：**  \n- **每个部门（项目）或个人原则上预借票据不超过3次**（《中传财字〔2026〕132号》第6页，第十九条第二款；《中传财字〔2022〕134号》第7页，第二十二条第二款）；  \n- 《中国传媒大学收费票据预借审批单》亦明确载明：“原则上每月预借票据次数不可超过三次”（第1页）。\n\n综上，预借收费票据须同时满足“当月到账、25日后停办增值税发票预借”和“每月累计不超过3次”的双重限制。\n\n依据文档与页码：  \n- 《中传财字〔2026〕132号_中国传媒大学收费票据管理办法_2026-07-02》第6页；  \n- 《中国传媒大学收费票据预借审批单》第1页；  \n- 《中国传媒大学收费票据管理办法（试行）》（中传财字〔2022〕134号）第7页。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确涵盖两个必答要点：'每月25日后停止预借'和'不超过3次'，且所有表述均源自给定原文（如片段2第十九条、片段3/4多次重复内容），未添加原文未提及的具体数字、日期或结论。"
+   }
+  },
+  {
+   "id": "w16",
+   "category": "multi_point",
+   "query": "博士后在站工作期限多久，提前出站和延期各最多几个月？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9742,
+   "degraded": false,
+   "took_ms": 2148,
+   "top_title": "中传人字〔2021〕295号_中国传媒大学博士后管理工作规定_2021-12-01",
+   "evidence": [
+    {
+     "doc_id": "d7df7440edf14",
+     "chunk_id": "d7df7440edf14-0017",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "博士后在站工作期限为24个月（即2年）。\n\n- 提前出站最多不超过3个月（依据《中传人字〔2021〕295号_中国传媒大学博士后管理工作规定_2021-12-01》第15条第（一）款，第8页）；  \n- 延期申请延长的期限一般不得超过12个月，且在站期间只可申请一次延期（依据同条第（二）款，第8页）。\n\n注：虽第27条第（十一）项规定“在站时间超过36个月”应予退站，但该36个月是退站触发上限，并非允许的最长延期时限；允许的最长在站总时长为24+12=36个月，其中延期部分上限为12个月。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确对应标准答案三个要点：在站24个月、提前出站不超过3个月、延期不超过12个月；所有内容均源自片段1第十五条，无编造数字或结论；完整覆盖全部必答要点。"
+   }
+  },
+  {
+   "id": "w17",
+   "category": "multi_point",
+   "query": "博士后出站留校评为优秀和青拔分别享受多少绩效奖励，什么时候发放？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 1.0,
+   "degraded": false,
+   "took_ms": 2402,
+   "top_title": "中传人字〔2021〕295号_中国传媒大学博士后管理工作规定_2021-12-01",
+   "evidence": [
+    {
+     "doc_id": "d7df7440edf14",
+     "chunk_id": "d7df7440edf14-0036",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文：\n\n- 出站时被评为**优秀博士后**者，留校后享受绩效奖励**10万元**；  \n- 被评为**青拔博士后**者，留校后享受绩效奖励**20万元**。  \n\n该绩效奖励在**博士后出站留校并签订正式入职协议后一次性发放**；出站未留校者不予发放。\n\n依据来源：  \n《中传人字〔2021〕295号_中国传媒大学博士后管理工作规定_2021-12-01》第13页，第三十四条（片段1、片段5）；  \n《人事工作回答-202605.doc_view》第5页、第6页（片段2、片段4）。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "准确对应标准答案三要点：优秀10万元、青拔20万元、签正式入职协议后一次性发放；未添加原文未提及的数字/时间/结论；未拒绝回答。"
+   }
+  },
+  {
+   "id": "w18",
+   "category": "table",
+   "query": "国内业务会议、国内管理会议和在华举办国际会议的综合定额合计分别是每人每天多少元？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9234,
+   "degraded": false,
+   "took_ms": 1882,
+   "top_title": "中传财字〔2023〕220号_中国传媒大学会议费管理办法（2023年修订）_2023-11-23",
+   "evidence": [
+    {
+     "doc_id": "d31d3cf629924",
+     "chunk_id": "d31d3cf629924-0010",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文，国内业务会议、国内管理会议和在华举办国际会议的综合定额合计（即“合计”栏）分别为：\n\n- 国内业务会议：**750元/人·天**  \n- 国内管理会议：**550元/人·天**  \n- 在华举办国际会议：**1200元/人·天**\n\n依据来源：《中传财字〔2023〕220号_中国传媒大学会议费管理办法（2023年修订）_2023-11-23》第6页，第九条表格（片段1）；该标准与《中传财字〔2019〕194号》（片段2）表格一致，但以最新修订版为准。\n\n✅ 答案明确出自原文表格“合计”列，无需推算。  \n（注：单位为“元/人·天”，即每人每天的综合定额上限）\n\n——依据文档：《中传财字〔2023〕220号_中国传媒大学会议费管理办法（2023年修订）_2023-11-23》第6页",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确给出三个会议类别的综合定额合计值（750/550/1200），完全覆盖全部必答要点，且数值、单位、来源均与原文表格一致，未添加任何编造信息。"
+   }
+  },
+  {
+   "id": "w19",
+   "category": "table",
+   "query": "到北京出差一类二类三类人员的住宿费限额分别是每人每天多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8235,
+   "degraded": false,
+   "took_ms": 2941,
+   "top_title": "《中国传媒大学差旅费管理办法》（中传财字〔2019〕35号）",
+   "evidence": [
+    {
+     "doc_id": "d26280db90637",
+     "chunk_id": "d26280db90637-0041",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "dense"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据《中国传媒大学差旅费管理办法》（中传财字〔2019〕35号）附件2《中国传媒大学国内差旅住宿费标准明细表》，北京全市适用统一标准，一类、二类、三类人员的住宿费限额标准分别为：\n\n- 一类人员：1100元/人·天  \n- 二类人员：650元/人·天  \n- 三类人员：500元/人·天  \n\n该信息出自知识库【片段1】《《中国传媒大学差旅费管理办法》（中传财字〔2019〕35号）》第14页，表格第一行明确列出。  \n\n依据文档：《中国传媒大学差旅费管理办法》（中传财字〔2019〕35号），第14页，附件2。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确给出一类1100、二类650、三类500，覆盖全部必答要点，且未添加原文未提及的数字/日期/结论，引用来源与原文一致。"
+   }
+  },
+  {
+   "id": "w20",
+   "category": "table",
+   "query": "到深圳出差一二三类人员住宿费限额各是多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.806,
+   "degraded": false,
+   "took_ms": 2775,
+   "top_title": "中传财字 [2019] 35号《中国传媒大学差旅费管理办法》.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d26280db90637",
+     "chunk_id": "d26280db90637-0045",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "dense"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.0,
+   "llm": {
+    "answer": "根据知识库原文，《中国传媒大学差旅费管理办法》（中传财字〔2019〕35号）第14页的“国内差旅住宿费标准明细表”中，**序号未单独列出“深圳”**，但在表格末尾的补充说明栏中有如下内容（见【片段3】和【片段4】第14页）：\n\n> “广东 中广州市、珠海市、佛山市、东莞市、山市、江门市 其他地区 深圳全市”\n\n该行文字存在明显排版错乱（如“中广州市”应为“广州市”，“山市”应为“中山市”），但关键信息明确：“**深圳全市**”被列在“其他地区”之后，并与“广东”条目并列；且在整张表格中，**深圳未被单列序号，也未在“住宿费标准”主表中给出具体数值**。\n\n进一步核查全部已提供片段（【片段1】–【片段4】），其中明确列出的城市/地区包括：大连（序号7）、吉林（8）、黑龙江（9）、上海（10）、江苏（11）、浙江（12）、宁波（13）、安徽（14）、福建（15）、厦门（16）、江西（17）、山东（18）、青岛（19）、河南（20）等，**但无“深圳”的独立条目，亦无其对应的住宿费标准数据（一类/二类/三类）或旺季浮动标准**。\n\n因此，尽管深圳被提及（作为广东省内特殊标注的“全市”地区），但知识库中**没有提供深圳的具体住宿费限额标准数值**。\n\n✅ 结论：  \n**知识库中没有直接回答这个问题的内容**。",
+    "correct": false,
+    "complete": false,
+    "fabricated": false,
+    "refused": false,
+    "reason": "judge output not JSON: {\"correct\": false, \"complete\": false, \"fabricated\": false, \"refused\": true, \"reason\": \"模型明确表示知识库中没有深圳住宿费标准，拒绝回答，但原文片段3和4"
+   }
+  },
+  {
+   "id": "w21",
+   "category": "table",
+   "query": "工学学博的学位课程合计最低学分比文学艺术学少多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8047,
+   "degraded": false,
+   "took_ms": 1927,
+   "top_title": "中国传媒大学攻读博士学位研究生培养工作规定",
+   "evidence": [
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0021",
+     "first_rank": 6,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0018",
+     "first_rank": 6,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "loss_stage": "recall",
+     "recall_source": "none"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库中《（自2022级博士生开始执行）中国传媒大学攻读博士学位研究生培养工作规定》第5页的表1.2（工学）和表1.1（文学和艺术学）：\n\n- 文学和艺术学博士生**学位课程合计最低学分**为：  \n  表1.1中“合计”行明确列出：“≥4  ≥16  ≥2  ≥6”，其中“学位课程”列对应的是前四栏合计（即公共必修课程合计、专业基础课程、专业必修课程、专业外语课程四项之和），但需注意表格结构——“合计”行第一项“≥4”对应“公共必修课程”小计（政治+学术写作≥2+2=≥4）；第二项“≥16”对应“专业基础课程+专业必修课程+专业外语课程+（跨）学科前沿课程+博导组课程”的总和（见表头下方“学位课程”大类下各子项，且该“≥16”位于“学位课程”列正下方，是学位课程合计值）。  \n  原文表1.1明确写有：“合计 ≥4  ≥16  ≥2  ≥6”，结合表头“学位课程”列覆盖范围（含公共必修、专业基础、专业必修、专业外语、（跨）学科前沿、博导组课程），而“≥16”所在列正对“学位课程”大类，且在多个片段中（如片段1第17条、片段5）均统一表述为“学位课程……合计≥16”（文学和艺术学），故**文学和艺术学博士生学位课程合计最低学分为≥16**。\n\n- 工学博士生**学位课程合计最低学分**为：  \n  表1.2中“合计”行对应“学位课程”列为“≥4  ≥14  ≥2  ≥6”，同理，“≥14”为工学学位课程合计最低要求。原文片段1、2、3、4、5中所有表1.2均一致写为“合计 ≥4  ≥14  ≥2  ≥6”，且明确标注“学位课程”列下该数值为合计值（如片段5：“合计 ≥4  ≥14  ≥2  ≥6”紧接在表头“学位课程”之下）。因此**工学博士生学位课程合计最低学分为≥14**。\n\n差值 = 16 − 14 = **2**\n\n依据文档：《（自2022级博士生开始执行）中国传媒大学攻读博士学位研究生培养工作规定》第5页，表1.1与表1.2。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确提取原文表1.1‘≥16’和表1.2‘≥14’，得出差值为2，覆盖全部必答要点且无编造内容。"
+   }
+  },
+  {
+   "id": "w22",
+   "category": "table",
+   "query": "差旅三类人员出差火车能坐什么席别、轮船飞机能坐什么舱？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9443,
+   "degraded": false,
+   "took_ms": 1425,
+   "top_title": "中传财字 [2019] 35号《中国传媒大学差旅费管理办法》.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d26280db90637",
+     "chunk_id": "d26280db90637-0010",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据《中国传媒大学差旅费管理办法》（中传财字〔2019〕35号）规定，第三类人员（即“其他人员”）出差乘坐城市间交通工具的标准如下：\n\n- **火车**：可乘坐**硬座、硬卧、二等软座、高铁/动车二等座**；  \n- **轮船**（不包括旅游船）：可乘坐**三等舱**；  \n- **飞机**：可乘坐**经济舱**。  \n\n依据来源：《中传财字 [2019] 35号〈中国传媒大学差旅费管理办法〉.docx_view》第3页及第4页的表格（“三类”标准栏），以及片段2、片段4、片段5中一致表述。  \n（注：各片段中该表格内容完全一致，均明确三类人员对应“火车硬座、硬卧、二等软座、高铁/动车二等座”“三等舱”“经济舱”）\n\n此外，需注意：第三类人员**原则上不得乘坐火车软座、软卧和动卧**，仅在特定条件下（如晚8时至次日晨8时且乘车6小时以上，或连续乘车超12小时）可按规定报销软座，软卧/动卧报销上限为不超过相应城市间飞机经济舱全价票金额（见第八条第七款）。\n\n答案依据文档名与页码：《中传财字 [2019] 35号〈中国传媒大学差旅费管理办法〉.docx_view》第3页、第4页。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确对应标准答案核心事实（硬座硬卧二等座、三等舱、经济舱），覆盖全部三个必答要点；未添加原文未提及的具体数字/日期/结论，所有依据均来自给定片段（如第3页、第4页表格及第八条第七款）；表述虽更详尽但未偏离原文，无编造内容。"
+   }
+  },
+  {
+   "id": "w23",
+   "category": "split_adjacent",
+   "query": "学生卡校园卡发给哪些学生，有效期跟什么一致，延期毕业要办什么手续？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.979,
+   "degraded": false,
+   "took_ms": 1948,
+   "top_title": "中国传媒大学校园卡管理办法",
+   "evidence": [
+    {
+     "doc_id": "d0781caf290d4",
+     "chunk_id": "d0781caf290d4-0006",
+     "first_rank": 3,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ranking",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d0781caf290d4",
+     "chunk_id": "d0781caf290d4-0007",
+     "first_rank": 3,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文，回答如下：\n\n1. **学生卡发放对象**：  \n   学生卡发放范围为：  \n   - 在校普通全日制本专科生和研究生；  \n   - 取得正式学籍的非全日制硕士研究生；  \n   - 国际交流合作处确认的留学生。  \n   （依据：《中国传媒大学校园卡管理办法》第3页、第1页、第3页【片段1】【片段2】【片段3】第六条（二））\n\n2. **学生卡有效期依据**：  \n   学生卡有效期与**学制一致**；具体而言，本科生校园卡有效期为4年，研究生（硕、博）校园卡有效期为3–5年，以各专业学制年限为准。  \n   （依据：《学生卡延期指南》第1页【片段4】【片段5】；《中国传媒大学校园卡管理办法》第3页【片段1】第六条（二））\n\n3. **延期毕业需办理的手续**：  \n   延期毕业的学生必须凭**延期证明和有效身份证件**办理延期使用手续。  \n   具体操作路径包括：  \n   - 登录业务服务中心（e.cuc.edu.cn）→ 搜索“学生基本信息管理”板块，查看预计毕业日期；  \n   - 若毕业日期正常，可持校园卡到**艺术与传播大楼1层校园生活服务大厅**修改毕业日期，或拨打信息化处电话（65783878）/通过线上客服联系修改；  \n   - 若预计毕业信息不正常，须联系**教务处**（电话：65773223、65773222）办理延期手续；  \n   - 留学生应联系**国际交流与合作处（港澳台事务办）**（电话：65779359）。  \n   （依据：《中国传媒大学校园卡管理办法》第3页【片段1】第六条（二）；《学生卡延期指南》第1页【片段4】【片段5】）\n\n注：所有答案均严格援引自所提供知识库原文，未作推断或补充。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确覆盖全部5个必答要点：本专科生和研究生、非全日制硕士、留学生、有效期与学制一致、延期证明办延期；未添加原文未明确的数字/结论（如‘3–5年’在片段4/5中明确存在，属原文内容，非编造）；所有信息均有原文依据。"
+   }
+  },
+  {
+   "id": "w24",
+   "category": "split_adjacent",
+   "query": "研究生新生复查发现身心状况不适宜在校学习怎么处理，康复后怎么重新入学？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9662,
+   "degraded": false,
+   "took_ms": 2553,
+   "top_title": "中传研字〔2024〕159号 关于印发《中国传媒大学研究生学籍管理规定》的通知",
+   "evidence": [
+    {
+     "doc_id": "d1545d0642df9",
+     "chunk_id": "d1545d0642df9-0008",
+     "first_rank": 8,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d1545d0642df9",
+     "chunk_id": "d1545d0642df9-0009",
+     "first_rank": 8,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "loss_stage": "ranking",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文，研究生新生在入学后三个月内复查中发现身心状况不适宜在校学习的，处理及康复后重新入学流程如下：\n\n一、复查发现身心状况不适宜在校学习的处理方式：  \n可按照《中国传媒大学研究生学籍管理规定》（中传研字〔2024〕159号）第六条**保留其入学资格**。具体依据为：  \n> “复查中发现学生身体和心理状况不适宜在校学习，经学校指定二级甲等（含）以上医院（含精神专科医院）诊断，需要在家休养者，可以按照本规定第六条保留其入学资格。”（《中传研字〔2024〕159号》第1页）\n\n二、康复后重新入学的程序：  \n1. **申请时间**：须在**保留入学资格期满前**，于**新学年开学初两周内**向学校提出复学（即入学）申请；  \n2. **医学证明**：需由**学校指定的二级甲等（含）以上医院（含精神专科医院）**出具诊断证明，确认符合体检要求；  \n3. **学校复查**：经学校复查合格后，**重新办理入学手续**；  \n4. **逾期后果**：若逾期不办理入学手续且无不可抗力等正当理由，视为自动放弃入学资格。（《中传研字〔2024〕159号》第1页；另参见《中传教字〔2025〕195号》第七条、第八条，内容一致，佐证该流程适用于包括研究生在内的各类新生）\n\n综上，研究生新生因身心状况不适宜学习而保留入学资格后，康复需凭指定医院诊断证明，在规定时限内申请并经学校复查合格，方可重新入学。\n\n依据文档：  \n- 《中传研字〔2024〕159号 关于印发〈中国传媒大学研究生学籍管理规定〉的通知》第1页  \n- 《中传教字〔2025〕195号 中国传媒大学本科生学籍管理规定》第3页（作为制度一致性佐证）",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确对应标准答案核心事实：明确指出‘保留入学资格’‘期满前申请入学’‘复查合格重新办理入学’三大要点；所有内容均源自给定原文（如片段1中‘保留入学资格’‘期满前申请’‘指定医院诊断’‘复查合格后重新办理’），未编造数字、日期或结论；覆盖全部必答要点，无遗漏。"
+   }
+  },
+  {
+   "id": "w25",
+   "category": "split_adjacent",
+   "query": "博士学位答辩没通过多久能重新申请答辩，什么条件下可以建议授予硕士学位？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9675,
+   "degraded": false,
+   "took_ms": 1637,
+   "top_title": "中华人民共和国学位法 （2024年4月26日第十四届全国人民代表大会常务委员会第九次会议通过）",
+   "evidence": [
+    {
+     "doc_id": "d5d0532be07ce",
+     "chunk_id": "d5d0532be07ce-0011",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ranking",
+     "recall_source": "bm25"
+    },
+    {
+     "doc_id": "d5d0532be07ce",
+     "chunk_id": "d5d0532be07ce-0012",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库内容，博士学位答辩未通过后重新申请答辩的时间及建议授予硕士学位的条件如下：\n\n一、重新申请答辩的时间：  \n学位申请人可在**三个月后**（在最长有效修业年限内）修改学位论文或实践成果，重新按流程要求申请答辩。  \n依据：《中传研字〔2026〕219号》第十条第（三）款：“学位答辩未通过者……在三个月后（最长有效修业年限内）重新按流程要求申请答辩。”（第4页）  \n另，《十二问》Q7亦明确：“可以在三个月以后（最长有效修业年限内）修改学位论文及毕业作品，重新按流程要求申请学位一次。”（第3页）\n\n注：《2018年研究生手册》第十七条曾规定“6个月以后至两年内”可重新答辩，但该文件发布时间为2018年，而《中传研字〔2026〕219号》（2026年8月25日印发）为现行有效实施办法，应以新办法为准。知识库中未说明旧规仍适用，故采信最新规定——即**三个月后**。\n\n二、建议授予硕士学位的条件：  \n须同时满足以下全部条件：  \n1. 为**博士学位答辩未通过**的情形；  \n2. **全体答辩委员三分之二以上**认为申请人已达到**硕士学位学术水平或专业水平**；  \n3. 申请人**尚未获得过中国传媒大学该学科、专业领域硕士学位**；  \n4. 经**学位申请人本人同意**。  \n符合上述条件的，答辩委员会可作出**建议授予硕士学位的决议**，报送学位评定委员会审定。  \n依据：《中传研字〔2026〕219号》第十条第（三）款（第4页）；《十二问》Q7（第3页）；《中华人民共和国学位法》第二十七条（第6页）。\n\n综上：  \n- 重新申请答辩时间：**三个月后**（最长有效修业年限内）；  \n- 建议授予硕士学位条件：全体答辩委员**三分之二以上同意**+达到**硕士水平**+**未获本校本学科/专业硕士学位**+**申请人同意**。  \n\n（依据文档：《中传研字〔2026〕219号》第4页；《十二问》第3页；《中华人民共和国学位法》第6页）",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确涵盖三个必答要点：'三个月后重新申请'、'三分之二以上认为达硕士水平'、'未获过该学科硕士学位'；所有事实均源自给定原文，未编造数字/日期/结论；未遗漏任一要点，且明确限定为'本校该学科、专业领域'，与原文一致。"
+   }
+  },
+  {
+   "id": "w26",
+   "category": "split_adjacent",
+   "query": "博士后代表作匿名送审几位专家、几份否定意见不能参加后续评审，拟录用名单谁审批？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9859,
+   "degraded": false,
+   "took_ms": 2054,
+   "top_title": "中传人字〔2021〕295号_中国传媒大学博士后管理工作规定_2021-12-01",
+   "evidence": [
+    {
+     "doc_id": "d7df7440edf14",
+     "chunk_id": "d7df7440edf14-0013",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d7df7440edf14",
+     "chunk_id": "d7df7440edf14-0014",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ranking",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文：\n\n1. **博士后代表作匿名送审专家人数**：  \n   《中传人字〔2021〕295号_中国传媒大学博士后管理工作规定_2021-12-01》第6页“第十二条招收流程”第5款明确：“人事处（人才工作办公室）对复审通过的申请人提交的学位论文和代表作实行匿名送审，由**5位评审专家**对学位论文和代表作的质量进行评定……”  \n   → **5位专家**。\n\n2. **几份否定意见则不能参加后续评审**：  \n   同条第5款规定：“评审意见中如有**两份及以上为‘未达到要求’**，则申请人不能参加后续评审。”  \n   → **两份及以上否定意见（即≥2份）即终止后续评审**。\n\n3. **拟录用博士后名单审批主体**：  \n   同文件第6页第8款：“**学校党委常委会审批**人事处将拟录用博士后名单报学校党委常委会审批。”  \n   → 由**学校党委常委会**审批。\n\n综上：  \n- 代表作匿名送审由**5位专家**评审（依据：片段1，第6页）；  \n- 如有**两份及以上**评审意见为“未达到要求”，则不能参加后续评审（依据：片段1，第6页）；  \n- 拟录用博士后名单由**学校党委常委会**审批（依据：片段1，第6页）。",
+    "correct": true,
+    "complete": false,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答遗漏必答要点'公示'，未提及'拟录用名单经党委常委会审批后公示'这一关键环节。"
+   }
+  },
+  {
+   "id": "w27",
+   "category": "split_adjacent",
+   "query": "纵向科研项目单笔消费多少必须用公务卡，在校学生执行项目任务能不能不用公务卡？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9672,
+   "degraded": false,
+   "took_ms": 1524,
+   "top_title": "中传财字 [2019] 175号《中国传媒大学科研经费报销实施细则》.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d68788bbbd78b",
+     "chunk_id": "d68788bbbd78b-0007",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d68788bbbd78b",
+     "chunk_id": "d68788bbbd78b-0008",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文：\n\n1. **纵向科研项目单笔消费必须使用公务卡的金额范围**：  \n   《中传财字〔2019〕175号〈中国传媒大学科研经费报销实施细则〉》第4页第七条（一）明确规定：  \n   > “纵向科研项目以及财政专项资金支持的科研项目须严格执行公务卡管理规定，**单笔消费500元以上、2万元以下的零星支出，须使用公务卡结算**。”  \n   （依据：《中传财字 [2019] 175号》第4页）\n\n2. **在校学生执行项目任务能否不用公务卡**：  \n   同一文件第4页第七条（一）第5款明确指出：  \n   > “不具备办理公务卡资格的项目参与人员，如临时聘用人员、在校学生，因执行项目任务发生的差旅费等费用，**可不使用公务卡结算，但原则上不得使用现金**。”  \n   此外，《中传财字〔2019〕176号〈中国传媒大学公务卡管理办法（修订）〉》第5页第六条（五）也印证：  \n   > “使用项目经费，临时聘用人员、在校学生等不具备公务卡办卡资格的参与人员，因执行项目任务产生的差旅费等费用，**可不使用公务卡结算，但原则上不得使用现金**。”  \n   （依据：《中传财字 [2019] 175号》第4页；《中传财字〔2019〕176号》第5页）\n\n综上：  \n- 纵向科研项目中，**单笔消费500元以上、2万元以下的零星支出必须使用公务卡**；  \n- **在校学生作为不具备公务卡办卡资格的项目参与人员，因执行项目任务发生的相关费用（如差旅费等），可以不使用公务卡结算，但原则上禁止使用现金**。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "准确复述了500元以上2万元以下须公务卡、在校学生可不使用、原则上不得现金三个必答要点，且所有表述均严格源自给定原文，无编造数字或结论。"
+   }
+  },
+  {
+   "id": "w28",
+   "category": "split_adjacent",
+   "query": "家庭经济困难认定访谈谈话多久，分几个资助档次，哪些消费行为不能认定？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9859,
+   "degraded": false,
+   "took_ms": 1916,
+   "top_title": "中国传媒大学家庭经济困难学生认定实施办法",
+   "evidence": [
+    {
+     "doc_id": "d937e8e98636e",
+     "chunk_id": "d937e8e98636e-0025",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d937e8e98636e",
+     "chunk_id": "d937e8e98636e-0026",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文：\n\n1. **家庭经济困难认定访谈谈话时长**：  \n   学院组成访谈小组，对申请认定学生进行**10-15分钟**的谈话。  \n   依据：《中国传媒大学家庭经济困难学生认定实施办法》第3页、第1页、第4页及第351页（多个片段均一致表述）【片段1、2、3、4、5】。\n\n2. **资助档次划分**：  \n   我校对家庭经济困难学生划分为**困难**和**特殊困难**两个资助档次。  \n   依据：《中国传媒大学家庭经济困难学生认定实施办法》第3页、第1页、第4页及第351页【片段1、2、3、4、5】。\n\n3. **不能认定为家庭经济困难学生的消费行为（含生活行为）**：  \n   有下列行为之一的，原则上不能认定为家庭经济困难学生，已认定的将取消受助资格：  \n   - 生活奢侈浪费的，如**购买与学习无关的高档消费品**、**经常自费外出旅游且消费较高**、**经常出入营业性网吧**等；  \n   - **不在学校统一安排的学生公寓住宿的**；  \n   - **有抽烟、酗酒等不良嗜好的**；  \n   - 其他不符合认定条件的行为（如隐瞒信息、因建房/购房/购车致暂时困难等，虽非纯消费行为，但属否决情形）。  \n   依据：《中国传媒大学家庭经济困难学生认定实施办法》第3页、第1页、第4页及第351页【片段1、2、3、4、5】。  \n\n注：以上答案严格依据原文，未作任何推断或补充。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确涵盖全部4个必答要点：10-15分钟谈话、两个档次、奢侈浪费不能认定、不在统一公寓住宿不能认定；所有内容均源自原文，无编造数字或结论；未遗漏任何要点。"
+   }
+  },
+  {
+   "id": "w29",
+   "category": "version_superseded",
+   "query": "硕士生导师最多可以在几个专业方向招收研究生？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9084,
+   "degraded": false,
+   "took_ms": 2326,
+   "top_title": "中传研字〔2026〕147号_中国传媒大学研究生导师岗位聘任办法_2026-07-21",
+   "evidence": [
+    {
+     "doc_id": "ddbc013a4ebbf",
+     "chunk_id": "ddbc013a4ebbf-0012",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "debff00767961": 2
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据《中传研字〔2026〕147号_中国传媒大学研究生导师岗位聘任办法_2026-07-21》第5页第十一条规定：\n\n> “硕士生导师招生专业方向不超过两个。”\n\n因此，硕士生导师最多可以在**两个专业方向**招收研究生。\n\n依据文档：《中传研字〔2026〕147号_中国传媒大学研究生导师岗位聘任办法_2026-07-21》第5页。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确引用2026版文件第十一条原文‘硕士生导师招生专业方向不超过两个’，覆盖必答要点‘不超过两个方向’，未添加原文未提及的数字、日期或结论，未拒绝作答。"
+   }
+  },
+  {
+   "id": "w30",
+   "category": "version_superseded",
+   "query": "管理会议会期最长不得超过几天？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.972,
+   "degraded": false,
+   "took_ms": 1498,
+   "top_title": "中传财字〔2023〕220号_中国传媒大学会议费管理办法（2023年修订）_2023-11-23",
+   "evidence": [
+    {
+     "doc_id": "d31d3cf629924",
+     "chunk_id": "d31d3cf629924-0005",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "d1ab68d2e1848": 2
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "管理会议会期最长不得超过1天半。\n\n依据：《中传财字〔2023〕220号_中国传媒大学会议费管理办法（2023年修订）_2023-11-23》第3页、第4页第六条：“管理会议会期不得超过1天半，传达、布置类管理会议会期不得超过1天。”",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确指出‘1天半’，覆盖必答要点；引用的文件名称、文号、条款与原文一致，未编造数字或结论。"
+   }
+  },
+  {
+   "id": "w31",
+   "category": "version_superseded",
+   "query": "博士匿名评阅没通过，最早几个月以后能重新申请学位？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9664,
+   "degraded": false,
+   "took_ms": 1719,
+   "top_title": "研究生院〔2026〕56号 关于印发《中国传媒大学博士研究生学位论文与实践成果匿名评阅办法》的通知",
+   "evidence": [
+    {
+     "doc_id": "d13a165c3144b",
+     "chunk_id": "d13a165c3144b-0012",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "d23d27d58ca82": null
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "博士匿名评阅未通过后，最早可在**六个月以后**重新申请学位。\n\n依据：  \n《研究生院〔2026〕56号 关于印发〈中国传媒大学博士研究生学位论文与实践成果匿名评阅办法〉的通知》第十二条：“未通过匿名评阅的，学位申请人应根据评阅意见认真修改学位论文或实践成果，可在六个月以后（最长有效修业年限内）重新按流程要求申请学位。”（第4页）  \n\n同时，《中传研字〔2026〕219号 中国传媒大学硕士学位、博士学位授予工作实施办法》第九条第二款亦明确：“未通过匿名评阅的，学位申请人应根据评阅意见认真修改学位论文或实践成果，可在六个月以后（最长有效修业年限内）重新按流程要求申请学位。”（第3页）  \n\n注：该时限（六个月）专指**匿名评阅未通过后重新申请学位**的情形；若为**学位答辩未通过**，则适用“三个月以后”重新申请的规定（见片段2、4、5中Q7及第十条），但本题问的是匿名评阅未通过情形，故不适用三个月规则。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确指出‘六个月以后’这一必答要点，且依据片段1和片段4原文明确引用，未添加原文未提及的数字、日期或结论，覆盖全部必答要点。"
+   }
+  },
+  {
+   "id": "w32",
+   "category": "version_superseded",
+   "query": "学位分委会作出不建议授予学位决议时，要履行什么告知程序？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9814,
+   "degraded": false,
+   "took_ms": 2850,
+   "top_title": "中传研字〔2026〕219号_中国传媒大学硕士学位、博士学位授予工作实施办法_2026-08-25",
+   "evidence": [
+    {
+     "doc_id": "d5d0532be07ce",
+     "chunk_id": "d5d0532be07ce-0014",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "dcae25d54d858": 4
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "学位分委会作出不建议授予学位或本次不建议授予学位的决议时，应以书面形式告知学位申请人拟作出决定的内容及事实、理由、依据，并听取其陈述和申辩。\n\n依据：《中传研字〔2026〕219号_中国传媒大学硕士学位、博士学位授予工作实施办法_2026-08-25》第5页第十二条；  \n以及《中传研字〔2025〕2号 关于印发〈中国传媒大学硕士学位、博士学位学位授予工作实施办法〉的通知》第5页第十二条（该条虽未在原文中完整重复“本次不建议授予”表述，但明确要求对“不建议授予学位”情形履行相同告知义务）。  \n\n注：两份文件均一致规定了书面告知+陈述申辩权这一程序性要求。",
+    "correct": false,
+    "complete": true,
+    "fabricated": true,
+    "refused": false,
+    "reason": "模型错误声称2025-2号文件也规定了相同告知程序，但给定原文中2025-2号第十二条仅规定分委会作出‘不建议授予学位’决议，未提‘本次不建议授予’，且第十四条虽有书面告知和陈述申辩，但明确针对‘校委会’作出的决议（非分委会），且标准答案明确指出‘2025-2号无此程序，已废止’；模型编造了2025-2号存在分委会层面该程序的事实。"
+   }
+  },
+  {
+   "id": "w33",
+   "category": "version_superseded",
+   "query": "家庭经济困难学生资格复核是每年固定四五月份进行吗？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9801,
+   "degraded": false,
+   "took_ms": 3670,
+   "top_title": "中传学字〔2019〕77号_中国传媒大学家庭经济困难学生认定实施办法_2019-04-22",
+   "evidence": [
+    {
+     "doc_id": "d937e8e98636e",
+     "chunk_id": "d937e8e98636e-0004",
+     "first_rank": 2,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "d2e3bc13731a0": 1
+   },
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "是的，家庭经济困难学生资格复核每年固定在4—5月份进行。\n\n依据：《中传学字〔2019〕77号_中国传媒大学家庭经济困难学生认定实施办法_2019-04-22》第6页第二十条明确规定：“学校每年4-5月份对已认定的除毕业班以外的各年级家庭经济困难学生进行资格复核工作……”（片段1、片段3均一致引用该条文）。\n\n注：其他片段（如片段2、片段4、片段5）仅表述为“每学年进行”，未明确具体月份；但根据具有明确日期和文号的正式文件《中传学字〔2019〕77号》原文，复核时间为每年4—5月。",
+    "correct": false,
+    "complete": false,
+    "fabricated": true,
+    "refused": false,
+    "reason": "模型错误认定2019年文件仍有效，而标准答案明确指出该文件已废止、复核不再固定4-5月；且回答完全遗漏‘动态调整’和‘不固定4-5月’两个必答要点，反而编造‘固定4-5月’这一与现行规定相悖的结论。"
+   }
+  },
+  {
+   "id": "w34",
+   "category": "version_superseded",
+   "query": "住院费借款出院后多久要把报销单据交到校医院？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 1.0,
+   "degraded": false,
+   "took_ms": 2188,
+   "top_title": "中传财字〔2025〕44号_中国传媒大学往来款项管理办法_2025-03-25",
+   "evidence": [
+    {
+     "doc_id": "d8a4aa008a226",
+     "chunk_id": "d8a4aa008a226-0010",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "d6ad94c398349": 4
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据知识库原文：\n\n- 《中传财字〔2025〕44号_中国传媒大学往来款项管理办法_2025-03-25》第十条第（三）款规定：“住院费借款应在出院后一个月内将相关报销单据交至校医院，办理相关报销审核手续。”（文档名：《中传财字〔2025〕44号_中国传媒大学往来款项管理办法_2025-03-25》第4页）\n\n- 《校医院关于2025--2026学年第二学期公费医疗报销工作安排的通知》和《2026-2027学年第一学期公费医疗报销工作安排的通知》中也一致明确：“请在出院后1个月内（如遇寒、暑假，请在开学后的当月）的工作日下午14：00—16:00，将报销材料交到校医院三楼计划生育办公室（305房间）。”（文档名：《校医院关于2025--2026学年第二学期公费医疗报销工作安排的通知(单页).docx_view》第1页；《校医院关于2026-2027学年第一学期公费医疗报销工作安排的通知(单页)》第1页）\n\n注意：《中传财字〔2022〕135号》（片段4）第十条第（三）款曾规定为“出院后2个月内”，但该文件为已废止的试行办法（被2025年新办法替代），依据新旧文件效力原则，应以最新有效文件《中传财字〔2025〕44号》为准。\n\n**答案：住院费借款应在出院后一个月内将相关报销单据交至校医院。**  \n依据：《中传财字〔2025〕44号_中国传媒大学往来款项管理办法_2025-03-25》第4页第十条第（三）款。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确引用2025-44号文明确规定的‘出院后一个月内’，覆盖必答要点；指出2022-135号文已废止且原为2个月，符合原文事实；未添加任何原文未提及的数字、日期或结论。"
+   }
+  },
+  {
+   "id": "w35",
+   "category": "attribute_trap",
+   "query": "校园卡挂失后补办新卡需要几个工作日才能拿到？",
+   "answerable": false,
+   "no_answer": false,
+   "confidence": 0.949,
+   "degraded": false,
+   "took_ms": 2033,
+   "top_title": "校园卡使用指南",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "w36",
+   "category": "attribute_trap",
+   "query": "博士后退站要交多少违约金？",
+   "answerable": false,
+   "no_answer": true,
+   "confidence": 0.7101,
+   "degraded": false,
+   "took_ms": 2185,
+   "top_title": "中国传媒大学博士后教学科研任务书",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "w37",
+   "category": "attribute_trap",
+   "query": "学生公寓暖气费按什么标准收，一平米多少钱？",
+   "answerable": false,
+   "no_answer": true,
+   "confidence": 0.611,
+   "degraded": false,
+   "took_ms": 1795,
+   "top_title": "中国传媒大学新生缴费指南",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "w38",
+   "category": "no_answer",
+   "query": "教工活动中心的预约电话是多少？",
+   "answerable": false,
+   "no_answer": true,
+   "confidence": 0.6913,
+   "degraded": false,
+   "took_ms": 1415,
+   "top_title": "场馆.docx_view",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "w39",
+   "category": "no_answer",
+   "query": "教职工停车包月一个月多少钱？",
+   "answerable": false,
+   "no_answer": true,
+   "confidence": 0.6127,
+   "degraded": false,
+   "took_ms": 1742,
+   "top_title": "《关于启动教职工及家属停车年度申报审核的通知及线上申报系统使用说明》",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  },
+  {
+   "id": "w40",
+   "category": "no_answer",
+   "query": "留学生公寓的探访时间是几点到几点？",
+   "answerable": false,
+   "no_answer": true,
+   "confidence": 0.6615,
+   "degraded": false,
+   "took_ms": 3603,
+   "top_title": "知识库-学生公寓服务中心",
+   "evidence": [],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": null,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": null,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": null,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": null
+  }
+ ]
+}

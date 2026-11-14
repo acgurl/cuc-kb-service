@@ -108,6 +108,12 @@ VERSION_FAMILY_PENALTY = _env_float("KB_VERSION_FAMILY_PENALTY", 0.05)
 # candidates; the old doc stays fully searchable when the newer one is absent
 # (e.g. "2022 年当时的规定" queries). Relation-driven, not a blanket date penalty.
 SUPERSEDED_PENALTY = _env_float("KB_SUPERSEDED_PENALTY", 0.05)
+# A fixed penalty cannot flip a pair whose rerank gap is large (e.g. 0.15). When
+# adaptive is on, the demotion grows just enough that the old doc's best chunk
+# lands below the replacement's best chunk, so the current version leads. Still
+# relation-driven: no demotion when the replacement is absent.
+SUPERSEDED_ADAPTIVE = _env_bool("KB_SUPERSEDED_ADAPTIVE", False)
+SUPERSEDED_MARGIN = _env_float("KB_SUPERSEDED_MARGIN", 0.01)
 CANDIDATE_POOL = _env_int("KB_CANDIDATE_POOL", 40)
 CANDIDATE_LIMIT = _env_int("KB_CANDIDATE_LIMIT", 24)
 MAX_CHUNKS_PER_DOC = _env_int("KB_MAX_CHUNKS_PER_DOC", 16)

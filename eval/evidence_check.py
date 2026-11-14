@@ -94,6 +94,30 @@ def item_first_rank(item, results):
     return None
 
 
+def item_cover_result(item, results):
+    """First result whose text covers all terms of the item (or None)."""
+    terms = [norm(t) for t in item["terms"]]
+    for result in results:
+        if result.get("doc_id") != item["doc_id"]:
+            continue
+        if all(term in norm(result.get("text", "")) for term in terms):
+            return result
+    return None
+
+
+def covered_via_expansion(item, results):
+    """True when the covering result merged the item's own chunk as a neighbour.
+
+    With KB_EXPAND_ADJACENT the anchor result's text includes +-1 active
+    neighbours (expanded_chunks); an item whose chunk was merged in — rather
+    than retrieved as the anchor — is evidence the expansion did the work.
+    """
+    if not item.get("chunk_id"):
+        return False
+    result = item_cover_result(item, results)
+    return bool(result) and item["chunk_id"] in (result.get("expanded_chunks") or [])
+
+
 def stage_evidence_present(item, chunk_ids, corpus):
     terms = [norm(t) for t in item["terms"]]
     for chunk_id in chunk_ids:
@@ -170,23 +194,57 @@ def parse_verdict(text):
     match = re.search(r"\{.*\}", text, re.DOTALL)
     if not match:
         return {"correct": False, "complete": False, "fabricated": False, "refused": False,
+                "_parse_failed": True,
                 "reason": f"judge output not JSON: {text[:120]}"}
     try:
         verdict = json.loads(match.group(0))
     except json.JSONDecodeError:
         return {"correct": False, "complete": False, "fabricated": False, "refused": False,
+                "_parse_failed": True,
                 "reason": f"judge JSON invalid: {text[:120]}"}
     return {key: bool(verdict.get(key)) for key in ("correct", "complete", "fabricated", "refused")} | {
         "reason": str(verdict.get("reason", ""))[:300]
     }
 
 
+def judge_with_retry(judge_user, cache, attempts=3):
+    """Judge once, then retry on a parse failure with a larger token budget.
+
+    The common failure is a verdict truncated mid-JSON (the reason text runs past
+    max_tokens), so each retry both raises the budget and nudges the model to emit
+    a single compact JSON object. The nudge varies per attempt so the response
+    cache does not replay the same truncated output. Deterministic metrics are
+    unaffected; only the optional LLM verdict pass uses this.
+    """
+    verdict = None
+    for attempt in range(attempts):
+        nudge = "" if attempt == 0 else (
+            f"\n\n（第{attempt + 1}次提醒：上次输出不是合法 JSON。请把 reason 控制在 50 字以内，"
+            "只输出一个合法 JSON 对象，不要输出任何其他文字。）"
+        )
+        messages = [{"role": "system", "content": JUDGE_SYSTEM},
+                    {"role": "user", "content": judge_user + nudge}]
+        verdict = parse_verdict(
+            llm_chat(JUDGE_MODEL, messages, cache, max_tokens=512 + 512 * attempt)
+        )
+        if not verdict.get("_parse_failed"):
+            break
+    verdict.pop("_parse_failed", None)
+    return verdict
+
+
+def fragment_label(r, i):
+    """Context fragment header; flags superseded docs so the answerer treats them
+    as historical, mirroring the MCP citation.superseded_by guidance."""
+    cit = r.get("citation", {})
+    label = f"【片段{i}】《{cit.get('doc_title', '')}》第{cit.get('page_start', '?')}页"
+    if cit.get("superseded_by"):
+        label += "（该文件已被新版替代/废止，仅作历史参考，现行规定以未废止的新版为准）"
+    return label + "：\n" + r.get("text", "")
+
+
 def llm_evaluate(case, results, cache):
-    context = "\n\n".join(
-        f"【片段{i}】《{r.get('citation', {}).get('doc_title', '')}》"
-        f"第{r.get('citation', {}).get('page_start', '?')}页：\n{r.get('text', '')}"
-        for i, r in enumerate(results[:5], 1)
-    )
+    context = "\n\n".join(fragment_label(r, i) for i, r in enumerate(results[:5], 1))
     messages = [{"role": "system", "content": ANSWER_SYSTEM}]
     messages.extend(case.get("history") or [])
     messages.append({"role": "user", "content": f"知识库原文：\n{context}\n\n用户问题：{case['query']}"})
@@ -197,10 +255,7 @@ def llm_evaluate(case, results, cache):
         f"必答要点：{json.dumps(points, ensure_ascii=False)}\n"
         f"给定原文：\n{context}\n\n模型回答：\n{answer}"
     )
-    verdict = parse_verdict(
-        llm_chat(JUDGE_MODEL, [{"role": "system", "content": JUDGE_SYSTEM},
-                               {"role": "user", "content": judge_user}], cache, max_tokens=512)
-    )
+    verdict = judge_with_retry(judge_user, cache)
     return {"answer": answer, **verdict}
 
 
@@ -238,10 +293,21 @@ def run_case(case, corpus, use_llm, cache):
                 str(k): item.get("chunk_id") in final_ids[:k] for k in CUTS
             },
             "covered": {str(k): item_covered(item, results[:k]) for k in CUTS},
+            "via_expansion": {
+                str(k): covered_via_expansion(item, results[:k]) for k in CUTS
+            },
         }
         if trace is not None and item.get("chunk_id"):
             entry.update(diagnose_item(item, trace, corpus, final_ids))
         row["evidence"].append(entry)
+    if case.get("watch_docs"):
+        row["watch_ranks"] = {
+            doc: next(
+                (rank for rank, r in enumerate(results, 1) if r.get("doc_id") == doc),
+                None,
+            )
+            for doc in case["watch_docs"]
+        }
     for k in CUTS:
         row[f"evidence_hit@{k}"] = bool(row["evidence"]) and all(
             e["covered"][str(k)] for e in row["evidence"]
@@ -297,6 +363,30 @@ def summarize(rows, latencies, trace_available):
             bucket["answerable"] += 1
             bucket["evidence_hit@5"] += row["evidence_hit@5"]
     summary["by_category"] = by_category
+    split_rows = [r for r in answerable if r["category"] == "split_adjacent"]
+    if split_rows:
+        items = [e for r in split_rows for e in r["evidence"]]
+        summary["split"] = {
+            "cases": len(split_rows),
+            "hit@5": sum(r["evidence_hit@5"] for r in split_rows),
+            "items_total": len(items),
+            "items_covered_via_expansion@5": sum(e["via_expansion"]["5"] for e in items),
+        }
+    version_rows = [r for r in answerable if r["category"] == "version_superseded"]
+    if version_rows:
+        old_wins = []
+        for row in version_rows:
+            ranks = [v for v in (row.get("watch_ranks") or {}).values() if v is not None]
+            new_ranks = [e["first_rank"] for e in row["evidence"] if e["first_rank"] is not None]
+            old_rank = min(ranks) if ranks else None
+            new_rank = min(new_ranks) if new_ranks else None
+            if old_rank is not None and (new_rank is None or old_rank < new_rank):
+                old_wins.append(row["id"])
+        summary["version"] = {
+            "cases": len(version_rows),
+            "hit@5": sum(r["evidence_hit@5"] for r in version_rows),
+            "old_above_new": old_wins,
+        }
     llm_rows = [r for r in answerable if "llm" in r]
     if llm_rows:
         summary["llm"] = {

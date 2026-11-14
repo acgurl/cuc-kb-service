@@ -1,5 +1,34 @@
 # HANDOFF — 检索质量优化（2026-11-01）
 
+## 2026-11-14 v2 优化实施（①+⑤+② 均已上线验证；③ 不可行；④ 归 agent 层）
+
+**一句话现状**：按 `report_evidence_v2.md` 后续清单实施。**① 版本替代端到端修复并已上线**——自适应降权（`KB_SUPERSEDED_ADAPTIVE=1`，旧版降权幅度自适应保证新版压旧版）+ 展开门控（被替代旧版不做相邻展开，防过时条款回流）+ 引用层 `superseded_by` 废止标注（search_core/mcp_server/harness 三处）；**线上 version 类 6/6 correct、6/6 complete、0 fabricated、old_above_new=[]**（w33/w32 稳定修复）。全量 A/B LLM correct 30→31、fabricated 2→1（剩 w21 为作答噪声，top5 已证不变）；检索零回归、hit@1 17→18。**⑤ judge 解析重试**已上线。**② 表格 caption 注入 embed_text + 重嵌 A/B 已验证**：107 块 batch 重嵌（≈¥0.02）+ 临时 collection `cuc_kb_v4_tablecap` 克隆覆盖，**召回丢失 recall 2→0、hit@1 17→19、零回归**（hit@5 瓶颈移到 fusion/排序）；上线需改 live embed_text+Qdrant 107 向量，**待确认**。**③ 2017 研究生学籍补 item3 核验不可行**（2024-159 无废止条款；w01 top1 是国际版属不同制度；全库 16 候选全为排除类）——更正原报告假设。**④ w35 时长误接受归 agent 层**。本地 136 单测/mcp-http 30/ruff 全过。报告 `eval/heldout/report_optimization_20261114.md`。
+
+| 项 | 值 |
+|---|---|
+| 代码 | `kb/common.py`（SUPERSEDED_ADAPTIVE/MARGIN）、`kb/search_core.py`（_superseded_relations/_superseded_penalties 两路、展开门控、citation.superseded_by）、`kb/mcp_server.py`（透传+INSTRUCTIONS）、`kb/ingest.py`（table_caption 注入 embed_text）、`eval/evidence_check.py`（judge_with_retry + fragment_label 废止标注）、`scripts/enrich_table_embed.py` |
+| A/B 产物 | `results_evidence_ab1_full.json`（检索回归）、`results_evidence_ab3_version_llm.json`（版本类 6/6）、`results_evidence_ab3_full_llm.json`（全量 31/34） |
+| 关键教训 | 版本冲突端到端正确≠排序：降权（谁排前）+展开门控（防过时文本回流）+废止标注（防 LLM 把旧版当现行）三者缺一不可 |
+| 测试 | unit 136（+SupersededExpansionTest/judge 重试/fragment 标注/ingest caption）、mcp-http 30、ruff 干净 |
+
+**①+⑤ 已上线**：Phoenix `.env` `KB_SUPERSEDED_ADAPTIVE=1`，`kb/{common,search_core,mcp_server}.py`+`eval/evidence_check.py` 已部署（md5 一致），cuc-kb/cuc-kb-mcp 已重启，线上 version 6/6 验证。备份 `*.bak-20261114-supadapt`。**回滚**：`.env` 置 `KB_SUPERSEDED_ADAPTIVE=0` 重启即恢复（标注附加字段无害）。**② 已上线**：live `data/chunks.jsonl` 注入 107 caption（备份 `.bak-20261114-tablecap`）+ Qdrant cuc_kb_v4 upsert 107 向量（原向量 `data/tablecap_orig_vectors.npz`）+ 新 `kb/ingest.py` + 重启 cuc-kb；线上①+②全量回归 hit@1=19、recall 丢失=0、零回归（`results_evidence_prod_tablecap_full.json`）。**②回滚**：还原 chunks.jsonl 备份 + `scripts/apply_tablecap_vectors.py --vectors data/tablecap_orig_vectors.npz --apply` + 重启。③ 不做；④ 转 agent 层。临时 collection `cuc_kb_v4_tablecap` 与 `~/cuc-kb-ab-opt` 已清理。
+
+## 2026-11-13 证据级盲测 v2（纯评测，线上零改动）
+
+**一句话现状**：新独立盲测集 `eval/heldout/dataset_evidence_v2.json`（40 题七类，含 v1 没覆盖的**跨块分裂条款 6 题**与**旧版压新版 6 题**，后者选自上线 12 对替代关系）在展开+版本降权配置下实测：**evidence_hit@1/3/5/10 = 17/25/27/30（@5 79%）**、误拒 0、误接受 1（w35 属性级）；split 5/6 且 12 证据项中 5 项经展开合并命中；version 6/6 但 **w33 旧版仍 top1（0.05 降权翻不动大分差）→ LLM 答旧版被判编造**；LLM 端到端 correct 30/34（88%）/fabricated 2。报告 `eval/heldout/report_evidence_v2.md`。
+
+| 项 | 值 |
+|---|---|
+| 构建核验 | `build_evidence_v2.py`：证据词逐字 active 命中、探测词零命中、查询不重复既有全部数据集、证据块不重用 v1；split 须同条款连续块、version 旧版须带 superseded_by。基线 `data-live`（=v9+apply_superseded，与线上投影 md5 一致 57546ec8…） |
+| harness 增量 | `eval/evidence_check.py` +`watch_ranks`（旧版排名）+`via_expansion`（证据经展开命中）+summary split/version 块；+2 单测，117 测试/ruff 全过 |
+| 分类 @5 | cross_clause 6/10（仍最弱，w01 top1 是未覆盖替代关系的 2017 研究生学籍）、multi_point 7/7、table 3/5（w10/w21 纯数字表块 recall 双路缺失、w20 fusion_pool）、split 5/6、version 6/6 |
+| 丢失阶段 | ranking 7 / fusion_pool 2 / recall 2（v1：4/6/2）；召回 both 43 |
+| LLM 非 correct | w10/w20 证据缺失诚实拒答（w20 叠加 judge JSON 解析失败噪声）、w32 检索正确但臆造新旧等同、w33 旧版 top1 带偏 |
+| 延迟 | P50/P95 2138/3603ms（v2 全新查询冷缓存；v1 复跑热缓存 1209/1867，口径差异非退化） |
+| 产物 | 本地+Phoenix `eval/heldout/{dataset_evidence_v2.json,build_evidence_v2.py,results_evidence_ev2_prod_20261113.json,report_evidence_v2.md}`；工作文件 `_v2_*` 不入库 |
+
+**坑/遗留**：① 0.05 软降权对 rerank 分差大的替代对不够（w33），候选：提高降权/top1 保护，须 A/B 再上线；② 表格块召回弱属 ingest embed_text 问题；③ 2017 研究生学籍等替代关系未进 item3；④ answerability guard 不覆盖「时长」属性（w35）；⑤ v2 与 v1 不同题集，对照非 A/B。**本轮无代码/配置/数据改动，无需回滚**。
+
 ## 2026-11-13 相邻块展开 + 版本替代关系（LIVE，A/B 实测后上线）
 
 **一句话现状**：在证据级评测基础上做两项检索改进并 A/B 实测后上线——① **item2 小块检索+相邻块展开**（`KB_EXPAND_ADJACENT=1`）：top 命中合并同文档前后各 1 个 active 相邻块文本，补全被切开的前提/例外/连续条款，排序与可回答性判定不变；② **item3 版本替代关系**（`KB_SUPERSEDED_PENALTY=0.05` + `scripts/apply_superseded.py`）：12 对同名制度「废止」关系写入 `chunk.superseded_by`，旧版仅在新版同在候选时降权让位（时间性查询仍可检索旧版）。**证据级 hit@5 58%→70%，LLM 端到端答对 61%→70%、编造 21%→18%；v2 刷新口径后严格 hit@1/3/5 各 +1、零回归。**

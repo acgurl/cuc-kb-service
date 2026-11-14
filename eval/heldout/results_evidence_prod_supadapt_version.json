@@ -1,0 +1,421 @@
+{
+ "summary": {
+  "tag": "prod_supadapt_version",
+  "dataset": "dataset_evidence_v2.json",
+  "total": 6,
+  "answerable_total": 6,
+  "unanswerable_total": 0,
+  "trace_available": true,
+  "degraded": 0,
+  "latency_p50": 736,
+  "latency_p95": 1457,
+  "evidence_hit@1": 6,
+  "verified_chunk_hit@1": 5,
+  "item_coverage@1": 1.0,
+  "evidence_hit@3": 6,
+  "verified_chunk_hit@3": 5,
+  "item_coverage@3": 1.0,
+  "evidence_hit@5": 6,
+  "verified_chunk_hit@5": 6,
+  "item_coverage@5": 1.0,
+  "evidence_hit@10": 6,
+  "verified_chunk_hit@10": 6,
+  "item_coverage@10": 1.0,
+  "false_refuse": [],
+  "false_accept": [],
+  "supported_answer@5": 6,
+  "evidence_loss_stages": {
+   "ok": 6
+  },
+  "evidence_recall_sources": {
+   "both": 6
+  },
+  "by_category": {
+   "version_superseded": {
+    "total": 6,
+    "evidence_hit@5": 6,
+    "answerable": 6
+   }
+  },
+  "version": {
+   "cases": 6,
+   "hit@5": 6,
+   "old_above_new": []
+  },
+  "llm": {
+   "total": 6,
+   "correct": 6,
+   "complete": 6,
+   "fabricated": 0,
+   "refused": 0
+  }
+ },
+ "details": [
+  {
+   "id": "w29",
+   "category": "version_superseded",
+   "query": "硕士生导师最多可以在几个专业方向招收研究生？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9084,
+   "degraded": false,
+   "took_ms": 1457,
+   "top_title": "中传研字〔2026〕147号_中国传媒大学研究生导师岗位聘任办法_2026-07-21",
+   "evidence": [
+    {
+     "doc_id": "ddbc013a4ebbf",
+     "chunk_id": "ddbc013a4ebbf-0012",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "debff00767961": 2
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据《中传研字〔2026〕147号_中国传媒大学研究生导师岗位聘任办法_2026-07-21》第5页第十一条规定：\n\n> “硕士生导师招生专业方向不超过两个。”\n\n因此，硕士生导师最多可以在**两个专业方向**招收研究生。\n\n依据文档：《中传研字〔2026〕147号_中国传媒大学研究生导师岗位聘任办法_2026-07-21》第5页，第十一条。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确引用2026年文件第十一条原文，明确指出‘硕士生导师招生专业方向不超过两个’，完全覆盖必答要点，未添加任何原文未提及的数字、日期或结论。"
+   }
+  },
+  {
+   "id": "w30",
+   "category": "version_superseded",
+   "query": "管理会议会期最长不得超过几天？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.972,
+   "degraded": false,
+   "took_ms": 729,
+   "top_title": "中传财字〔2023〕220号_中国传媒大学会议费管理办法（2023年修订）_2023-11-23",
+   "evidence": [
+    {
+     "doc_id": "d31d3cf629924",
+     "chunk_id": "d31d3cf629924-0005",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "d1ab68d2e1848": 2
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "管理会议会期最长不得超过1天半。\n\n依据：《中传财字〔2023〕220号_中国传媒大学会议费管理办法（2023年修订）_2023-11-23》第4页第六条：“管理会议会期不得超过1天半，传达、布置类管理会议会期不得超过1天。”",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确指出‘1天半’这一必答要点，且依据原文片段1和5第六条原文，未添加任何编造内容，覆盖全部要点。"
+   }
+  },
+  {
+   "id": "w31",
+   "category": "version_superseded",
+   "query": "博士匿名评阅没通过，最早几个月以后能重新申请学位？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9664,
+   "degraded": false,
+   "took_ms": 762,
+   "top_title": "研究生院〔2026〕56号 关于印发《中国传媒大学博士研究生学位论文与实践成果匿名评阅办法》的通知",
+   "evidence": [
+    {
+     "doc_id": "d13a165c3144b",
+     "chunk_id": "d13a165c3144b-0012",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "d23d27d58ca82": null
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "博士匿名评阅未通过后，最早可在**六个月以后**重新申请学位。\n\n依据：  \n《研究生院〔2026〕56号 关于印发〈中国传媒大学博士研究生学位论文与实践成果匿名评阅办法〉的通知》第十二条：“未通过匿名评阅的，学位申请人应根据评阅意见认真修改学位论文或实践成果，可在六个月以后（最长有效修业年限内）重新按流程要求申请学位。”（第4页）  \n\n另见《中传研字〔2026〕219号_中国传媒大学硕士学位、博士学位授予工作实施办法_2026-08-25》第九条第二款：“未通过匿名评阅的，学位申请人应根据评阅意见认真修改学位论文或实践成果，可在六个月以后（最长有效修业年限内）重新按流程要求申请学位。”（第3页）  \n\n注：该时间要求适用于博士生；硕士生答辩未通过的补救期限为“三个月以后”（见片段2、4、5），但匿名评阅未通过的博士生适用的是“六个月以后”，二者不可混淆。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确指出‘六个月以后’这一必答要点，且依据原文片段1和片段4的明确条款，未添加任何原文未提及的具体数字、日期或结论，完全覆盖要点。"
+   }
+  },
+  {
+   "id": "w32",
+   "category": "version_superseded",
+   "query": "学位分委会作出不建议授予学位决议时，要履行什么告知程序？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9814,
+   "degraded": false,
+   "took_ms": 736,
+   "top_title": "中传研字〔2026〕219号_中国传媒大学硕士学位、博士学位授予工作实施办法_2026-08-25",
+   "evidence": [
+    {
+     "doc_id": "d5d0532be07ce",
+     "chunk_id": "d5d0532be07ce-0014",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "dcae25d54d858": 4
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "学位分委会作出不建议授予学位决议时，应以书面形式告知学位申请人拟作出决定的内容及事实、理由、依据，并听取其陈述和申辩。\n\n依据：《中传研字〔2026〕219号_中国传媒大学硕士学位、博士学位授予工作实施办法_2026-08-25》第5页第十二条。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确复现了2026-219号文第十二条规定的书面告知内容、事实理由依据，以及听取陈述和申辩两项必答要点，未添加原文未提及的信息，也未遗漏要点。"
+   }
+  },
+  {
+   "id": "w33",
+   "category": "version_superseded",
+   "query": "家庭经济困难学生资格复核是每年固定四五月份进行吗？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9801,
+   "degraded": false,
+   "took_ms": 415,
+   "top_title": "中国传媒大学家庭经济困难学生认定实施办法",
+   "evidence": [
+    {
+     "doc_id": "d937e8e98636e",
+     "chunk_id": "d937e8e98636e-0004",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "d2e3bc13731a0": 2
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "不是每年固定在四五月份进行。\n\n依据现行有效的《中国传媒大学家庭经济困难学生认定实施办法》（见【片段1】第4页、【片段3】第352页、【片段4】第1页、【片段5】第1页），第二十条统一表述为：“学校**每学年**对已认定的除毕业班以外的各年级家庭经济困难学生进行资格复核工作”，并未规定具体月份。\n\n而【片段2】中提到的“每年4–5月份”出自已废止的历史文件《中传学字〔2019〕77号》，且该文件明确标注“已被新版替代/废止，现行规定以未废止的新版为准”。因此，该时间点不具现行效力。\n\n综上，现行制度仅规定复核工作按“每学年”开展，未限定为每年4–5月。  \n依据：《中国传媒大学家庭经济困难学生认定实施办法》第4页、第352页、第1页（【片段1】【片段3】【片段4】【片段5】）；《中传学字〔2019〕77号》第6页（【片段2】，已废止，仅作历史参考）。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确指出复核是每学年进行、不固定4-5月，并明确提及动态调整机制（隐含在‘每学年复核’及‘如有家庭经济情况变化可增减变动’中），覆盖全部三个必答要点；未编造原文未提的数字或结论；引用依据均来自给定片段。"
+   }
+  },
+  {
+   "id": "w34",
+   "category": "version_superseded",
+   "query": "住院费借款出院后多久要把报销单据交到校医院？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 1.0,
+   "degraded": false,
+   "took_ms": 740,
+   "top_title": "中传财字〔2025〕44号_中国传媒大学往来款项管理办法_2025-03-25",
+   "evidence": [
+    {
+     "doc_id": "d8a4aa008a226",
+     "chunk_id": "d8a4aa008a226-0010",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "watch_ranks": {
+    "d6ad94c398349": 4
+   },
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0,
+   "llm": {
+    "answer": "根据《中传财字〔2025〕44号_中国传媒大学往来款项管理办法_2025-03-25》第十条第（三）款规定：  \n**“根据主管部门审核时间要求，住院费借款应在出院后一个月内将相关报销单据交至校医院，办理相关报销审核手续。”**  \n（依据文档：《中传财字〔2025〕44号_中国传媒大学往来款项管理办法_2025-03-25》第4页）\n\n该规定与《校医院关于2025--2026学年第二学期公费医疗报销工作安排的通知》及《2026-2027学年第一学期公费医疗报销工作安排的通知》中关于住院费用报销材料提交时限的表述一致（均明确为“出院后1个月内”，遇寒暑假则顺延至开学当月），进一步印证了“一个月”的时效要求。\n\n注：旧版《中传财字〔2022〕135号》（片段4）曾规定为“2个月内”，但该文件已被明确标注为“已废止”，现行有效规定以2025年新版办法为准。\n\n✅ 答案：**出院后一个月内**。",
+    "correct": true,
+    "complete": true,
+    "fabricated": false,
+    "refused": false,
+    "reason": "回答准确引用2025-44号文第十条第（三）款‘出院后一个月内’，覆盖必答要点；同时说明旧规已废止，未编造数字或日期，信息均来自给定原文。"
+   }
+  }
+ ]
+}

@@ -7,6 +7,7 @@
 data/
 data.bak*/
 data-v*/
+data-live/
 batch-qwen37*/
 docs/
 docs-new*/
@@ -49,4 +50,6 @@ eval/heldout/_candidates.txt
 eval/heldout/_candidates_view.txt
 eval/heldout/_inventory_v3.tsv
 eval/heldout/_peek*.txt
+eval/heldout/_opt_*
+eval/heldout/_v2_*
 eval/ab/results_deploycheck.json

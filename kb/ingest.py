@@ -36,6 +36,11 @@ DOC_NO_RE = re.compile(
     r"[一-龥A-Za-z]{0,30}[〔\[（(]\s*\d{4}\s*[〕\]）)]\s*\d+\s*号"
 )
 TOC_LEADER_RE = re.compile(r"[.．·]{8,}")
+# A table's caption (e.g. "表1.1 …课程学分要求（文学和艺术学）") sits in the text
+# just before the table, not in the table itself. Attaching it to the table
+# chunk's embed_text lets pure-number tables be recalled by the discipline/topic
+# words they lack. Stops at sentence end / table pipe / newline.
+TABLE_CAPTION_RE = re.compile(r"表\s*\d+(?:\.\d+)?[^\n|。]*")
 
 CHUNK_LIMIT = 450
 TABLE_CHUNK_LIMIT = 1200
@@ -429,6 +434,24 @@ def split_table(md: str, limit: int = TABLE_CHUNK_LIMIT):
     return parts
 
 
+def table_caption(text):
+    """Last table caption in the preceding text, trimmed to its scope parenthetical.
+
+    Returns "" when there is no descriptive caption (a bare "见表2" cross-reference
+    is skipped). Ending at the first "）" keeps the discipline/scope and drops any
+    flattened table text that runs on without punctuation.
+    """
+    for cap in reversed(TABLE_CAPTION_RE.findall(text or "")):
+        cap = cap.strip()
+        if len(cap) < 8:
+            continue
+        close = cap.find("）")
+        if close != -1:
+            cap = cap[: close + 1]
+        return cap[:80]
+    return ""
+
+
 def chunk_status(record):
     if record["doc_id"] in SUPERSEDED_DOC_IDS or record["title"] in SUPERSEDED_TITLES:
         return "superseded"
@@ -449,7 +472,7 @@ def chunk_document(record):
     buffer_clause = None
     buffer_section = []
 
-    def emit(text, page_start, page_end, clause=None, section_path=None, is_table=False):
+    def emit(text, page_start, page_end, clause=None, section_path=None, is_table=False, caption=""):
         text = text.strip()
         if len(text) < MIN_CHUNK_CHARS or looks_like_toc(text):
             return
@@ -459,6 +482,7 @@ def chunk_document(record):
             prefix += " " + " > ".join(section_path)
         if clause:
             prefix += f" {clause}"
+        embed_prefix = prefix + ("\n" + caption if caption else "")
         chunks.append(
             {
                 "chunk_id": f"{record['doc_id']}-{len(chunks):04d}",
@@ -478,7 +502,7 @@ def chunk_document(record):
                 "date_basis": record.get("date_basis", ""),
                 "provenance": record.get("provenance", ""),
                 "text": text,
-                "embed_text": (alias + "\n" if alias else "") + prefix + "\n" + text,
+                "embed_text": (alias + "\n" if alias else "") + embed_prefix + "\n" + text,
                 "is_qa": False,
                 "is_generic": record.get("is_generic", False),
                 "is_table": is_table,
@@ -539,13 +563,14 @@ def chunk_document(record):
             continue
 
         if line.startswith(("**表格 ", "|")):
+            caption = table_caption(join_lines(buffer))
             flush()
             table_lines = [line]
             while index < len(lines) and lines[index].strip().startswith(("**表格 ", "|")):
                 table_lines.append(lines[index].strip())
                 index += 1
             for part in split_table("\n".join(table_lines)):
-                emit(part, page, page, None, list(section), is_table=True)
+                emit(part, page, page, None, list(section), is_table=True, caption=caption)
             continue
 
         clause_match = CLAUSE_RE.match(line) if clause_mode else None

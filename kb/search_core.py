@@ -62,6 +62,8 @@ from kb.common import (
     RERANK_PROVIDER,
     RERANK_SHORTLIST,
     RERANK_TRIGGER,
+    SUPERSEDED_ADAPTIVE,
+    SUPERSEDED_MARGIN,
     SUPERSEDED_PENALTY,
     VERSION_FAMILY_PENALTY,
     edition_year,
@@ -821,24 +823,59 @@ class KB:
         year = edition_year(chunk.get("doc_title", ""))
         return family in newest and year is not None and year < newest[family]
 
-    def _superseded_docs(self, items):
-        """Docs explicitly superseded by another doc that is also a candidate.
+    def _superseded_relations(self, items):
+        """{old_doc_id: new_doc_id} for superseded docs whose replacement is a candidate.
 
-        Relation-driven (chunk.superseded_by): the old version yields only when
-        its replacement is present, so temporal queries still retrieve it.
+        Relation-driven (chunk.superseded_by): an old version only counts as
+        superseded here when its replacement is also among the candidates, so
+        temporal queries ("2022 年当时的规定") still retrieve and expand it.
         """
         present = set()
         for chunk_id, _ in items:
             chunk = self.chunk_map.get(chunk_id)
             if chunk:
                 present.add(chunk.get("doc_id"))
-        superseded = set()
+        relations = {}
         for chunk_id, _ in items:
             chunk = self.chunk_map.get(chunk_id) or {}
             target = chunk.get("superseded_by")
-            if target and target in present and target != chunk.get("doc_id"):
-                superseded.add(chunk.get("doc_id"))
-        return superseded
+            old = chunk.get("doc_id")
+            if target and target in present and target != old:
+                relations[old] = target
+        return relations
+
+    def _superseded_penalties(self, items, score_of):
+        """Per-old-doc demotion when its replacement is also a candidate.
+
+        Returns {old_doc_id: penalty}. The base is SUPERSEDED_PENALTY; with
+        SUPERSEDED_ADAPTIVE the penalty grows to put the old doc's best chunk a
+        margin below the replacement's best chunk, so a large rerank gap cannot
+        keep a 废止d version on top. ``score_of`` maps chunk_id -> the score the
+        ordering uses *before* the superseded demotion (generic/edition already
+        applied), or None when the chunk was not scored. Relation-driven: an old
+        doc with no replacement among the candidates is not demoted at all.
+        """
+        relations = self._superseded_relations(items)
+        if not relations:
+            return {}
+        present = {}
+        for chunk_id, _ in items:
+            chunk = self.chunk_map.get(chunk_id)
+            if chunk:
+                present.setdefault(chunk.get("doc_id"), []).append(chunk_id)
+        best = {}
+        for doc_id, chunk_ids in present.items():
+            scores = [score_of(chunk_id) for chunk_id in chunk_ids]
+            scores = [score for score in scores if score is not None]
+            if scores:
+                best[doc_id] = max(scores)
+        penalties = {}
+        for old, new in relations.items():
+            penalty = SUPERSEDED_PENALTY
+            if SUPERSEDED_ADAPTIVE and old in best and new in best:
+                penalty = max(penalty, best[old] - best[new] + SUPERSEDED_MARGIN)
+            penalties[old] = penalty
+        return penalties
 
     def _rerank(self, query, candidates):
         """Return (reordered candidates, rerank scores by chunk_id)."""
@@ -865,16 +902,18 @@ class KB:
             and specific_best >= generic_best - GENERIC_CLOSE_MARGIN
         )
         newest = self._newest_editions(reranked)
-        superseded = self._superseded_docs(reranked)
-
-        def adjusted(item):
+        pre = {}
+        for item in reranked:
             chunk = self.chunk_map.get(item[0]) or {}
             score = self._adjusted_rerank_score(chunk, rerank_scores[item[0]], generic_penalty)
             if self._is_older_edition(chunk, newest):
                 score -= VERSION_FAMILY_PENALTY
-            if chunk.get("doc_id") in superseded:
-                score -= SUPERSEDED_PENALTY
-            return score
+            pre[item[0]] = score
+        penalties = self._superseded_penalties(reranked, pre.get)
+
+        def adjusted(item):
+            chunk = self.chunk_map.get(item[0]) or {}
+            return pre[item[0]] - penalties.get(chunk.get("doc_id"), 0.0)
 
         reranked.sort(key=adjusted, reverse=True)
         others = [item for item in candidates if item[0] not in rerank_scores]
@@ -891,20 +930,22 @@ class KB:
             and specific_best >= generic_best * GENERIC_RRF_FACTOR
         )
         newest = self._newest_editions(candidates)
-        superseded = self._superseded_docs(candidates)
-        if not generic_penalty and not newest and not superseded:
-            return
-
-        def adjusted(item):
+        pre = {}
+        for item in candidates:
             chunk = self.chunk_map.get(item[0]) or {}
             score = item[1]
             if generic_penalty and self._is_generic_id(item[0]):
                 score *= GENERIC_RRF_FACTOR
             if self._is_older_edition(chunk, newest):
                 score -= VERSION_FAMILY_PENALTY
-            if chunk.get("doc_id") in superseded:
-                score -= SUPERSEDED_PENALTY
-            return score
+            pre[item[0]] = score
+        penalties = self._superseded_penalties(candidates, pre.get)
+        if not generic_penalty and not newest and not penalties:
+            return
+
+        def adjusted(item):
+            chunk = self.chunk_map.get(item[0]) or {}
+            return pre[item[0]] - penalties.get(chunk.get("doc_id"), 0.0)
 
         candidates.sort(key=adjusted, reverse=True)
 
@@ -921,6 +962,7 @@ class KB:
             "source_url": chunk.get("source_url", ""),
             "publish_date": chunk.get("publish_date", ""),
             "date_basis": chunk.get("date_basis", ""),
+            "superseded_by": chunk.get("superseded_by", ""),
             "page_count": self.page_count(chunk["doc_id"]),
             "file_url": self.file_url(chunk["doc_id"], chunk.get("page_start") or None),
         }
@@ -1064,7 +1106,16 @@ class KB:
         if rerank_failed and RERANK_FAILURE_POLICY == "refuse":
             no_answer = True
         if EXPAND_ADJACENT > 0:
+            # Do not expand a superseded old version when its replacement is in
+            # play: expansion would re-merge the very obsolete clauses the
+            # demotion pushed down (e.g. a 废止d "每年4-5月" clause). Temporal
+            # queries keep expansion because the replacement is then absent.
+            skip_expand = (
+                set(self._superseded_relations(candidates)) if SUPERSEDED_ADAPTIVE else set()
+            )
             for item in results:
+                if item["doc_id"] in skip_expand:
+                    continue
                 self._expand_adjacent(item, EXPAND_ADJACENT)
         payload = {
             "query": query,

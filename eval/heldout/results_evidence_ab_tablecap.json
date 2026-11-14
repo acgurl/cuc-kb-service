@@ -1,0 +1,400 @@
+{
+ "summary": {
+  "tag": "ab_tablecap",
+  "dataset": "dataset_evidence_v2.json",
+  "total": 6,
+  "answerable_total": 6,
+  "unanswerable_total": 0,
+  "trace_available": true,
+  "degraded": 0,
+  "latency_p50": 739,
+  "latency_p95": 3023,
+  "evidence_hit@1": 3,
+  "verified_chunk_hit@1": 3,
+  "item_coverage@1": 0.5833,
+  "evidence_hit@3": 3,
+  "verified_chunk_hit@3": 3,
+  "item_coverage@3": 0.5833,
+  "evidence_hit@5": 3,
+  "verified_chunk_hit@5": 3,
+  "item_coverage@5": 0.5833,
+  "evidence_hit@10": 4,
+  "verified_chunk_hit@10": 3,
+  "item_coverage@10": 0.75,
+  "false_refuse": [],
+  "false_accept": [],
+  "supported_answer@5": 3,
+  "evidence_loss_stages": {
+   "fusion_pool": 3,
+   "ok": 5
+  },
+  "evidence_recall_sources": {
+   "dense": 4,
+   "both": 4
+  },
+  "by_category": {
+   "cross_clause": {
+    "total": 1,
+    "evidence_hit@5": 0,
+    "answerable": 1
+   },
+   "table": {
+    "total": 5,
+    "evidence_hit@5": 3,
+    "answerable": 5
+   }
+  }
+ },
+ "details": [
+  {
+   "id": "w10",
+   "category": "cross_clause",
+   "query": "文学艺术学学博的学位课程合计至少多少学分，博士候选人资格考试计几学分？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.948,
+   "degraded": false,
+   "took_ms": 3023,
+   "top_title": "中传研字〔2026〕227号_中国传媒大学攻读学术学位博士研究生培养工作规定_2026-08-26",
+   "evidence": [
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0018",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "dense"
+    },
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0025",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.5,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.5,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.5,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.5
+  },
+  {
+   "id": "w18",
+   "category": "table",
+   "query": "国内业务会议、国内管理会议和在华举办国际会议的综合定额合计分别是每人每天多少元？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9234,
+   "degraded": false,
+   "took_ms": 872,
+   "top_title": "中传财字〔2023〕220号_中国传媒大学会议费管理办法（2023年修订）_2023-11-23",
+   "evidence": [
+    {
+     "doc_id": "d31d3cf629924",
+     "chunk_id": "d31d3cf629924-0010",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w19",
+   "category": "table",
+   "query": "到北京出差一类二类三类人员的住宿费限额分别是每人每天多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.7969,
+   "degraded": false,
+   "took_ms": 711,
+   "top_title": "中传财字 [2019] 35号《中国传媒大学差旅费管理办法》.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d26280db90637",
+     "chunk_id": "d26280db90637-0041",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "dense"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w20",
+   "category": "table",
+   "query": "到深圳出差一二三类人员住宿费限额各是多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.806,
+   "degraded": false,
+   "took_ms": 686,
+   "top_title": "中传财字 [2019] 35号《中国传媒大学差旅费管理办法》.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d26280db90637",
+     "chunk_id": "d26280db90637-0045",
+     "first_rank": null,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "dense"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": false,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 0.0
+  },
+  {
+   "id": "w21",
+   "category": "table",
+   "query": "工学学博的学位课程合计最低学分比文学艺术学少多少？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.8047,
+   "degraded": false,
+   "took_ms": 1040,
+   "top_title": "中国传媒大学攻读博士学位研究生培养工作规定",
+   "evidence": [
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0021",
+     "first_rank": 6,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    },
+    {
+     "doc_id": "d51c86b15a10d",
+     "chunk_id": "d51c86b15a10d-0018",
+     "first_rank": 6,
+     "verified_chunk_in_top": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "covered": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": true
+     },
+     "loss_stage": "fusion_pool",
+     "recall_source": "dense"
+    }
+   ],
+   "evidence_hit@1": false,
+   "verified_chunk_hit@1": false,
+   "item_coverage@1": 0.0,
+   "evidence_hit@3": false,
+   "verified_chunk_hit@3": false,
+   "item_coverage@3": 0.0,
+   "evidence_hit@5": false,
+   "verified_chunk_hit@5": false,
+   "item_coverage@5": 0.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": false,
+   "item_coverage@10": 1.0
+  },
+  {
+   "id": "w22",
+   "category": "table",
+   "query": "差旅三类人员出差火车能坐什么席别、轮船飞机能坐什么舱？",
+   "answerable": true,
+   "no_answer": false,
+   "confidence": 0.9443,
+   "degraded": false,
+   "took_ms": 739,
+   "top_title": "中传财字 [2019] 35号《中国传媒大学差旅费管理办法》.docx_view",
+   "evidence": [
+    {
+     "doc_id": "d26280db90637",
+     "chunk_id": "d26280db90637-0010",
+     "first_rank": 1,
+     "verified_chunk_in_top": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "covered": {
+      "1": true,
+      "3": true,
+      "5": true,
+      "10": true
+     },
+     "via_expansion": {
+      "1": false,
+      "3": false,
+      "5": false,
+      "10": false
+     },
+     "loss_stage": "ok",
+     "recall_source": "both"
+    }
+   ],
+   "evidence_hit@1": true,
+   "verified_chunk_hit@1": true,
+   "item_coverage@1": 1.0,
+   "evidence_hit@3": true,
+   "verified_chunk_hit@3": true,
+   "item_coverage@3": 1.0,
+   "evidence_hit@5": true,
+   "verified_chunk_hit@5": true,
+   "item_coverage@5": 1.0,
+   "evidence_hit@10": true,
+   "verified_chunk_hit@10": true,
+   "item_coverage@10": 1.0
+  }
+ ]
+}

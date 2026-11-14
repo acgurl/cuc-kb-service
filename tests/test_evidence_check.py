@@ -2,6 +2,7 @@
 
 import sys
 import unittest
+from unittest import mock
 
 from tests import support
 
@@ -100,6 +101,58 @@ class VerdictTest(unittest.TestCase):
         verdict = evidence_check.parse_verdict("I cannot judge this.")
         self.assertFalse(verdict["correct"])
         self.assertIn("not JSON", verdict["reason"])
+        self.assertTrue(verdict["_parse_failed"])
+
+    def test_truncated_json_is_a_parse_failure(self):
+        verdict = evidence_check.parse_verdict('{"correct": false, "complete": false, "fabricated": false')
+        self.assertTrue(verdict["_parse_failed"])
+
+
+class JudgeRetryTest(unittest.TestCase):
+    def test_clean_verdict_does_not_retry(self):
+        good = '{"correct": true, "complete": true, "fabricated": false, "refused": false, "reason": "ok"}'
+        with mock.patch.object(evidence_check, "llm_chat", return_value=good) as chat:
+            verdict = evidence_check.judge_with_retry("q", {})
+        self.assertEqual(chat.call_count, 1)
+        self.assertTrue(verdict["correct"])
+        self.assertNotIn("_parse_failed", verdict)
+
+    def test_retry_recovers_from_truncation(self):
+        truncated = '{"correct": false, "complete": false, "fabricated": false'
+        good = '{"correct": true, "complete": false, "fabricated": false, "refused": false, "reason": "ok"}'
+        with mock.patch.object(evidence_check, "llm_chat", side_effect=[truncated, good]) as chat:
+            verdict = evidence_check.judge_with_retry("q", {})
+        self.assertEqual(chat.call_count, 2)
+        self.assertTrue(verdict["correct"])
+        self.assertNotIn("_parse_failed", verdict)
+
+    def test_retry_budget_grows_and_nudge_varies(self):
+        truncated = '{"correct": false'
+        with mock.patch.object(evidence_check, "llm_chat", return_value=truncated) as chat:
+            verdict = evidence_check.judge_with_retry("q", {}, attempts=3)
+        self.assertEqual(chat.call_count, 3)
+        budgets = [call.kwargs["max_tokens"] for call in chat.call_args_list]
+        self.assertEqual(budgets, [512, 1024, 1536])
+        users = [call.args[1][-1]["content"] for call in chat.call_args_list]
+        self.assertEqual(len(set(users)), 3)  # distinct nudges -> distinct cache keys
+        self.assertFalse(verdict["correct"])
+        self.assertNotIn("_parse_failed", verdict)
+
+
+class FragmentLabelTest(unittest.TestCase):
+    def test_superseded_fragment_is_flagged(self):
+        r = {"citation": {"doc_title": "某办法（2019）", "page_start": 3, "superseded_by": "newdoc"},
+             "text": "旧内容"}
+        label = evidence_check.fragment_label(r, 1)
+        self.assertIn("废止", label)
+        self.assertIn("旧内容", label)
+
+    def test_current_fragment_not_flagged(self):
+        r = {"citation": {"doc_title": "某办法（2025）", "page_start": 1, "superseded_by": ""},
+             "text": "新内容"}
+        label = evidence_check.fragment_label(r, 2)
+        self.assertNotIn("废止", label)
+        self.assertIn("【片段2】", label)
 
 
 class SummarizeTest(unittest.TestCase):
@@ -140,6 +193,36 @@ class SummarizeTest(unittest.TestCase):
         row["llm"] = {"correct": True, "complete": False, "fabricated": True, "refused": False}
         summary = evidence_check.summarize([row], [100], True)
         self.assertEqual(summary["llm"], {"total": 1, "correct": 1, "complete": 0, "fabricated": 1, "refused": 0})
+
+
+class ExpansionWatchTest(unittest.TestCase):
+    def test_via_expansion_only_when_merged_neighbour(self):
+        merged = result("docA", "a-2", "研究生每年不超过16000元 本专科生每年不超过12000元")
+        merged["expanded_chunks"] = ["a-1"]
+        self.assertTrue(evidence_check.covered_via_expansion(ITEM, [merged]))
+        anchor = result("docA", "a-1", "本专科生每年不超过12000元")
+        anchor["expanded_chunks"] = ["a-2"]
+        self.assertFalse(evidence_check.covered_via_expansion(ITEM, [anchor]))
+        self.assertFalse(evidence_check.covered_via_expansion(ITEM, []))
+        self.assertFalse(evidence_check.covered_via_expansion({"doc_id": "docA", "terms": ["x"]}, [merged]))
+
+    def test_summarize_split_and_version_blocks(self):
+        def entry(chunk_id, rank, via5):
+            return {
+                "doc_id": "docA", "chunk_id": chunk_id, "first_rank": rank,
+                "covered": {str(k): True for k in (1, 3, 5, 10)},
+                "via_expansion": {str(k): via5 for k in (1, 3, 5, 10)},
+            }
+
+        split = SummarizeTest.row(self, "s1", "split_adjacent", True, False, True)
+        split["evidence"] = [entry("a-1", 1, False), entry("a-2", 1, True)]
+        version = SummarizeTest.row(self, "v1", "version_superseded", True, False, True)
+        version["evidence"] = [entry("a-1", 2, False)]
+        version["watch_ranks"] = {"oldDoc": 1}
+        summary = evidence_check.summarize([split, version], [100, 200], True)
+        self.assertEqual(summary["split"], {"cases": 1, "hit@5": 1, "items_total": 2,
+                                            "items_covered_via_expansion@5": 1})
+        self.assertEqual(summary["version"], {"cases": 1, "hit@5": 1, "old_above_new": ["v1"]})
 
 
 if __name__ == "__main__":

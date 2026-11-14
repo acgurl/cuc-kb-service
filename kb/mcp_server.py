@@ -75,6 +75,8 @@ INSTRUCTIONS = (
     "citation.source_url 是文档的原始出处链接（官网页面或 AIHub 文档），非空时一并标注；"
     "citation.publish_date 是文档日期（可能仅到年份，date_basis 说明依据），涉及时效的问题须结合该日期判断，"
     "为空表示日期未标定，不得自行推断；"
+    "citation.superseded_by 非空表示该文件已被新版替代/废止：回答现行制度须优先采用未废止的新版原文，"
+    "不得把已废止文件的内容当作现行规定，仅当用户明确询问历史版本时才引用它并注明已废止；"
     "不要编造原文没有的内容。"
     + RETRY_RULE
     + NO_ANSWER_RULE
@@ -207,6 +209,7 @@ def tool_search(arguments):
                     "source_url": citation.get("source_url", ""),
                     "publish_date": citation.get("publish_date", ""),
                     "date_basis": citation.get("date_basis", ""),
+                    "superseded_by": citation.get("superseded_by", ""),
                     "page_count": citation.get("page_count", 0),
                     "file_url": citation.get("file_url", ""),
                 },
