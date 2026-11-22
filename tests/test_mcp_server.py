@@ -104,6 +104,47 @@ class SearchAnswerModeTest(unittest.TestCase):
         self.assertEqual(payload["top_k"], 3)
         self.assertEqual(payload["doc_type"], ["制度"])
 
+    def test_current_evidence_opt_in_is_forwarded_without_changing_tool_schema(self):
+        with mock.patch.object(mcp_server, "PREFER_CURRENT", True):
+            _, api = self.run_search(search_response(False, 0.91))
+        self.assertIs(api.call_args.args[2]["prefer_current"], True)
+
+    def test_missing_requested_version_does_not_expose_other_years(self):
+        response = {**search_response(True, 0.96), "missing_version_year": "2027"}
+        with mock.patch.object(mcp_server, "PREFER_CURRENT", True):
+            result, _ = self.run_search(response, query="2027年最新通知")
+        self.assertEqual(result["answer_mode"], "none")
+        self.assertEqual(result["results"], [])
+        self.assertIn("2027", result["note"])
+
+    def test_place_answer_is_direct_without_results(self):
+        response = {
+            **search_response(True, 0.2, results=0),
+            "place_answer": True,
+            "places": [{
+                "name": "明德楼（2号楼）",
+                "wgs84": {"lat": 39.911914, "lon": 116.550726},
+                "gcj02": {"lat": 39.913001, "lon": 116.556565},
+                "bd09": {"lat": 39.918879, "lon": 116.563093},
+            }],
+        }
+        result, _ = self.run_search(response)
+        self.assertEqual(result["answer_mode"], "direct")
+        self.assertFalse(result["no_answer"])
+        self.assertTrue(result["place_answer"])
+        self.assertEqual(result["places"][0]["name"], "明德楼（2号楼）")
+        self.assertIn("place_answer=true", result["note"])
+
+    def test_places_are_passed_through_without_overriding_answer_mode(self):
+        response = {
+            **search_response(True, mcp_server.RELATED_MIN_CONFIDENCE - 0.01),
+            "places": [{"name": "图书馆", "wgs84": {"lat": 39.9, "lon": 116.5}}],
+        }
+        result, _ = self.run_search(response)
+        self.assertEqual(result["answer_mode"], "none")
+        self.assertEqual(result["places"][0]["name"], "图书馆")
+        self.assertNotIn("place_answer", result)
+
     def test_related_at_threshold(self):
         threshold = mcp_server.RELATED_MIN_CONFIDENCE
         result, _ = self.run_search(search_response(True, threshold))

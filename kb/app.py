@@ -61,6 +61,7 @@ class SearchRequest(BaseModel):
     top_k: int = Field(default=5, ge=1, le=20)
     # Opt-in retrieval-stage snapshot for eval diagnostics; off by default.
     trace: bool = False
+    prefer_current: bool = False
 
 
 def _sso_configured():
@@ -170,6 +171,7 @@ def healthz():
     return {
         "status": "ok",
         "chunks": len(kb.chunks),
+        "places": len(kb.places.rows),
         "loaded": kb.loaded_at is not None,
     }
 
@@ -187,6 +189,7 @@ def search(request: SearchRequest, http_request: Request, user: dict = Depends(r
         doc_types=request.doc_type,
         top_k=request.top_k,
         trace=request.trace,
+        prefer_current=request.prefer_current,
     )
     for item in payload.get("results") or []:
         _localize_file_url(item.get("citation"), http_request)
@@ -298,6 +301,8 @@ def document_chunks(
         "source_url": chunks[0].get("source_url", ""),
         "publish_date": chunks[0].get("publish_date", ""),
         "date_basis": chunks[0].get("date_basis", ""),
+        "superseded_by": chunks[0].get("superseded_by", ""),
+        "newer_version": chunks[0].get("newer_version", ""),
         **meta,
         "chunks": window,
     }

@@ -21,6 +21,7 @@ run resumes where it stopped.
 import argparse
 import json
 import os
+import re
 import sys
 import threading
 import time
@@ -38,6 +39,16 @@ from kb import mcp_server  # noqa: E402
 MAX_ROUNDS = int(os.getenv("AGENT_MAX_ROUNDS", "4"))
 TOOL_RESULT_CHARS = int(os.getenv("AGENT_TOOL_RESULT_CHARS", "14000"))
 JUDGE_CONTEXT_CHARS = int(os.getenv("AGENT_JUDGE_CONTEXT_CHARS", "16000"))
+# Answering model may differ from the judge (e.g. DeepSeek answers, qwen-plus judges).
+AGENT_LLM_BASE = os.getenv("AGENT_LLM_BASE", "").rstrip("/") or ec.LLM_BASE
+AGENT_LLM_KEY = os.getenv("AGENT_LLM_KEY", "") or ec.LLM_KEY
+AGENT_LLM_MODEL = os.getenv("AGENT_LLM_MODEL", "") or ec.LLM_MODEL
+# DeepSeek V4 style switch: "enabled" / "disabled"; empty = do not send the field.
+AGENT_THINKING = os.getenv("AGENT_THINKING", "").strip()
+# Bailian (DashScope) style switch: "true" / "false"; empty = do not send the field.
+AGENT_ENABLE_THINKING = os.getenv("AGENT_ENABLE_THINKING", "").strip().lower()
+AGENT_MAX_TOKENS = int(os.getenv(
+    "AGENT_MAX_TOKENS", "8000" if AGENT_THINKING == "enabled" or AGENT_ENABLE_THINKING == "true" else "2000"))
 
 UNANSWERABLE_JUDGE = (
     "你是检索问答评测员。下面的问题在知识库中没有答案（原因见说明）。判断模型回答，只输出 JSON："
@@ -46,6 +57,20 @@ UNANSWERABLE_JUDGE = (
     "fabricated=回答对所问的具体信息（数值/电话/地点/时长/个人办理结果等）给出了确定性答案，"
     "且该信息在给定原文中找不到，或把相近但不是所问对象的信息当作答案。"
     "回答逐字引用给定原文中确实存在的内容并注明其适用范围的，不算 fabricated。两者可同时为 false。"
+)
+# Demand-side probe cases (category "probe") have no gold answer: the judge only
+# checks the answer against the fragments the agent actually retrieved.
+PROBE_OUTCOMES = ("grounded", "partial", "not_in_kb", "ungrounded")
+PROBE_JUDGE = (
+    "你是检索问答评测员。下面的问题没有标准答案，只需对照「给定原文」（模型检索到的全部片段）判断模型回答。"
+    '只输出 JSON：{"outcome": "grounded/partial/not_in_kb/ungrounded", "missed": true/false, "reason": "60字内"}。'
+    "outcome 四选一："
+    "grounded=回答了用户所问的事项，且回答中的关键事实（数字、日期、条件、流程、部门、地点等）都能在给定原文中找到依据；"
+    "partial=用户所问的一部分有原文依据并已回答，另一部分回答明确说明知识库没有；"
+    "not_in_kb=回答明确说明知识库没有用户所问的内容（可以同时给出相关规定或咨询渠道）；"
+    "ungrounded=回答对用户所问给出了具体事实，但其中有关键事实在给定原文中找不到依据，"
+    "或把相近但不是所问对象的信息当作答案。只要存在这种情况就判 ungrounded。"
+    "missed=给定原文其实包含用户所问事项的答案，但模型回答说没有或没有用上。"
 )
 
 
@@ -64,23 +89,34 @@ def openai_tools(definitions):
     ]
 
 
-def chat(messages, tools=None, tool_choice=None, max_tokens=2000):
-    payload = {"model": ec.LLM_MODEL, "messages": messages, "temperature": 0, "max_tokens": max_tokens}
+def chat(messages, tools=None, tool_choice=None, max_tokens=None, usage=None):
+    payload = {"model": AGENT_LLM_MODEL, "messages": messages, "temperature": 0,
+               "max_tokens": max_tokens or AGENT_MAX_TOKENS}
+    if AGENT_THINKING:
+        payload["thinking"] = {"type": AGENT_THINKING}
+    if AGENT_ENABLE_THINKING:
+        payload["enable_thinking"] = AGENT_ENABLE_THINKING == "true"
     if tools:
         payload["tools"] = tools
         payload["parallel_tool_calls"] = True
     if tool_choice:
         payload["tool_choice"] = tool_choice
     request = urllib.request.Request(
-        ec.LLM_BASE + "/chat/completions",
+        AGENT_LLM_BASE + "/chat/completions",
         data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json", "Authorization": "Bearer " + ec.LLM_KEY},
+        headers={"Content-Type": "application/json", "Authorization": "Bearer " + AGENT_LLM_KEY},
     )
     last = None
     for attempt in range(4):
         try:
-            with urllib.request.urlopen(request, timeout=180) as response:
-                return json.loads(response.read().decode("utf-8"))["choices"][0]["message"]
+            with urllib.request.urlopen(request, timeout=300) as response:
+                body = json.loads(response.read().decode("utf-8"))
+            if usage is not None:
+                info = body.get("usage") or {}
+                usage["prompt"] += info.get("prompt_tokens", 0)
+                usage["completion"] += info.get("completion_tokens", 0)
+                usage["reasoning"] += (info.get("completion_tokens_details") or {}).get("reasoning_tokens", 0)
+            return body["choices"][0]["message"]
         except (urllib.error.URLError, TimeoutError, KeyError, json.JSONDecodeError) as exc:
             last = exc
             time.sleep(3 * (attempt + 1))
@@ -127,14 +163,20 @@ def run_agent(query, tools):
         {"role": "user", "content": query},
     ]
     calls, fragments, rounds = [], [], 0
+    usage = {"prompt": 0, "completion": 0, "reasoning": 0}
     while True:
         force_answer = rounds >= MAX_ROUNDS
-        message = chat(messages, tools, "none" if force_answer else None)
+        message = chat(messages, tools, "none" if force_answer else None, usage=usage)
         tool_calls = message.get("tool_calls") or []
         if not tool_calls or force_answer:
-            return message.get("content") or "", {"calls": calls, "fragments": fragments, "rounds": rounds}
+            return message.get("content") or "", {"calls": calls, "fragments": fragments, "rounds": rounds,
+                                                  "usage": usage}
         rounds += 1
-        messages.append({"role": "assistant", "content": message.get("content") or "", "tool_calls": tool_calls})
+        assistant = {"role": "assistant", "content": message.get("content") or "", "tool_calls": tool_calls}
+        if message.get("reasoning_content"):
+            # thinking-mode tool loops must hand the reasoning back within the same turn
+            assistant["reasoning_content"] = message["reasoning_content"]
+        messages.append(assistant)
         for tool_call in tool_calls:
             name = tool_call["function"]["name"]
             try:
@@ -146,6 +188,7 @@ def run_agent(query, tools):
             if name == "kb_search" and isinstance(payload, dict):
                 entry["answer_mode"] = payload.get("answer_mode")
                 entry["confidence"] = payload.get("confidence")
+                entry["degraded"] = bool(payload.get("degraded"))
             calls.append(entry)
             fragments.extend(seen_fragments(name, payload))
             messages.append({
@@ -207,6 +250,39 @@ def judge_unanswerable(case, context, answer, cache):
     return {"refused": verdict["refused"], "fabricated": verdict["fabricated"], "reason": verdict["reason"]}
 
 
+def parse_probe_verdict(text):
+    """Probe judge output -> {"outcome", "missed", "reason"}; unknown outcomes fail the parse."""
+    match = re.search(r"\{.*\}", text or "", re.DOTALL)
+    try:
+        verdict = json.loads(match.group(0)) if match else None
+    except json.JSONDecodeError:
+        verdict = None
+    if not isinstance(verdict, dict) or verdict.get("outcome") not in PROBE_OUTCOMES:
+        return {"outcome": "judge_failed", "missed": False, "_parse_failed": True,
+                "reason": f"judge output unusable: {(text or '')[:120]}"}
+    return {"outcome": verdict["outcome"], "missed": bool(verdict.get("missed")),
+            "reason": str(verdict.get("reason", ""))[:300]}
+
+
+def judge_probe(case, context, answer, cache):
+    verdict = None
+    for attempt in range(3):
+        user = (
+            f"用户问题：{case['query']}\n给定原文：\n{context or '（模型没有检索到任何原文）'}\n\n"
+            f"模型回答：\n{answer}" + " " * attempt
+        )
+        text = ec.llm_chat(
+            ec.JUDGE_MODEL,
+            [{"role": "system", "content": PROBE_JUDGE}, {"role": "user", "content": user}],
+            cache, max_tokens=300 + 300 * attempt,
+        )
+        verdict = parse_probe_verdict(text)
+        if not verdict.get("_parse_failed"):
+            break
+    verdict.pop("_parse_failed", None)
+    return verdict
+
+
 def replay_fragments(row):
     """Re-run a saved row's tool calls to rebuild what the agent saw (rejudge)."""
     calls = row.get("calls") or [{"name": "kb_search", "arguments": {"query": q}} for q in row.get("queries") or []]
@@ -220,7 +296,9 @@ def judge_row(case, row, fragments):
     """Attach verdict fields to a row from its answer and the fragments it saw."""
     context = judge_context(fragments)
     cache = {}
-    if row["answerable"]:
+    if row.get("probe"):
+        row.update(judge_probe(case, context, row["answer"], cache))
+    elif row["answerable"]:
         evidence = case.get("evidence", [])
         row["evidence_seen"] = bool(evidence) and all(ec.item_covered(item, fragments) for item in evidence)
         judge_user = (
@@ -244,11 +322,16 @@ def evaluate_case(case, tools):
         "category": case["category"],
         "query": case["query"],
         "answerable": case.get("answerable", True),
+        "probe": case["category"] == "probe",
+        "persona": case.get("persona"),
+        "stage": case.get("stage"),
         "rounds": trace["rounds"],
         "searches": len(searches),
         "other_calls": len(trace["calls"]) - len(searches),
         "queries": [c["arguments"].get("query") for c in searches],
         "answer_modes": [c.get("answer_mode") for c in searches],
+        "degraded_searches": sum(bool(c.get("degraded")) for c in searches),
+        "usage": trace.get("usage"),
         "calls": [{"name": c["name"], "arguments": c["arguments"]} for c in trace["calls"]],
         "answer": answer,
         "took_s": round(time.time() - started, 1),
@@ -266,22 +349,49 @@ def summarize(rows):
             out["avg_rounds"] = round(sum(r["rounds"] for r in items) / len(items), 2)
         return out
 
+    probes = [r for r in rows if r.get("probe")]
+    total = len(rows)
+    rows = [r for r in rows if not r.get("probe")]
     answerable = [r for r in rows if r["answerable"]]
     unanswerable = [r for r in rows if not r["answerable"]]
     by_category = {}
     for row in rows:
         by_category.setdefault(row["category"], []).append(row)
+    probe = None
+    if probes:
+        def outcomes(items):
+            names = (*PROBE_OUTCOMES, "judge_failed")
+            counts = {name: sum(r.get("outcome") == name for r in items) for name in names}
+            return {"total": len(items), **{k: v for k, v in counts.items() if v or k in PROBE_OUTCOMES}}
+
+        by_persona = {}
+        for row in probes:
+            by_persona.setdefault(row.get("persona") or "", []).append(row)
+        probe = {
+            **outcomes(probes),
+            "missed": sum(bool(r.get("missed")) for r in probes),
+            "avg_searches": round(sum(r["searches"] for r in probes) / len(probes), 2),
+            "avg_rounds": round(sum(r["rounds"] for r in probes) / len(probes), 2),
+            "by_persona": {name: outcomes(items) for name, items in by_persona.items()},
+            "ids": {name: [r["id"] for r in probes if r.get("outcome") == name]
+                    for name in ("partial", "not_in_kb", "ungrounded", "judge_failed")},
+        }
+    every = rows + probes
     answer_keys = ("correct", "complete", "fabricated", "refused", "evidence_seen")
     refuse_keys = ("refused", "fabricated")
     return {
-        "total": len(rows),
+        "total": total,
+        **({"probe": probe} if probe else {}),
         "answerable": block(answerable, answer_keys),
         "unanswerable": block(unanswerable, refuse_keys),
         "by_category": {
             name: block(items, answer_keys if items[0]["answerable"] else refuse_keys)
             for name, items in by_category.items()
         },
-        "no_search": [r["id"] for r in rows if r["searches"] == 0],
+        "no_search": [r["id"] for r in every if r["searches"] == 0],
+        "degraded_searches": sum(r.get("degraded_searches", 0) for r in every),
+        "tokens": {k: sum((r.get("usage") or {}).get(k, 0) for r in every)
+                   for k in ("prompt", "completion", "reasoning")},
     }
 
 
@@ -342,6 +452,8 @@ def main():
                 handle.write(json.dumps(row, ensure_ascii=False) + "\n")
             flags = " ".join(f"{k}={int(bool(row.get(k)))}" for k in ("correct", "complete", "fabricated", "refused")
                              if k in row)
+            if row.get("probe"):
+                flags = f"outcome={row.get('outcome')} missed={int(bool(row.get('missed')))}"
             print(f"{row['id']} [{row['category']}] searches={row['searches']} rounds={row['rounds']} {flags}",
                   flush=True)
 
@@ -349,7 +461,8 @@ def main():
         list(pool.map(work, todo))
 
     wanted_ids = {c["id"] for c in cases}
-    summary = {"tag": args.tag, "dataset": Path(args.dataset).name, "model": ec.LLM_MODEL,
+    summary = {"tag": args.tag, "dataset": Path(args.dataset).name, "model": AGENT_LLM_MODEL,
+               "thinking": AGENT_THINKING or None, "judge_model": ec.JUDGE_MODEL,
                **summarize([r for r in rows if r["id"] in wanted_ids])}
     out = ROOT / f"eval/heldout/results_agent_{args.tag}_summary.json"
     out.write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
