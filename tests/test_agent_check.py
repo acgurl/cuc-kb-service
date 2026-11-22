@@ -116,5 +116,50 @@ class SummaryTest(unittest.TestCase):
         self.assertEqual(summary["no_search"], ["b"])
 
 
+
+class ProbeTest(unittest.TestCase):
+    def test_parse_probe_verdict_accepts_known_outcomes_only(self):
+        ok = agent_check.parse_probe_verdict('好的 {"outcome": "not_in_kb", "missed": true, "reason": "库里没有"}')
+        self.assertEqual(ok, {"outcome": "not_in_kb", "missed": True, "reason": "库里没有"})
+        for bad in ('{"outcome": "maybe"}', "不是 JSON", '{"outcome": ', None):
+            verdict = agent_check.parse_probe_verdict(bad)
+            self.assertEqual(verdict["outcome"], "judge_failed")
+            self.assertTrue(verdict["_parse_failed"])
+
+    def test_probe_rows_use_the_probe_judge_and_retry_on_bad_output(self):
+        row = {"probe": True, "answerable": True, "answer": "知识库中没有相关内容"}
+        replies = ["乱码", '{"outcome": "not_in_kb", "missed": false, "reason": "明确说明没有"}']
+        with mock.patch.object(agent_check.ec, "llm_chat", side_effect=replies) as llm:
+            judged = agent_check.judge_row({"query": "快递在哪取", "category": "probe"}, row, [])
+        self.assertEqual(llm.call_count, 2)
+        self.assertEqual(judged["outcome"], "not_in_kb")
+        self.assertNotIn("correct", judged)
+        self.assertNotIn("_parse_failed", judged)
+        self.assertIn("没有检索到任何原文", llm.call_args_list[0].args[1][1]["content"])
+
+    def test_summary_reports_probe_outcomes_apart_from_gold_cases(self):
+        base = {"searches": 3, "rounds": 1, "usage": {"prompt": 1, "completion": 1, "reasoning": 0}}
+        rows = [
+            {**base, "id": "p001", "category": "probe", "probe": True, "answerable": True,
+             "persona": "研究生", "outcome": "grounded", "missed": False},
+            {**base, "id": "p002", "category": "probe", "probe": True, "answerable": True,
+             "persona": "研究生", "outcome": "not_in_kb", "missed": True},
+            {**base, "id": "p003", "category": "probe", "probe": True, "answerable": True,
+             "persona": "教职工", "outcome": "ungrounded", "missed": False},
+            {**base, "id": "g1", "category": "table", "answerable": True, "correct": True},
+        ]
+        summary = agent_check.summarize(rows)
+        self.assertEqual(summary["total"], 4)
+        self.assertEqual(summary["answerable"]["total"], 1)
+        self.assertNotIn("probe", summary["by_category"])
+        self.assertEqual(summary["tokens"]["prompt"], 4)
+        probe = summary["probe"]
+        self.assertEqual((probe["total"], probe["grounded"], probe["not_in_kb"], probe["ungrounded"]), (3, 1, 1, 1))
+        self.assertEqual(probe["missed"], 1)
+        self.assertEqual(probe["by_persona"]["研究生"]["total"], 2)
+        self.assertEqual(probe["ids"]["ungrounded"], ["p003"])
+        self.assertNotIn("probe", agent_check.summarize(rows[3:]))
+
+
 if __name__ == "__main__":
     unittest.main()

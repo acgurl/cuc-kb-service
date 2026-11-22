@@ -14,6 +14,7 @@ from fastembed.rerank.cross_encoder import TextCrossEncoder
 from qdrant_client.models import FieldCondition, Filter, MatchAny, MatchValue
 from rank_bm25 import BM25Okapi
 
+from kb.clause_updates import ClauseUpdates
 from kb.common import (
     ANSWER_SPAN_WINDOW,
     ANSWERABILITY_MAX_CONF,
@@ -74,6 +75,7 @@ from kb.common import (
     qdrant_client,
     version_family,
 )
+from kb.places import PlaceIndex
 
 DOC_NO_RE = re.compile(r"[〔\[（(]\s*\d{4}\s*[〕\]）)]\s*\d+\s*号")
 
@@ -207,7 +209,33 @@ def is_generic_chunk(chunk) -> bool:
 
 
 QUERY_YEAR_RE = re.compile(r"(?<!\d)(?:19|20)\d{2}(?!\d)")
+EDITION_YEAR_RE = re.compile(r"(?<!\d)((?:19|20)\d{2})\s*(?:年|版|(?:试行|修订|修正)版?)")
+IMPLICIT_EVENT_HISTORY_RE = re.compile(r"\d{1,2}\s*月\s*\d{1,2}\s*[日号].{0,28}(?:那届|该届|那次|当天)")
+CURRENT_INTENT_RE = re.compile(r"现行|最新版|最新一版|最新一期|现在|目前|当前")
+COMPARISON_RE = re.compile(
+    r"两版|新旧|旧版.*(?:新版|现行)|(?:新版|现行).*旧版|(?:之前|以前).*(?:对比|比较|区别|不同)"
+)
 SHINGLE_SIZE = 5
+
+
+def names_old_edition(query, chunk, historical_year=None):
+    doc_nos = {normalize(m.group()) for m in DOC_NO_RE.finditer(chunk.get("doc_no") or "")}
+    if not doc_nos:
+        doc_nos = {normalize(m.group()) for m in DOC_NO_RE.finditer(chunk.get("doc_title") or "")}
+    requested = {normalize(m.group()) for m in DOC_NO_RE.finditer(query)}
+    if requested:
+        return bool(requested & doc_nos)
+    if CURRENT_INTENT_RE.search(query) and not COMPARISON_RE.search(query):
+        return False
+    years = set(EDITION_YEAR_RE.findall(query))
+    old_year = historical_year or str(chunk.get("publish_date") or "")[:4]
+    # A document may have been republished well after its revision. Preserve
+    # candidates when the question expressly asks about a historical revision.
+    historical_intent = COMPARISON_RE.search(query) or re.search(
+        r"当时|彼时|曾经|(?:19|20)\d{2}\s*年?\s*(?:修正|颁布)", query
+    ) or (chunk.get("newer_version") and IMPLICIT_EVENT_HISTORY_RE.search(query))
+    return bool(historical_intent or old_year in years or (not historical_year and
+                years & set(EDITION_YEAR_RE.findall(chunk.get("doc_title") or ""))))
 
 
 def shingles(text):
@@ -479,6 +507,8 @@ class KB:
         self.bm25_masks = None
         self._embed_cache = OrderedDict()
         self._embed_cache_lock = threading.Lock()
+        self.places = PlaceIndex()
+        self.clause_updates = ClauseUpdates.load()
 
     # ---- loading -----------------------------------------------------------
 
@@ -486,6 +516,8 @@ class KB:
         started = time.time()
         self._load_chunks()
         self._load_doc_meta()
+        place_count = self.places.load(DATA_DIR / "places.json")
+        print(f"places loaded: {place_count}", flush=True)
 
         tokenized = [jieba.lcut_for_search(chunk["embed_text"]) for chunk in self.chunks]
         self.bm25 = BM25Okapi(tokenized) if tokenized else None
@@ -696,6 +728,15 @@ class KB:
             for term, (indexes, freqs) in postings.items()
         }
         self.bm25_doc_len = np.asarray(self.bm25.doc_len)
+        version_targets = {
+            target for chunk in self.chunks
+            for target in (chunk.get("superseded_by"), chunk.get("newer_version")) if target
+        }
+        self.reissued_targets = {chunk["newer_version"] for chunk in self.chunks if chunk.get("newer_version")}
+        self.version_doc_indexes = {doc_id: [] for doc_id in version_targets}
+        for index, chunk in enumerate(self.chunks):
+            if chunk["doc_id"] in version_targets:
+                self.version_doc_indexes[chunk["doc_id"]].append(index)
         size = len(self.chunks)
         assistants = sorted(
             {
@@ -838,7 +879,7 @@ class KB:
         year = edition_year(chunk.get("doc_title", ""))
         return family in newest and year is not None and year < newest[family]
 
-    def _superseded_relations(self, items, query=""):
+    def _superseded_relations(self, items, query="", prefer_current=False):
         """{old_doc_id: new_doc_id} for superseded docs whose replacement is a candidate.
 
         Relation-driven (chunk.superseded_by): an old version only counts as
@@ -857,16 +898,18 @@ class KB:
         for chunk_id, _ in items:
             chunk = self.chunk_map.get(chunk_id) or {}
             target = chunk.get("superseded_by")
-            if not target and NEWER_VERSION and chunk.get("newer_version"):
+            if not target and NEWER_VERSION:
                 year = str(chunk.get("publish_date") or "")[:4]
-                if not (year and year in query_years):
+                if prefer_current or not (year and year in query_years):
                     target = chunk.get("newer_version")
+            if prefer_current and target and names_old_edition(query, chunk):
+                continue
             old = chunk.get("doc_id")
             if target and target in present and target != old:
                 relations[old] = target
         return relations
 
-    def _superseded_penalties(self, items, score_of, query=""):
+    def _superseded_penalties(self, items, score_of, query="", prefer_current=False):
         """Per-old-doc demotion when its replacement is also a candidate.
 
         Returns {old_doc_id: penalty}. The base is SUPERSEDED_PENALTY; with
@@ -877,7 +920,7 @@ class KB:
         applied), or None when the chunk was not scored. Relation-driven: an old
         doc with no replacement among the candidates is not demoted at all.
         """
-        relations = self._superseded_relations(items, query)
+        relations = self._superseded_relations(items, query, prefer_current)
         if not relations:
             return {}
         present = {}
@@ -899,10 +942,67 @@ class KB:
             penalties[old] = penalty
         return penalties
 
-    def _rerank(self, query, candidates):
+    @staticmethod
+    def _keep_earlier_edition(chunk, query, current_editions, latest_only):
+        target = chunk.get("newer_version")
+        return not target or names_old_edition(query, chunk) or (
+            target not in current_editions and not latest_only
+        )
+
+    def _linked_version_candidates(self, candidates, query, assistant, doc_types):
+        """Probe a few linked documents locally, then let the normal reranker score them."""
+        present = {self.chunk_map[key]["doc_id"] for key, _ in candidates}
+        linked = {}
+        for chunk_id, score in candidates[:12]:
+            chunk = self.chunk_map[chunk_id]
+            target = chunk.get("superseded_by") or (chunk.get("newer_version") if NEWER_VERSION else None)
+            if target and target not in present and target not in linked and not names_old_edition(query, chunk):
+                linked[target] = score
+        if not linked or not self.bm25 or self.bm25_postings is None:
+            return []
+
+        # Reuse BM25, but examine only chunks in the explicitly linked documents.
+        scores = self._bm25_scores(jieba.lcut_for_search(query))
+        matches = []
+        for doc_id, source_score in list(linked.items())[:3]:
+            entries = []
+            for index in self.version_doc_indexes.get(doc_id, ()):
+                chunk = self.chunks[index]
+                if scores[index] > 0 and self._matches(chunk, assistant, doc_types) and not chunk.get("superseded_by"):
+                    entries.append((chunk["chunk_id"], scores[index]))
+            matches.extend((key, source_score) for key, _ in sorted(entries, key=lambda entry: -entry[1])[:2])
+        return matches
+
+    def _current_candidates(self, candidates, query, assistant, doc_types):
+        """Remove repealed evidence and offer verified updates to the same rerank call."""
+        selected = {}
+        for chunk_id, score in candidates:
+            chunk = self.chunk_map[chunk_id]
+            if chunk.get("superseded_by") and not names_old_edition(query, chunk):
+                continue
+            rule = self.clause_updates.match(chunk)
+            if rule and not names_old_edition(query, chunk, rule[2]):
+                new = self.chunk_map.get(rule[1])
+                if not rule[0].sub("", chunk["text"]).strip():
+                    if new and self._matches(new, assistant, doc_types):
+                        selected[rule[1]] = max(score, selected.get(rule[1], 0.0))
+                    continue
+            selected[chunk_id] = max(score, selected.get(chunk_id, 0.0))
+        for chunk_id, score in self._linked_version_candidates(candidates, query, assistant, doc_types):
+            selected.setdefault(chunk_id, score)
+        return sorted(selected.items(), key=lambda item: item[1], reverse=True)[:len(candidates)]
+
+    def _rerank(self, query, candidates, text_of=None):
         """Return (reordered candidates, rerank scores by chunk_id)."""
-        shortlist = candidates[: max(RERANK_SHORTLIST, CANDIDATE_LIMIT)]
-        documents = [self.chunk_map[chunk_id]["embed_text"] for chunk_id, _ in shortlist]
+        # Rerank only the configured shortlist. The previous max() silently
+        # expanded a 20-document setting to the full 40-candidate limit.
+        shortlist = candidates[: min(RERANK_SHORTLIST, len(candidates), CANDIDATE_LIMIT)]
+        documents = []
+        for chunk_id, _ in shortlist:
+            chunk = self.chunk_map[chunk_id]
+            text = text_of(chunk) if text_of else chunk["text"]
+            documents.append(chunk["embed_text"] if text == chunk["text"] else
+                             chunk["embed_text"].partition("\n")[0] + "\n" + text)
         scores = self._rerank_scores(query, documents)
         if not scores:
             return candidates, {}
@@ -931,7 +1031,7 @@ class KB:
             if self._is_older_edition(chunk, newest):
                 score -= VERSION_FAMILY_PENALTY
             pre[item[0]] = score
-        penalties = self._superseded_penalties(reranked, pre.get, query)
+        penalties = self._superseded_penalties(reranked, pre.get, query, bool(text_of))
 
         def adjusted(item):
             chunk = self.chunk_map.get(item[0]) or {}
@@ -941,7 +1041,7 @@ class KB:
         others = [item for item in candidates if item[0] not in rerank_scores]
         return reranked + others, rerank_scores
 
-    def _demote_generic_rrf(self, candidates, query=""):
+    def _demote_generic_rrf(self, candidates, query="", prefer_current=False):
         """Without rerank, down-weight generic compilations and older editions."""
         generic_best, specific_best = best_split(
             candidates, lambda item: self._is_generic_id(item[0]), lambda item: item[1]
@@ -961,7 +1061,7 @@ class KB:
             if self._is_older_edition(chunk, newest):
                 score -= VERSION_FAMILY_PENALTY
             pre[item[0]] = score
-        penalties = self._superseded_penalties(candidates, pre.get, query)
+        penalties = self._superseded_penalties(candidates, pre.get, query, prefer_current)
         if not generic_penalty and not newest and not penalties:
             return
 
@@ -990,7 +1090,7 @@ class KB:
             "file_url": self.file_url(chunk["doc_id"], chunk.get("page_start") or None),
         }
 
-    def _expand_adjacent(self, result, n):
+    def _expand_adjacent(self, result, n, text_of=None):
         """Merge up to n active neighbour chunks into a result's text (read aid).
 
         Neighbours are the document-order chunks at sequence ±1..n of the anchor
@@ -1010,12 +1110,12 @@ class KB:
         for offset in range(1, n + 1):
             for signed in (-offset, offset):
                 neighbor = self.chunk_map.get(f"{doc_id}-{center + signed:04d}")
-                if neighbor and neighbor.get("status") == "active":
+                if neighbor and neighbor.get("status") == "active" and (not text_of or text_of(neighbor)):
                     parts.append((center + signed, neighbor))
         if len(parts) == 1:
             return
         parts.sort(key=lambda item: item[0])
-        result["text"] = "\n".join(chunk.get("text", "") for _, chunk in parts)
+        result["text"] = "\n".join(text_of(chunk) if text_of else chunk.get("text", "") for _, chunk in parts)
         result["expanded_chunks"] = [c["chunk_id"] for _, c in parts if c["chunk_id"] != chunk_id]
         result["expanded"] = True
         starts = [int(c.get("page_start") or 0) for _, c in parts]
@@ -1078,7 +1178,7 @@ class KB:
 
     # ---- public API --------------------------------------------------------
 
-    def search(self, query, assistant=None, doc_types=None, top_k=5, trace=False):
+    def search(self, query, assistant=None, doc_types=None, top_k=5, trace=False, prefer_current=False):
         started = time.time()
         query = (query or "").strip()
         if not query:
@@ -1101,6 +1201,13 @@ class KB:
         self._apply_fusion_bonuses(query, fused)
 
         candidates = self._select_candidates(fused)
+        text_of = None
+        if prefer_current:
+            def text_of(chunk):
+                return self.clause_updates.text(
+                    chunk, lambda item, year: names_old_edition(query, item, year)
+                )
+            candidates = self._current_candidates(candidates, query, assistant, doc_types)
         selected_ids = [chunk_id for chunk_id, _ in candidates] if trace else []
         rerank_scores = {}
         rerank_failed = False
@@ -1112,12 +1219,29 @@ class KB:
             and self._should_rerank(query, best_dense_all)
         ):
             rerank_triggered = True
-            candidates, rerank_scores = self._rerank(query, candidates)
+            candidates, rerank_scores = self._rerank(query, candidates, text_of)
             # The rerank was needed but nothing scored: the hybrid floor below
             # is not calibrated for this, so flag the response as degraded.
             rerank_failed = not rerank_scores
         if not rerank_scores and candidates:
-            self._demote_generic_rrf(candidates, query)
+            self._demote_generic_rrf(candidates, query, prefer_current)
+
+        omitted_targets = set()
+        latest_only = False
+        if prefer_current and NEWER_VERSION:
+            current_editions = {
+                self.chunk_map[key]["doc_id"] for key, _ in candidates
+                if rerank_scores.get(key, 0) >= RERANK_MIN_SCORE
+            }
+            latest_only = "最新" in query and not COMPARISON_RE.search(query)
+            retained = []
+            for item in candidates:
+                chunk = self.chunk_map[item[0]]
+                if self._keep_earlier_edition(chunk, query, current_editions, latest_only):
+                    retained.append(item)
+                else:
+                    omitted_targets.add(chunk["newer_version"])
+            candidates = retained
 
         results = []
         kept_shingles = []
@@ -1128,7 +1252,7 @@ class KB:
             if not chunk:
                 continue
             if DEDUP_NEAR:
-                current = shingles(chunk.get("text", ""))
+                current = shingles(text_of(chunk) if text_of else chunk.get("text", ""))
                 twin = self._near_duplicate_of(current, kept_shingles)
                 if twin is not None:
                     results[twin].setdefault("duplicates", []).append(
@@ -1145,7 +1269,7 @@ class KB:
                 {
                     "chunk_id": chunk_id,
                     "doc_id": chunk["doc_id"],
-                    "text": chunk["text"],
+                    "text": text_of(chunk) if text_of else chunk["text"],
                     "score": round(score, 6),
                     "dense_score": round(dense_scores.get(chunk_id, 0.0), 4),
                     "bm25_score": round(bm25_scores.get(chunk_id, 0.0), 4),
@@ -1157,6 +1281,20 @@ class KB:
             )
 
         no_answer, confidence, answerability = self._judge_answer(query, results)
+        requested_years = set(EDITION_YEAR_RE.findall(query)) if latest_only else set()
+        missing_version_year = False
+        if len(requested_years) == 1 and results:
+            head = self.chunk_map[results[0]["chunk_id"]]
+            family_id = head.get("newer_version") or head["doc_id"]
+            family_chunks = [self.chunk_map[item["chunk_id"]] for item in results
+                             if (self.chunk_map[item["chunk_id"]].get("newer_version") or item["doc_id"]) == family_id]
+            if family_id in self.reissued_targets and not any(
+                requested_years & (set(EDITION_YEAR_RE.findall(chunk.get("doc_title") or ""))
+                                   or {str(chunk.get("publish_date") or "")[:4]})
+                for chunk in family_chunks
+            ):
+                no_answer = True
+                missing_version_year = True
         if rerank_failed and RERANK_FAILURE_POLICY == "refuse":
             no_answer = True
         if EXPAND_ADJACENT > 0:
@@ -1165,14 +1303,14 @@ class KB:
             # demotion pushed down (e.g. a 废止d "每年4-5月" clause). Temporal
             # queries keep expansion because the replacement is then absent.
             skip_expand = (
-                set(self._superseded_relations(candidates, query))
+                set(self._superseded_relations(candidates, query, prefer_current))
                 if SUPERSEDED_ADAPTIVE
                 else set()
             )
             for item in results:
                 if item["doc_id"] in skip_expand:
                     continue
-                self._expand_adjacent(item, EXPAND_ADJACENT)
+                self._expand_adjacent(item, EXPAND_ADJACENT, text_of)
         payload = {
             "query": query,
             "results": results,
@@ -1183,6 +1321,24 @@ class KB:
             "degraded_reason": "rerank_unavailable" if rerank_failed else None,
             "took_ms": int((time.time() - started) * 1000),
         }
+        # A low scoring, linked newer edition can still have relevant text.
+        # Surface that distinction without inheriting the discarded old score.
+        if missing_version_year:
+            payload["missing_version_year"] = next(iter(requested_years))
+        elif no_answer and not rerank_failed:
+            review = [item["chunk_id"] for item in results
+                      if item["doc_id"] in omitted_targets and item["rerank_score"] is not None]
+            if review:
+                payload["version_review"] = review
+        # Structured place layer: a query that names a known campus place
+        # carries its coordinates even when the text corpus only has rules.
+        place_matches = self.places.search(query)
+        if place_matches:
+            payload["places"] = place_matches
+            if self.places.is_location_intent(query):
+                payload["place_answer"] = True
+                payload["no_answer"] = False
+                payload["confidence"] = max(payload["confidence"], 0.99)
         if trace:
             # Opt-in stage snapshot for eval diagnostics (eval/evidence_check.py);
             # never requested by the agent-facing tools, zero cost when off.
@@ -1216,6 +1372,7 @@ class KB:
             "model": EMBED_MODEL,
             "chunks": len(self.chunks),
             "documents": len(self.doc_chunks),
+            "places": len(self.places.rows),
             "assistants": assistants,
             "doc_types": doc_types,
         }

@@ -17,6 +17,16 @@ BASE_URL = os.getenv("KB_API_URL", "http://127.0.0.1:8000").strip().rstrip("/")
 TIMEOUT = float(os.getenv("KB_TIMEOUT", "10").strip() or "10")
 DEFAULT_ASSISTANT = os.getenv("KB_DEFAULT_ASSISTANT", "").strip()
 DEFAULT_TOP_K = int(os.getenv("KB_DEFAULT_TOP_K", "5").strip() or "5")
+PREFER_CURRENT = os.getenv("KB_MCP_PREFER_CURRENT", "0").strip().lower() in {"1", "true", "yes", "on"}
+VERSION_RULE = (
+    "【区分版本】并行检索时每个问法都保留用户指定的年份、文号、旧版对比等限制。"
+    "合并结果时先核对适用对象、学年和条款：不要把 superseded_by 标记的旧文当现行，"
+    "也不要把 newer_version 标记的旧一期当最新一期；最新一期未找到就说明未核实。"
+    "明确指定历史版本或比较时，可引用对应旧文并标明版本。不要只凭发布日期推断整份文件废止，"
+    "也不要把上一届活动通知当成下一届安排。"
+    "若返回 version_review，优先核对标记的新版本原文；可以报告原文明示了什么，"
+    "也可以说这份原文没有单列某项，但不能据此推断不符合条件或所问年份已发布。"
+) if PREFER_CURRENT else ""
 # Below the API's no_answer threshold but at or above this confidence, results are
 # usually related rules without the asked fact (eval/ab/report_na1.md); the agent may
 # answer partially from them. Below it, results are treated as unrelated.
@@ -74,6 +84,15 @@ NO_ANSWER_RULE = (
     "查询个人状态（余额、成绩、审批进度、分配结果等）时知识库无法给出个人数据，"
     "最多给出原文中的查询或办理渠道。"
 )
+PLACE_RULE = (
+    "kb_search 返回的 places 是校内地点结构化坐标（wgs84 / gcj02 / bd09 三套）。"
+    "用户问“X 在哪/怎么走/位置/哪个楼/附近”等地点问题时，若 places 非空，直接按 places 回答："
+    "先写地点名称与所在楼/位置说明（detail、room、note），再给坐标；"
+    "高德/腾讯地图用 gcj02，OpenStreetMap/Leaflet 用 wgs84，百度地图用 bd09。"
+    "place_answer=true 表示地点层已直接回答，即使 results 为空也可作答，不要因检索结果为空而拒答。"
+    "坐标只能来自 places，不得凭记忆编造；同名多条时按 campus、category、note 区分，"
+    "必要时说明有多个地点并列出各自坐标。places 为空或用户问的不是地点时，仍按原文回答。"
+)
 INSTRUCTIONS = (
     "与本校有关的问题先调用 kb_search 再作答；问候、寒暄、自我介绍、"
     "询问助手能力、闲聊和与学校无关的通用知识问题不要调用任何工具。"
@@ -90,8 +109,10 @@ INSTRUCTIONS = (
     "results[].duplicates 列出内容相同、已合并展示的其他文档，可一并作为出处；"
     "不要编造原文没有的内容。"
     + SCOPE_RULE
+    + VERSION_RULE
     + RETRY_RULE
     + NO_ANSWER_RULE
+    + PLACE_RULE
     + QUERY_TERMS_RULE
     + REFERENCE_RULE
 )
@@ -191,6 +212,8 @@ def tool_search(arguments):
         "query": query,
         "top_k": as_int(arguments.get("top_k"), "top_k", 1, 20, DEFAULT_TOP_K),
     }
+    if PREFER_CURRENT:
+        payload["prefer_current"] = True
     assistant = str(arguments.get("assistant") or DEFAULT_ASSISTANT).strip()
     if assistant:
         payload["assistant"] = assistant
@@ -210,6 +233,7 @@ def tool_search(arguments):
                 "score": item.get("score"),
                 "rerank_score": item.get("rerank_score"),
                 "duplicates": item.get("duplicates") or [],
+                **({"expanded_chunks": item["expanded_chunks"]} if item.get("expanded_chunks") else {}),
                 "citation": {
                     "doc_title": citation.get("doc_title", ""),
                     "doc_no": citation.get("doc_no", ""),
@@ -233,13 +257,24 @@ def tool_search(arguments):
     no_answer = bool(data.get("no_answer"))
     confidence = data.get("confidence")
     degraded = bool(data.get("degraded"))
-    if not no_answer:
+    place_answer = bool(data.get("place_answer"))
+    missing_version_year = data.get("missing_version_year") if PREFER_CURRENT else None
+    review_ids = set(data.get("version_review") or []) if PREFER_CURRENT else set()
+    version_review = [item["chunk_id"] for item in results if item["chunk_id"] in review_ids]
+    if place_answer:
+        # The structured place layer already answered the "where" question;
+        # text results are still returned for context but are not required.
+        no_answer = False
+        answer_mode = "direct"
+    elif missing_version_year:
+        answer_mode = "none"
+    elif not no_answer:
         answer_mode = "direct"
     elif degraded and results:
         # Rerank was unavailable, so confidence is not on the calibrated scale:
         # show the results for the agent to judge, never as a direct answer.
         answer_mode = "related"
-    elif results and isinstance(confidence, (int, float)) and confidence >= RELATED_MIN_CONFIDENCE:
+    elif version_review or (results and isinstance(confidence, (int, float)) and confidence >= RELATED_MIN_CONFIDENCE):
         answer_mode = "related"
     else:
         answer_mode = "none"
@@ -251,13 +286,33 @@ def tool_search(arguments):
         "took_ms": data.get("took_ms"),
         "results": results if answer_mode != "none" else [],
     }
+    places = data.get("places") or []
+    if places:
+        result["places"] = places
+    if place_answer:
+        result["place_answer"] = True
     if degraded:
         result["degraded"] = True
-    if degraded and answer_mode == "related":
+    if place_answer:
+        result["note"] = (
+            "place_answer=true：本次是地点查询，places 已直接给出校内地点坐标。"
+            "按 places 的 wgs84/gcj02/bd09 回答，并说明坐标来源与精度；"
+            "高德/腾讯用 gcj02，OpenStreetMap/Leaflet 用 wgs84，百度用 bd09。"
+        )
+    elif missing_version_year:
+        result["missing_version_year"] = missing_version_year
+        result["note"] = f"本次未核实 {missing_version_year} 年的对应版本；不能用其他年份的通知或规定替代。"
+    elif degraded and answer_mode == "related":
         result["note"] = (
             "degraded=true：本次检索的精排服务暂时不可用，结果未经精排、可信度无法判断。"
             "先用同一问法重试一次；重试仍为 degraded 时，只有原文确实直接回答了问题才能使用并标注出处，"
             "否则按 related 处理，不得推断原文没写的内容。"
+        )
+    elif version_review and answer_mode == "related":
+        result["version_review"] = version_review
+        result["note"] = (
+            "已找到关联新版，检索分数不足以确认完整作答。先核对标记原文是否写明所问事实；"
+            "可以如实说明这份新版明示了什么、没有单列什么，不得补用旧版，也不得从未提及推断不适用。"
         )
     elif answer_mode == "related":
         result["note"] = (
@@ -402,6 +457,7 @@ def tool_document_chunks(arguments):
         "source_url": data.get("source_url", ""),
         "publish_date": data.get("publish_date", ""),
         "date_basis": data.get("date_basis", ""),
+        **{key: data[key] for key in ("superseded_by", "newer_version") if data.get(key)},
         **meta,
         "chunks": [{key: chunk.get(key) for key in keys} for chunk in window],
     }
@@ -417,6 +473,7 @@ TOOL_DEFINITIONS = [
             "用户问题较短或指代不清时可以补全成完整问句再检索，但只能补全用户已表达的意思，"
             "不得引入示例、知识库内容或无关话题。"
             + SCOPE_RULE
+            + VERSION_RULE
             + RETRY_RULE
             + NO_ANSWER_RULE
             + "问题本不属于校内事务却误调了本工具、结果又无关时，忽略结果并直接回答用户原问题；"
@@ -424,6 +481,7 @@ TOOL_DEFINITIONS = [
             "引用时使用 citation 中的 doc_title、doc_no、clause_no、page_start；"
             "citation.file_url 可直接打开原文并跳到 page_start 页，page_count 为文档总页数；"
             "citation.source_url 为原始出处链接（非空时标注），publish_date 为文档日期（可能仅年份）。"
+            + PLACE_RULE
             + QUERY_TERMS_RULE
             + REFERENCE_RULE
         ),

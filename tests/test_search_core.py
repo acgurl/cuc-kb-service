@@ -17,6 +17,8 @@ from rank_bm25 import BM25Okapi
 from tests import support  # noqa: F401
 
 from kb import search_core
+from kb.clause_updates import ClauseUpdates
+from kb.places import PlaceIndex
 from kb.search_core import KB, CloudReranker
 
 CHUNKS = [
@@ -288,6 +290,50 @@ class SearchPipelineTest(unittest.TestCase):
         self.assertEqual({doc["doc_id"] for doc in kb.documents()}, {"dorm", "fee", "guide", "old"})
 
 
+class PlaceLayerTest(unittest.TestCase):
+    ROWS = [
+        {
+            "name": "明德楼（2号楼）", "alias": "2号楼", "category": "行政办公",
+            "campus": "北京校区", "lat": 39.911914, "lon": 116.550726,
+            "glat": 39.913001, "glon": 116.556565, "blat": 39.918879,
+            "blon": 116.563093, "source": "校方3D热点", "acc": "中",
+            "detail": "", "room": "", "note": "",
+        },
+        {
+            "name": "图书馆", "alias": "大阅城", "category": "文化场馆",
+            "campus": "北京校区", "lat": 39.913559, "lon": 116.551823,
+            "glat": 39.914644, "glon": 116.557659, "blat": 39.920503,
+            "blon": 116.564193, "source": "OpenStreetMap", "acc": "高",
+            "detail": "", "room": "", "note": "",
+        },
+    ]
+
+    def test_location_query_attaches_places_and_overrides_no_answer(self):
+        kb = build_kb({})
+        kb.places = PlaceIndex(rows=self.ROWS)
+        result = kb.search("明德楼在哪")
+        self.assertTrue(result["place_answer"])
+        self.assertFalse(result["no_answer"])
+        self.assertEqual(result["confidence"], 0.99)
+        self.assertEqual(result["places"][0]["name"], "明德楼（2号楼）")
+        self.assertEqual(result["places"][0]["wgs84"], {"lat": 39.911914, "lon": 116.550726})
+
+    def test_plain_mention_attaches_places_but_keeps_answer_mode(self):
+        kb = build_kb({})
+        kb.places = PlaceIndex(rows=self.ROWS)
+        result = kb.search("图书馆开放时间")
+        self.assertIn("places", result)
+        self.assertNotIn("place_answer", result)
+        self.assertTrue(result["no_answer"])
+
+    def test_no_place_leaves_payload_unchanged(self):
+        kb = build_kb({})
+        kb.places = PlaceIndex(rows=self.ROWS)
+        result = kb.search("学生公寓床铺尺寸")
+        self.assertNotIn("places", result)
+        self.assertNotIn("place_answer", result)
+
+
 class TraceTest(unittest.TestCase):
     """Opt-in stage snapshot used by eval/evidence_check.py for loss diagnosis."""
 
@@ -543,6 +589,73 @@ class NewerVersionTest(unittest.TestCase):
 
     def test_query_naming_the_old_year_is_not_demoted(self):
         self.assertEqual([r["doc_id"] for r in self._search("2021年贷款额度", True)], ["y21", "y26"])
+
+
+class CurrentEvidenceTest(unittest.TestCase):
+    def test_repealed_candidate_is_hidden_but_explicit_doc_number_is_searchable(self):
+        old = dict(CHUNKS[3], status="active", superseded_by="dorm", publish_date="2015")
+        kb = build_kb({"old-1": 0.99}, chunks=[old])
+        self.assertEqual(kb.search("现行公寓床宽", prefer_current=True)["results"], [])
+        for query in ("中传学字〔2015〕3号的学生公寓床宽", "2015年公寓床宽"):
+            with self.subTest(query=query):
+                self.assertEqual(kb.search(query, prefer_current=True)["results"][0]["doc_id"], "old")
+
+    def test_redaction_does_not_remove_other_clauses_or_reappear_in_expansion(self):
+        chunks = [
+            dict(CHUNKS[0], chunk_id="dorm-0000", text="第一条 前置条件。"),
+            dict(CHUNKS[0], chunk_id="dorm-0001", text="旧标准 8000 元。无关规定保留。"),
+            dict(CHUNKS[1], text="新标准 10000 元。"),
+        ]
+        kb = build_kb({"dorm-0000": 0.9}, chunks=chunks)
+        kb.clause_updates = ClauseUpdates([{
+            "old_chunk": "dorm-0001", "new_chunk": "fee-1",
+            "span": "旧标准8000元。", "historical_year": "2024",
+        }])
+        with mock.patch.object(search_core, "EXPAND_ADJACENT", 1):
+            text = kb.search("前置条件", top_k=1, prefer_current=True)["results"][0]["text"]
+        self.assertIn("无关规定保留", text)
+        self.assertNotIn("8000", text)
+
+    def test_linked_replacement_recalled_locally_and_scored_once(self):
+        old = dict(CHUNKS[0], superseded_by="fee", text="床铺尺寸旧规定。")
+        new = dict(CHUNKS[1], text="床铺尺寸新规定。")
+        kb = build_kb({"dorm-1": 0.99}, rerank={"fee-1": 0.91}, chunks=[old, new])
+        kb._build_bm25_index()
+        with mock.patch.object(kb, "bm25_search", return_value=[]), \
+                mock.patch.object(kb, "_bm25_scores", return_value=np.asarray([2.0, 1.0])), \
+                mock.patch.object(search_core, "RERANK_ALWAYS", True):
+            result = kb.search("床铺尺寸", prefer_current=True)
+            restricted = kb.search("床铺尺寸", assistant="中传小勤", prefer_current=True)
+        self.assertEqual([item["chunk_id"] for item in result["results"]], ["fee-1"])
+        self.assertEqual(result["confidence"], 0.91)
+        self.assertEqual(restricted["results"], [])
+        self.assertEqual(kb.cloud_reranker.calls, 1)
+
+    def test_low_scoring_linked_new_edition_is_exposed_without_old_confidence(self):
+        old = dict(CHUNKS[0], newer_version="fee", text="旧版床铺尺寸。")
+        new = dict(CHUNKS[1], text="新版床铺尺寸。")
+        kb = build_kb({"dorm-1": 0.99, "fee-1": 0.95},
+                      rerank={"dorm-1": 0.98, "fee-1": 0.63}, chunks=[old, new])
+        with mock.patch.object(search_core, "NEWER_VERSION", True), \
+                mock.patch.object(search_core, "RERANK_ALWAYS", True):
+            result = kb.search("最新版床铺尺寸", prefer_current=True)
+        self.assertEqual(result["version_review"], ["fee-1"])
+        self.assertTrue(result["no_answer"])
+        self.assertEqual(result["confidence"], 0.63)
+
+    def test_replaced_clause_seeds_same_rerank_without_crossing_assistant_scope(self):
+        old = dict(CHUNKS[0], text="旧标准8000元。")
+        new = dict(CHUNKS[1], text="新标准10000元。")
+        kb = build_kb({"dorm-1": 0.9}, rerank={"fee-1": 0.94}, chunks=[old, new])
+        kb.clause_updates = ClauseUpdates([{
+            "old_chunk": "dorm-1", "new_chunk": "fee-1", "span": old["text"], "historical_year": "2024",
+        }])
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True):
+            result = kb.search("现行标准是多少", prefer_current=True)
+            filtered = kb.search("现行标准是多少", assistant="中传小勤", prefer_current=True)
+        self.assertEqual(result["results"][0]["doc_id"], "fee")
+        self.assertEqual(filtered["results"], [])
+        self.assertEqual(kb.cloud_reranker.calls, 1)
 
 
 class NearDuplicateTest(unittest.TestCase):

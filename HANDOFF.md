@@ -1,5 +1,28 @@
 # HANDOFF — 检索质量优化（2026-11-01）
 
+## 2026-11-22 版本证据与精排条数（生产）
+
+- MCP 通过 `KB_MCP_PREFER_CURRENT=1` 开启版本证据过滤；REST 默认不套版本过滤。精排候选池保留 40 条，实际送精排最多 20 条。Open-LLM-VTuber、语料与 Qdrant 未改。
+- Phoenix 备份：`~/cuc-kb-release-20261122.xAkmEb/backup/`（含 `.env`、生产旧版 `app.py`、`search_core.py`、`mcp_server.py`）。发布及冒烟见 `deploy/release_freshness_20261122.sh`。关闭 `KB_MCP_PREFER_CURRENT` 并重启 MCP 可只撤版本过滤；完整回滚须还原 `.env` 和三个旧文件、移走本次新加的 `kb/clause_updates.{py,json}`，再先重启 `cuc-kb`、待健康后重启 `cuc-kb-mcp`。
+- 生产测试用 `eval/freshness_mcp_live.py`，逐题调用 VTuber 配置所用的 `127.0.0.1:8765/mcp`，记录整次 MCP 耗时，不把缓存预热后的 API 耗时当线上 P95。
+
+## 2026-11-20 地点坐标层（LIVE）
+
+**一句话现状**：把 `知识库地点坐标-20261120/` 的 217 行校园地点坐标表并入检索。`KB.search` 对命中地点名的查询返回 `places`（WGS-84 / GCJ-02 / BD-09 + 来源/精度）；`place_answer=true` 表示地点层直接作答（`no_answer=false`、`confidence=0.99`）。MCP `kb_search` 透传 `places`/`place_answer`，`place_answer=true` 时 `answer_mode=direct` 并附说明；非地点问法只附加 `places`、不改变 answer_mode。
+
+| 项 | 值 |
+|---|---|
+| 代码 | `kb/places.py`（新增：名称/别名/括号楼号/办公单位匹配 + 地点意图）；`kb/search_core.py`（`self.places`、`search()` 附加 `places`/`place_answer`、`meta().places`）；`kb/mcp_server.py`（`PLACE_RULE` + `tool_search` 透传）；`kb/app.py`（healthz.places） |
+| 数据 | `data/places.json`（217 行，源文件 `知识库地点坐标-20261120/data/places.json`；55 北京楼宇 + 校门/道路/景观/餐饮/体育/医疗设施 + 82 办公点 + 5 海南） |
+| 口径 | 楼宇=校方 3D 热点经 OSM 17 控制点单应标定（留一中位 14.6m/最大 34.9m），热点多为入口；OSM 有轮廓的 15 处用 OSM 中心；校门/道路/景观/14–19/28/29 号楼为 2018 版图/边界估算；海南 A/B/C 仅校区点 |
+| 匹配 | 名称/别名/括号楼号/办公单位；常见别名（南门/北门/东1门/医院/附小/艺传/中蓝/梆子井/国重/教务处/国资处/研招办/纪委/后勤处/公寓中心/饮食中心等）；纯 `N号楼` 用数字边界，`1号楼` 不匹配 `41号楼`；精确命中 100 分时不再返回短别名误配（`东南门` 不会带出 `南大门`）；`校医院` 命中现址 20 号楼、`41号楼` 命中旧址；办公点与楼宇同坐标时去重 |
+| 测试 | `tests/test_places.py` 10、`PlaceLayerTest` 3、MCP 透传 2；unit 171、ruff 干净 |
+| 线上 | `cuc-kb` 已重启（`cuc-kb-mcp` 未重启，调用 API 自动生效）；`/healthz` places=217；REST/MCP 冒烟：明德楼/图书馆/校医院/海南校区/2号楼/东南门/东1门/国重/教务处/南门/医院/附小/菜鸟驿站/澡堂 direct+places，图书馆几点开门 related 仅附 places，学生公寓床铺尺寸无 places |
+| 备份 | 首次：Phoenix `kb/{search_core,mcp_server,app}.py.bak-places-20261120-154400`、`.env.bak-places-20261120-154400`；二次：`kb/places.py.bak-places2-20261120-155348`、`data/places.json.bak-places2-20261120-155348` |
+| 回滚 | 恢复三个 `.bak-places-*` + 删除 `data/places.json` + 重启；或仅删 `data/places.json` 重启即可关闭地点层（代码缺文件时为空索引） |
+| 部署备注 | 本机 SSH 22 端口 kex 被对端关闭（疑似 fail2ban/sshd），本轮经 OCI Bastion 临时端口转发部署，bastion/session 已删除。`places.json` 在 `data/` 下、git 忽略，需随部署单独拷贝 |
+| 遗留 | 只覆盖表内 217 个地点；“食堂/宿舍”等泛称不单独定位；热点入口 vs 建筑中心、47 号楼三源冲突按表内备注；agent 若缓存 `tools/list`，需重连/重启才读到新 `PLACE_RULE`（tool 结果的 `note` 已含指引） |
+
 ## 2026-11-14 v2 优化实施（①+⑤+② 均已上线验证；③ 不可行；④ 归 agent 层）
 
 **一句话现状**：按 `report_evidence_v2.md` 后续清单实施。**① 版本替代端到端修复并已上线**——自适应降权（`KB_SUPERSEDED_ADAPTIVE=1`，旧版降权幅度自适应保证新版压旧版）+ 展开门控（被替代旧版不做相邻展开，防过时条款回流）+ 引用层 `superseded_by` 废止标注（search_core/mcp_server/harness 三处）；**线上 version 类 6/6 correct、6/6 complete、0 fabricated、old_above_new=[]**（w33/w32 稳定修复）。全量 A/B LLM correct 30→31、fabricated 2→1（剩 w21 为作答噪声，top5 已证不变）；检索零回归、hit@1 17→18。**⑤ judge 解析重试**已上线。**② 表格 caption 注入 embed_text + 重嵌 A/B 已验证**：107 块 batch 重嵌（≈¥0.02）+ 临时 collection `cuc_kb_v4_tablecap` 克隆覆盖，**召回丢失 recall 2→0、hit@1 17→19、零回归**（hit@5 瓶颈移到 fusion/排序）；上线需改 live embed_text+Qdrant 107 向量，**待确认**。**③ 2017 研究生学籍补 item3 核验不可行**（2024-159 无废止条款；w01 top1 是国际版属不同制度；全库 16 候选全为排除类）——更正原报告假设。**④ w35 时长误接受归 agent 层**。本地 136 单测/mcp-http 30/ruff 全过。报告 `eval/heldout/report_optimization_20261114.md`。

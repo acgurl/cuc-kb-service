@@ -21,7 +21,7 @@ TOKEN = support.TEST_ENV["KB_API_TOKEN"]
 AUTH = {"Authorization": f"Bearer {TOKEN}"}
 
 
-def fake_search(query, assistant=None, doc_types=None, top_k=5, trace=False):
+def fake_search(query, assistant=None, doc_types=None, top_k=5, trace=False, prefer_current=False):
     payload = {
         "query": query,
         "results": [
@@ -117,14 +117,20 @@ class ApiTest(unittest.TestCase):
         response = self.client.post("/v1/search", headers=AUTH, json={"query": "床尺寸", "top_k": 1, "doc_type": ["制度"]})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["cache-control"], "no-store")
-        self.search.assert_called_once_with("床尺寸", assistant=None, doc_types=["制度"], top_k=1, trace=False)
+        self.search.assert_called_once_with(
+            "床尺寸", assistant=None, doc_types=["制度"], top_k=1, trace=False, prefer_current=False
+        )
         self.assertEqual(response.json()["results"][0]["doc_id"], "d1")
         self.assertNotIn("trace", response.json())
 
     def test_search_trace_forwarded(self):
-        response = self.client.post("/v1/search", headers=AUTH, json={"query": "床尺寸", "trace": True})
+        response = self.client.post(
+            "/v1/search", headers=AUTH, json={"query": "床尺寸", "trace": True, "prefer_current": True}
+        )
         self.assertEqual(response.status_code, 200)
-        self.search.assert_called_once_with("床尺寸", assistant=None, doc_types=None, top_k=5, trace=True)
+        self.search.assert_called_once_with(
+            "床尺寸", assistant=None, doc_types=None, top_k=5, trace=True, prefer_current=True
+        )
         self.assertEqual(response.json()["trace"], {"final": ["c1"]})
 
     def test_search_rewrites_file_url_to_request_host(self):
