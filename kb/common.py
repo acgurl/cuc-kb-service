@@ -173,11 +173,15 @@ GENERIC_TITLE_PREFIXES = (
 GENERIC_TITLE_MARKERS = (
     "学生工作规章制度汇编",
     "学生规章制度汇编",
+    "修学指南",
+    "研究生手册",
+    "本科生学习指南",
 )
 
 _VERSION_LEAD_YEAR_RE = re.compile(r"^\s*(?:19|20)\d{2}\s*年?\s*")
 _VERSION_TAIL_RE = re.compile(r"(?:19|20)\d{2}\s*(?:年)?\s*(?:[-—_]\s*转换之后)?\s*$")
 _COMPILATION_MARKER = "规章制度汇编"
+_FAMILY_MARKERS = ("修学指南",)
 
 
 def is_generic_title(title):
@@ -190,6 +194,9 @@ def is_generic_title(title):
 def version_family(title):
     """Family key shared by editions of one compilation; None for other docs."""
     title = (title or "").strip()
+    for marker in _FAMILY_MARKERS:
+        if marker in title:
+            return marker
     if _COMPILATION_MARKER not in title:
         return None
     family = _VERSION_TAIL_RE.sub("", _VERSION_LEAD_YEAR_RE.sub("", title)).strip(" -—_")

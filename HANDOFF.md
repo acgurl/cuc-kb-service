@@ -1,5 +1,11 @@
 # HANDOFF — 检索质量优化（2026-11-01）
 
+## 2026-11-23 版本过滤收紧、近重复新旧择优与语料补链（生产）
+
+- 结合 Phoenix `open-llm-vtuber` 11-22/23 调用日志及全库 2289 篇扫描修复旧版回流：① `kb/common.py` `GENERIC_TITLE_MARKERS` 补齐 `修学指南`/`研究生手册`/`本科生学习指南`、`version_family()` 扩展 `修学指南`，消除新版单独扣分倒挂；② `kb/search_core.py` 收紧 `prefer_current` 下 `newer_version` 过滤（关联新版已入候选/精排即剔除旧版，低分走 `version_review`；`_linked_version_candidates` 扩至 shortlist 且提权 shortlist 外关联新版）并修复 `DEDUP_NEAR`（分差 `≤ 0.05` 时按未废止 > 非旧版 > 非 generic > 年份更新置换主结果，防止旧版吞并新版）；③ `kb/mcp_server.py` 与 `agent/tools.openai.json` 在 `kb_search.query` 参数说明强调保留版本/年份限定词；④ `scripts/apply_version_links_20261123.py` 对线上 `data/` 补齐 **30 对活跃文档（535 chunks）** `newer_version`（含日志高频 13 对 + 全库扫描核验新增 17 对：导师聘任 2024→2025/2026、校医院报销 2025-2026二→2026-2027一、学生缴费通知 2024-2025→2025-2026、服兵役资助 2026春→秋、补退选课 2025-2026春→2026-2027秋、辅修招生 2025→2026、研究生公共外语 2023→2024、培养环节流程 2021→2024、课程自评/督导推荐/留基委/进修计划/信息化服务指南 2022→2026 等）及 3 份修学指南 `publish_date`。本地 `data-live` 已同步；Qdrant 向量零改动。
+- 验证：unit 182 通过（5 跳过）、MCP 34 通过、Ruff 干净；Phoenix `cuc-kb`/`cuc-kb-mcp` 已重启健康（`chunks=52322, places=217`），共完成 9 条日志回归 + 16 条跨领域泛化 + 5 条全库补链复测，现行问法已标注旧版泄漏数为 0，历史版查询无回归。临时 OCI Bastion 已删除。
+- 备份与回滚：Phoenix 代码备份 `~/cuc-kb-release-20261123/backup/{common,search_core,mcp_server}.py`，数据备份 `~/cuc-kb/data/{chunks.jsonl,docs.json}.bak-vlinks-20261123`（或 `.venv/bin/python -m scripts.apply_version_links_20261123 --data data --reverse`），还原后依次重启 `cuc-kb` 与 `cuc-kb-mcp`。
+
 ## 2026-11-22 版本证据与精排条数（生产）
 
 - MCP 通过 `KB_MCP_PREFER_CURRENT=1` 开启版本证据过滤；REST 默认不套版本过滤。精排候选池保留 40 条，实际送精排最多 20 条。Open-LLM-VTuber、语料与 Qdrant 未改。

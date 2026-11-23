@@ -488,7 +488,15 @@ TOOL_DEFINITIONS = [
         "inputSchema": {
             "type": "object",
             "properties": {
-                "query": {"type": "string", "minLength": 1, "maxLength": 500, "description": "完整的中文检索问题。并行调用时每个调用用不同问法，不要重复用过的查询。"},
+                "query": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 500,
+                    "description": (
+                        "完整的中文检索问题。并行调用时每个调用用不同问法，不要重复用过的查询；"
+                        "用户原话含年份、文号或“最新/现行”等版本限定时，每条子查询都必须原样保留这些限定词。"
+                    ),
+                },
                 "assistant": {
                     "type": "string",
                     "description": "按助手名过滤（如“中传小勤”）；共享文档始终可见。可先用 kb_meta 查询可选值。",

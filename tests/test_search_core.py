@@ -121,6 +121,9 @@ class PureHelpersTest(unittest.TestCase):
 
     def test_generic_detection(self):
         self.assertTrue(search_core.is_generic_chunk({"doc_title": "修学指南2025版（本科）"}))
+        self.assertTrue(search_core.is_generic_chunk({"doc_title": "2023修学指南电子版"}))
+        self.assertTrue(search_core.is_generic_chunk({"doc_title": "2018年研究生手册"}))
+        self.assertTrue(search_core.is_generic_chunk({"doc_title": "中国传媒大学本科生学习指南（学生版）"}))
         self.assertTrue(search_core.is_generic_chunk({"doc_title": "x", "is_generic": True}))
         self.assertTrue(
             search_core.is_generic_chunk(
@@ -143,11 +146,15 @@ class PureHelpersTest(unittest.TestCase):
         self.assertEqual(
             search_core.version_family("中国传媒大学学生工作规章制度汇编2026-转换之后"), family
         )
+        self.assertEqual(search_core.version_family("2023修学指南电子版"), "修学指南")
+        self.assertEqual(search_core.version_family("修学指南2025版"), "修学指南")
         self.assertIsNone(search_core.version_family("学生公寓管理办法"))
         self.assertEqual(search_core.edition_year("2022年中国传媒大学学生工作规章制度汇编"), 2022)
         self.assertEqual(
             search_core.edition_year("中国传媒大学学生工作规章制度汇编2026-转换之后"), 2026
         )
+        self.assertEqual(search_core.edition_year("2023修学指南电子版"), 2023)
+        self.assertEqual(search_core.edition_year("修学指南2025版"), 2025)
 
     def test_attribute_and_answer_span(self):
         self.assertIsNone(search_core.detect_attribute("你好"))
@@ -638,10 +645,45 @@ class CurrentEvidenceTest(unittest.TestCase):
                       rerank={"dorm-1": 0.98, "fee-1": 0.63}, chunks=[old, new])
         with mock.patch.object(search_core, "NEWER_VERSION", True), \
                 mock.patch.object(search_core, "RERANK_ALWAYS", True):
-            result = kb.search("最新版床铺尺寸", prefer_current=True)
-        self.assertEqual(result["version_review"], ["fee-1"])
-        self.assertTrue(result["no_answer"])
-        self.assertEqual(result["confidence"], 0.63)
+            for query in ("最新版床铺尺寸", "床铺尺寸"):
+                with self.subTest(query=query):
+                    result = kb.search(query, prefer_current=True)
+                    self.assertEqual([r["chunk_id"] for r in result["results"]], ["fee-1"])
+                    self.assertEqual(result["version_review"], ["fee-1"])
+                    self.assertTrue(result["no_answer"])
+                    self.assertEqual(result["confidence"], 0.63)
+
+    def test_older_edition_is_omitted_when_newer_scores_below_threshold_alongside_other_hit(self):
+        old = dict(CHUNKS[0], newer_version="fee", text="旧版贷款额度16000元。")
+        new = dict(CHUNKS[1], text="新版贷款说明。")
+        policy = dict(CHUNKS[2], chunk_id="pol-1", doc_id="pol", text="本科生国家助学贷款最高20000元。")
+        kb = build_kb(
+            {"pol-1": 0.96, "dorm-1": 0.92, "fee-1": 0.88},
+            rerank={"pol-1": 0.93, "dorm-1": 0.85, "fee-1": 0.74},
+            chunks=[old, new, policy],
+        )
+        with mock.patch.object(search_core, "NEWER_VERSION", True), \
+                mock.patch.object(search_core, "RERANK_ALWAYS", True):
+            result = kb.search("国家助学贷款最高额度", prefer_current=True)
+        self.assertFalse(result["no_answer"])
+        self.assertEqual([r["doc_id"] for r in result["results"]], ["pol", "fee"])
+
+    def test_linked_newer_edition_outside_shortlist_is_promoted(self):
+        old = dict(CHUNKS[0], chunk_id="old-1", doc_id="old", newer_version="newdoc", text="旧版规定。")
+        new = dict(CHUNKS[1], chunk_id="new-1", doc_id="newdoc", text="新版规定。")
+        filler = [
+            dict(CHUNKS[2], chunk_id=f"f-{i}", doc_id=f"f{i}", text=f"其他条款{i}。")
+            for i in range(4)
+        ]
+        dense = {"old-1": 0.99, "f-0": 0.95, "f-1": 0.94, "f-2": 0.93, "f-3": 0.92, "new-1": 0.80}
+        rerank = {"old-1": 0.95, "f-0": 0.60, "f-1": 0.59, "f-2": 0.58, "f-3": 0.57, "new-1": 0.88}
+        kb = build_kb(dense, rerank=rerank, chunks=[old, new, *filler])
+        with mock.patch.object(search_core, "NEWER_VERSION", True), \
+                mock.patch.object(search_core, "RERANK_ALWAYS", True), \
+                mock.patch.object(search_core, "RERANK_SHORTLIST", 3):
+            result = kb.search("规定", prefer_current=True)
+        self.assertEqual(result["results"][0]["doc_id"], "newdoc")
+        self.assertNotIn("old", [r["doc_id"] for r in result["results"]])
 
     def test_replaced_clause_seeds_same_rerank_without_crossing_assistant_scope(self):
         old = dict(CHUNKS[0], text="旧标准8000元。")
@@ -696,6 +738,42 @@ class NearDuplicateTest(unittest.TestCase):
     def test_longer_chunk_with_extra_content_is_kept(self):
         results = self._search(True, top_k=3)
         self.assertEqual([r["chunk_id"] for r in results], ["a-0000", "c-0000", "d-0000"])
+
+    def test_newer_or_specific_duplicate_replaces_older_primary_within_margin(self):
+        clause = "第十五条 研究生请假三天以上须经导师同意并报培养单位审批备案。"
+        chunks = [
+            {"chunk_id": "y22-0", "doc_id": "y22", "doc_title": "中传研字〔2022〕35号",
+             "doc_type": "制度", "assistants": ["shared"], "status": "active",
+             "page_start": 1, "page_end": 1, "publish_date": "2022-02-09", "text": clause},
+            {"chunk_id": "y24-0", "doc_id": "y24", "doc_title": "中传研字〔2024〕159号",
+             "doc_type": "制度", "assistants": ["shared"], "status": "active",
+             "page_start": 1, "page_end": 1, "publish_date": "2024-07-05", "text": clause},
+        ]
+        kb = build_kb({"y22-0": 0.9, "y24-0": 0.88}, rerank={"y22-0": 0.78, "y24-0": 0.76}, chunks=chunks)
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True), \
+                mock.patch.object(search_core, "DEDUP_NEAR", True):
+            current = kb.search("研究生请假审批", top_k=2)["results"]
+            historical = kb.search("2022年研究生请假审批", top_k=2)["results"]
+        self.assertEqual([r["doc_id"] for r in current], ["y24"])
+        self.assertEqual([d["doc_id"] for d in current[0]["duplicates"]], ["y22"])
+        self.assertEqual([r["doc_id"] for r in historical], ["y22"])
+
+    def test_specific_doc_replaces_generic_handbook_duplicate(self):
+        clause = "学生须在规定时间内登录教务系统完成主修和辅修课程的网上选课。"
+        chunks = [
+            {"chunk_id": "h23-0", "doc_id": "h23", "doc_title": "2023修学指南电子版",
+             "doc_type": "指南", "assistants": ["shared"], "status": "active",
+             "page_start": 1, "page_end": 1, "publish_date": "2024-11-25", "text": clause},
+            {"chunk_id": "n26-0", "doc_id": "n26", "doc_title": "本科生院[2026]40号选课通知",
+             "doc_type": "通知", "assistants": ["shared"], "status": "active",
+             "page_start": 1, "page_end": 1, "publish_date": "2026-07-06", "text": clause},
+        ]
+        kb = build_kb({"h23-0": 0.9, "n26-0": 0.88}, rerank={"h23-0": 0.88, "n26-0": 0.85}, chunks=chunks)
+        with mock.patch.object(search_core, "RERANK_ALWAYS", True), \
+                mock.patch.object(search_core, "DEDUP_NEAR", True):
+            results = kb.search("网上选课", top_k=2)["results"]
+        self.assertEqual([r["doc_id"] for r in results], ["n26"])
+        self.assertEqual([d["doc_id"] for d in results[0]["duplicates"]], ["h23"])
 
 
 class SparseBM25Test(unittest.TestCase):

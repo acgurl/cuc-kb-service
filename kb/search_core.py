@@ -951,20 +951,34 @@ class KB:
 
     def _linked_version_candidates(self, candidates, query, assistant, doc_types):
         """Probe a few linked documents locally, then let the normal reranker score them."""
+        shortlist_limit = min(RERANK_SHORTLIST, len(candidates), CANDIDATE_LIMIT)
+        shortlist_docs = {self.chunk_map[key]["doc_id"] for key, _ in candidates[:shortlist_limit]}
         present = {self.chunk_map[key]["doc_id"] for key, _ in candidates}
         linked = {}
-        for chunk_id, score in candidates[:12]:
+        promote = {}
+        for chunk_id, score in candidates[:shortlist_limit]:
             chunk = self.chunk_map[chunk_id]
             target = chunk.get("superseded_by") or (chunk.get("newer_version") if NEWER_VERSION else None)
-            if target and target not in present and target not in linked and not names_old_edition(query, chunk):
+            if not target or names_old_edition(query, chunk):
+                continue
+            if target not in present and target not in linked:
                 linked[target] = score
+            elif target in present and target not in shortlist_docs and target not in promote:
+                promote[target] = score
+        matches = []
+        if promote:
+            for chunk_id, _ in candidates[shortlist_limit:]:
+                doc_id = self.chunk_map[chunk_id]["doc_id"]
+                if doc_id in promote:
+                    matches.append((chunk_id, promote.pop(doc_id)))
+                    if not promote:
+                        break
         if not linked or not self.bm25 or self.bm25_postings is None:
-            return []
+            return matches
 
         # Reuse BM25, but examine only chunks in the explicitly linked documents.
         scores = self._bm25_scores(jieba.lcut_for_search(query))
-        matches = []
-        for doc_id, source_score in list(linked.items())[:3]:
+        for doc_id, source_score in list(linked.items())[:5]:
             entries = []
             for index in self.version_doc_indexes.get(doc_id, ()):
                 chunk = self.chunks[index]
@@ -989,8 +1003,36 @@ class KB:
                     continue
             selected[chunk_id] = max(score, selected.get(chunk_id, 0.0))
         for chunk_id, score in self._linked_version_candidates(candidates, query, assistant, doc_types):
-            selected.setdefault(chunk_id, score)
+            selected[chunk_id] = max(score, selected.get(chunk_id, 0.0))
         return sorted(selected.items(), key=lambda item: item[1], reverse=True)[:len(candidates)]
+
+    @staticmethod
+    def _chunk_year(chunk):
+        year = edition_year(chunk.get("doc_title", ""))
+        if year is not None:
+            return year
+        raw = str(chunk.get("publish_date") or "")[:4]
+        return int(raw) if raw.isdigit() else 0
+
+    @classmethod
+    def _authority_key(cls, chunk):
+        return (
+            not chunk.get("superseded_by"),
+            not chunk.get("newer_version"),
+            not is_generic_chunk(chunk),
+            cls._chunk_year(chunk),
+        )
+
+    def _prefer_duplicate(self, existing_item, candidate_chunk, candidate_rerank, candidate_score, query):
+        existing_chunk = self.chunk_map.get(existing_item["chunk_id"]) or {}
+        if names_old_edition(query, existing_chunk):
+            return False
+        if self._authority_key(candidate_chunk) <= self._authority_key(existing_chunk):
+            return False
+        existing_rerank = existing_item.get("rerank_score")
+        if existing_rerank is not None and candidate_rerank is not None:
+            return (existing_rerank - candidate_rerank) <= 0.05
+        return (existing_item["score"] - candidate_score) <= 0.005
 
     def _rerank(self, query, candidates, text_of=None):
         """Return (reordered candidates, rerank scores by chunk_id)."""
@@ -1231,7 +1273,7 @@ class KB:
         if prefer_current and NEWER_VERSION:
             current_editions = {
                 self.chunk_map[key]["doc_id"] for key, _ in candidates
-                if rerank_scores.get(key, 0) >= RERANK_MIN_SCORE
+                if not rerank_scores or key in rerank_scores
             }
             latest_only = "最新" in query and not COMPARISON_RE.search(query)
             retained = []
@@ -1245,26 +1287,56 @@ class KB:
 
         results = []
         kept_shingles = []
-        for chunk_id, score in candidates:
-            if len(results) >= top_k:
+        for index, (chunk_id, score) in enumerate(candidates):
+            full = len(results) >= top_k
+            if full and (not DEDUP_NEAR or (rerank_scores and chunk_id not in rerank_scores) or index >= max(top_k * 2, 10)):
                 break
             chunk = self.chunk_map.get(chunk_id)
             if not chunk:
                 continue
+            rerank_score = rerank_scores.get(chunk_id)
             if DEDUP_NEAR:
                 current = shingles(text_of(chunk) if text_of else chunk.get("text", ""))
                 twin = self._near_duplicate_of(current, kept_shingles)
                 if twin is not None:
-                    results[twin].setdefault("duplicates", []).append(
-                        {
+                    if self._prefer_duplicate(results[twin], chunk, rerank_score, score, query):
+                        old_item = results[twin]
+                        dups = list(old_item.get("duplicates") or [])
+                        dups.append(
+                            {
+                                "chunk_id": old_item["chunk_id"],
+                                "doc_id": old_item["doc_id"],
+                                "doc_title": (old_item.get("citation") or {}).get("doc_title", ""),
+                            }
+                        )
+                        results[twin] = {
                             "chunk_id": chunk_id,
                             "doc_id": chunk["doc_id"],
-                            "doc_title": chunk.get("doc_title", ""),
+                            "text": text_of(chunk) if text_of else chunk["text"],
+                            "score": round(score, 6),
+                            "dense_score": round(dense_scores.get(chunk_id, 0.0), 4),
+                            "bm25_score": round(bm25_scores.get(chunk_id, 0.0), 4),
+                            "rerank_score": None if rerank_score is None else round(rerank_score, 4),
+                            "citation": self._citation(chunk),
+                            "is_qa": chunk.get("is_qa", False),
+                            "is_generic": is_generic_chunk(chunk),
+                            "duplicates": dups,
                         }
-                    )
+                        kept_shingles[twin] = current
+                    else:
+                        results[twin].setdefault("duplicates", []).append(
+                            {
+                                "chunk_id": chunk_id,
+                                "doc_id": chunk["doc_id"],
+                                "doc_title": chunk.get("doc_title", ""),
+                            }
+                        )
+                    continue
+                if full:
                     continue
                 kept_shingles.append(current)
-            rerank_score = rerank_scores.get(chunk_id)
+            elif full:
+                break
             results.append(
                 {
                     "chunk_id": chunk_id,
